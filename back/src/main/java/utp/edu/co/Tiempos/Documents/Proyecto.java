@@ -26,13 +26,13 @@ public class Proyecto {
     @DBRef(lazy = true)
     private List<Tarea> tareas;
     @DBRef(lazy = true)
-    private List<Usuario> UsersId;
+    private List<String> UsersId;
     
     protected Proyecto(){
         this.tareas = new ArrayList<>();
         this.UsersId = new ArrayList<>();}
 
-    public Proyecto(String name, String creator, List<Tarea> tareas, List<Usuario> UsersId) {
+    public Proyecto(String name, String creator, List<Tarea> tareas, List<String> UsersId) {
         this.name = name;
         this.creator = creator;
         this.tareas = tareas;
@@ -68,11 +68,11 @@ public class Proyecto {
         this.tareas = tareas;
     }
 
-    public List<Usuario> getUsersId() {
+    public List<String> getUsersId() {
         return UsersId;
     }
 
-    public void setUsersId(List<Usuario> UsersId) {
+    public void setUsersId(List<String> UsersId) {
         this.UsersId = UsersId;
     }
     

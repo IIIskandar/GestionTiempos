@@ -29,7 +29,7 @@ public class Usuario {
     private String password;
     
     @DBRef(lazy = true)
-    private List<Proyecto> projectsId;
+    private List<String> projectsId;
     @DBRef(lazy = true)
     private List<Suspension> suspensions;
     
@@ -38,7 +38,7 @@ public class Usuario {
         this.suspensions = new ArrayList<>();
     }
 
-    public Usuario(String name, String cc, String password, List<Proyecto> projectsId, List<Suspension> suspensions) {
+    public Usuario(String name, String cc, String password, List<String> projectsId, List<Suspension> suspensions) {
         this.name = name;
         this.cc = cc;
         this.password = password;
@@ -63,7 +63,7 @@ public class Usuario {
         this.password = password;
     }
 
-    public void setProjectsId(List<Proyecto> projectsId) {
+    public void setProjectsId(List<String> projectsId) {
         this.projectsId = projectsId;
     }
 
@@ -84,7 +84,7 @@ public class Usuario {
         return password;
     }
 
-    public List<Proyecto> getProjectsId() {
+    public List<String> getProjectsId() {
         return projectsId;
     }
 

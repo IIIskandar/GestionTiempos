@@ -5,6 +5,7 @@
  */
 package utp.edu.co.Tiempos.Repository;
 
+import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import utp.edu.co.Tiempos.Documents.Usuario;
@@ -15,5 +16,5 @@ import utp.edu.co.Tiempos.Documents.Usuario;
  */
 @Repository
 public interface UsuarioRepository extends MongoRepository<Usuario, String>{
-    
+    Optional<Usuario> findByCc(String cc);
 }

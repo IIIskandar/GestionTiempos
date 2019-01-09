@@ -19,12 +19,13 @@ public interface ConfiguracionService {
     
     Usuario consultarUsuario(String id);
     
+    Usuario consultarUsuariobyCC(String cc);
+    
     Usuario guardarUsuario(Usuario usuario);
     
     Usuario actualizarUsuario(Usuario usuario);
     
     Usuario eliminarUsuario(String id);
-<<<<<<< HEAD:src/main/java/utp/edu/co/Tiempos/Service/ConfiguracionService.java
     
     List<Proyecto> listaProyectos();
     
@@ -33,9 +34,8 @@ public interface ConfiguracionService {
     Proyecto guardarProyecto(Proyecto proyecto);
     
     Proyecto eliminarProyecto(String id);
-||||||| merged common ancestors
-=======
+    
+    Proyecto asignarUsuarioaProyecto(String idProyecto, String idUsuario);
     
     Usuario guardarSuspension(String id, Suspension suspension);
->>>>>>> f3a2861718249a171c0372d89fe026d30dc263b4:back/src/main/java/utp/edu/co/Tiempos/Service/ConfiguracionService.java
 }
