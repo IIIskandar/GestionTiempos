@@ -7,6 +7,7 @@ package utp.edu.co.Tiempos.Service;
 
 import java.util.List;
 import utp.edu.co.Tiempos.Documents.Usuario;
+import utp.edu.co.Tiempos.Documents.Suspension;
 
 /**
  *
@@ -20,4 +21,6 @@ public interface ConfiguracionService {
     Usuario guardarUsuario(Usuario usuario);
     
     Usuario eliminarUsuario(String id);
+    
+    Usuario guardarSuspension(String id, Suspension suspension);
 }

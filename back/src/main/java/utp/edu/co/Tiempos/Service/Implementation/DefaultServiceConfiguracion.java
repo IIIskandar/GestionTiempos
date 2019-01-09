@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import utp.edu.co.Tiempos.Documents.Usuario;
+import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 
@@ -63,4 +64,17 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return null;
     }
     
+    
+    @Override
+    public Usuario guardarSuspension(String id, Suspension suspension){
+        Usuario usuarioToSus = consultarUsuario(id);
+        if(usuarioToSus != null){
+            List<Suspension> respuesta = new ArrayList<>();
+            respuesta = usuarioToSus.getSuspensions();
+            respuesta.add(suspension);
+            usuarioToSus.setSuspensions(respuesta);
+            return usuarioToSus;
+        }
+        return null;
+    }
 }
