@@ -1,0 +1,17 @@
+utp\edu\co\Tiempos\Controller\UsuarioController.class
+utp\edu\co\Tiempos\Documents\Descripcion.class
+utp\edu\co\Tiempos\Documents\Suspension.class
+utp\edu\co\Tiempos\Documents\Tarea.class
+utp\edu\co\Tiempos\Documents\WC.class
+utp\edu\co\Tiempos\Repository\SuspensionRepository.class
+utp\edu\co\Tiempos\Documents\Usuario.class
+utp\edu\co\Tiempos\Repository\DescripcionRepository.class
+utp\edu\co\Tiempos\Service\ConfiguracionService.class
+utp\edu\co\Tiempos\Service\Implementation\DefaultServiceConfiguracion.class
+utp\edu\co\Tiempos\Documents\Proyecto.class
+utp\edu\co\Tiempos\TiemposApplication.class
+utp\edu\co\Tiempos\Documents\Meeting.class
+utp\edu\co\Tiempos\Documents\Snack.class
+utp\edu\co\Tiempos\Repository\UsuarioRepository.class
+utp\edu\co\Tiempos\Repository\ProyectoRepository.class
+utp\edu\co\Tiempos\Repository\TareaRepository.class
