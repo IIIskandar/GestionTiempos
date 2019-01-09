@@ -24,7 +24,6 @@ public class Usuario {
     @NotNull
     private String name;
     @NotNull
-    @Field( unique = true)
     private String cc;
     @NotNull
     private String password;

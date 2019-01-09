@@ -6,6 +6,7 @@
 package utp.edu.co.Tiempos.Service;
 
 import java.util.List;
+import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Usuario;
 
 /**
@@ -19,5 +20,15 @@ public interface ConfiguracionService {
     
     Usuario guardarUsuario(Usuario usuario);
     
+    Usuario actualizarUsuario(Usuario usuario);
+    
     Usuario eliminarUsuario(String id);
+    
+    List<Proyecto> listaProyectos();
+    
+    Proyecto consultarProyecto(String id);
+    
+    Proyecto guardarProyecto(Proyecto proyecto);
+    
+    Proyecto eliminarProyecto(String id);
 }

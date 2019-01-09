@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
+import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Usuario;
+import utp.edu.co.Tiempos.Repository.ProyectoRepository;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 
@@ -21,9 +23,11 @@ import utp.edu.co.Tiempos.Service.ConfiguracionService;
 public class DefaultServiceConfiguracion implements ConfiguracionService{
 
     private UsuarioRepository usuarioRepository;
+    private ProyectoRepository proyectoRepository;
 
-    public DefaultServiceConfiguracion(UsuarioRepository usuarioRepository) {
+    public DefaultServiceConfiguracion(UsuarioRepository usuarioRepository, ProyectoRepository proyectoRepository) {
         this.usuarioRepository = usuarioRepository;
+        this.proyectoRepository = proyectoRepository;
     }
     
     //Lista los usuarios guardados
@@ -52,6 +56,16 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         Usuario representativo = usuarioRepository.insert(usuario);
         return representativo;
     }
+    
+    @Override
+    public Usuario actualizarUsuario(Usuario usuario){
+        Optional<Usuario> update = usuarioRepository.findById(usuario.getId());
+        if(update.isPresent()){
+            Usuario respuesta = usuarioRepository.save(update.get());
+            return respuesta;
+        }
+        return null;
+    }
 
     @Override
     public Usuario eliminarUsuario(String id) {
@@ -61,6 +75,31 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
             return usuarioToDel;
         }
         return null;
+    }
+
+    @Override
+    public List<Proyecto> listaProyectos() {
+        List<Proyecto> respuesta = new ArrayList<>();
+        respuesta = proyectoRepository.findAll();
+        if(!respuesta.isEmpty()){
+            return respuesta;
+        }
+        return null;      
+    }
+
+    @Override
+    public Proyecto consultarProyecto(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Proyecto guardarProyecto(Proyecto proyecto) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Proyecto eliminarProyecto(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
