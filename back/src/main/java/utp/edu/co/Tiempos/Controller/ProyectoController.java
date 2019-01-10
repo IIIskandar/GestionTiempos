@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import utp.edu.co.Tiempos.Documents.Proyecto;
+import utp.edu.co.Tiempos.Documents.Tarea;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 
@@ -76,6 +77,37 @@ public class ProyectoController {
         }
         
         return ResponseEntity.ok(proyectoHelper.getUsersId());
+    }
+    
+    @GetMapping("/tareas")
+    public ResponseEntity<?> getAllTareas(){
+        List<Tarea> listaTareas = configuracionService.listaTareas();
+        if (listaTareas == null || listaTareas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listaTareas);
+    }
+    
+    @PutMapping("/{id}/tarea")
+    public ResponseEntity<?> createTarea(@PathVariable("id") String id,@RequestBody Tarea tarea){
+        
+        tarea = configuracionService.guardarTarea(id,tarea);
+        
+        if(tarea == null){
+            return ResponseEntity.badRequest().build();
+        }
+        
+        return ResponseEntity.ok(tarea);
+    }
+    
+    @DeleteMapping("tarea/{id}")
+    public ResponseEntity<?> deleteTarea(@PathVariable("id") String id){
+        Tarea tarea = configuracionService.eliminarTarea(id);
+        if(tarea == null){
+            return ResponseEntity.notFound().build();
+        }
+        
+        return ResponseEntity.ok(tarea);
     }
 }
 

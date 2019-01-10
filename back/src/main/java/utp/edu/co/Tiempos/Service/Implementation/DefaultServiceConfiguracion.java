@@ -14,6 +14,8 @@ import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Repository.ProyectoRepository;
 import utp.edu.co.Tiempos.Documents.Suspension;
+import utp.edu.co.Tiempos.Documents.Tarea;
+import utp.edu.co.Tiempos.Repository.TareaRepository;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 
@@ -26,8 +28,10 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
 
     private UsuarioRepository usuarioRepository;
     private ProyectoRepository proyectoRepository;
+    private TareaRepository tareaRepository;
 
-    public DefaultServiceConfiguracion(UsuarioRepository usuarioRepository, ProyectoRepository proyectoRepository) {
+    public DefaultServiceConfiguracion(TareaRepository tareaRepository, UsuarioRepository usuarioRepository, ProyectoRepository proyectoRepository) {
+        this.tareaRepository = tareaRepository;
         this.usuarioRepository = usuarioRepository;
         this.proyectoRepository = proyectoRepository;
     }
@@ -95,7 +99,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
 
     @Override
     public Proyecto consultarProyecto(String id) {
-         Optional<Proyecto> proyectOptional = proyectoRepository.findById(id);
+        Optional<Proyecto> proyectOptional = proyectoRepository.findById(id);
         if(proyectOptional.isPresent()){
             return proyectOptional.get();
         }
@@ -105,7 +109,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
     @Override
     public Proyecto guardarProyecto(Proyecto proyecto) {
        Proyecto representativo = proyectoRepository.insert(proyecto);
-        return representativo;
+       return representativo;
     }
 
     @Override
@@ -171,16 +175,16 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
     @Override
     public Proyecto asignarUsuarioaProyecto(String idProyecto, String idUsuario) {
         Proyecto proyectoHelper = consultarProyecto(idProyecto);
-        List<String> usuariosId = new ArrayList<>();
-        usuariosId = proyectoHelper.getUsersId();
-        usuariosId.add(idUsuario);
-        proyectoHelper.setUsersId(usuariosId);
         Usuario usuarioHelper = consultarUsuario(idUsuario);
-        List<String> proyectosId = new ArrayList<>();
-        proyectosId = usuarioHelper.getProjectsId();
-        proyectosId.add(idProyecto);
-        usuarioHelper.setProjectsId(proyectosId);
-        usuarioRepository.save(usuarioHelper);
+        List<Usuario> usuariosId = new ArrayList<>();
+        usuariosId = proyectoHelper.getUsersId();
+        usuariosId.add(usuarioHelper);
+        proyectoHelper.setUsersId(usuariosId);
+        //List<Proyecto> proyectosId = new ArrayList<>();
+//        proyectosId = usuarioHelper.getProjectsId();
+//        proyectosId.add(proyectoHelper);
+//        usuarioHelper.setProjectsId(proyectosId);
+//        usuarioRepository.save(usuarioHelper);
         proyectoRepository.save(proyectoHelper);
         
         return proyectoHelper;
@@ -194,4 +198,48 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         }
         return null;
     }
+
+    @Override
+    public List<Tarea> listaTareas() {
+        List<Tarea> respuesta = new ArrayList<>();
+        respuesta = tareaRepository.findAll();
+        if(!respuesta.isEmpty()){
+            return respuesta;
+        }
+        return null; 
+    }
+
+    @Override
+    public Tarea consultarTarea(String id) {   
+    Optional<Tarea> tareaOptional = tareaRepository.findById(id);
+        if(tareaOptional.isPresent()){
+            return tareaOptional.get();
+        }
+        return null;
+    }
+
+
+    
+
+    @Override
+    public Tarea eliminarTarea(String id) {
+       Tarea tareaToDel = consultarTarea(id);
+        if(tareaToDel != null){
+            tareaRepository.deleteById(id);
+            return tareaToDel;
+        }
+        return null;
+    }
+
+    @Override
+    public Tarea guardarTarea(String id, Tarea tarea) {
+        Tarea representativo = tareaRepository.insert(tarea);
+        Proyecto proyectoHelper = consultarProyecto(id);
+        List<Tarea> tareas = new ArrayList<>();
+        tareas = proyectoHelper.getTareas();
+        tareas.add(tarea);
+        proyectoHelper.setTareas(tareas);
+        proyectoRepository.save(proyectoHelper);
+        return representativo;
+    }    
 }

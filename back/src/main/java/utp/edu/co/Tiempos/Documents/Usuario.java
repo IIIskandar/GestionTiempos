@@ -28,8 +28,6 @@ public class Usuario {
     private String cc;
     @NotNull
     private String password;
-    @DBRef(lazy = true)
-    private List<String> projectsId;
     private List<Suspension> suspensions;
     private Long tiempoWC;
     private Long tiempoSnacks;
@@ -37,15 +35,13 @@ public class Usuario {
     private String rol;
     
     protected Usuario(){   
-        this.projectsId = new ArrayList<>();
         this.suspensions = new ArrayList<>();
     }
 
-    public Usuario(String name, String cc, String password, List<String> projectsId, List<Suspension> suspensions, Long tiempoWC, Long tiempoSnacks, Long tiempoMeeting, String rol) {
+    public Usuario(String name, String cc, String password, List<Suspension> suspensions, Long tiempoWC, Long tiempoSnacks, Long tiempoMeeting, String rol) {
         this.name = name;
         this.cc = cc;
         this.password = password;
-        this.projectsId = projectsId;
         this.suspensions = suspensions;
         this.tiempoWC = tiempoWC;
         this.tiempoSnacks = tiempoSnacks;
@@ -71,10 +67,6 @@ public class Usuario {
         this.password = password;
     }
 
-    public void setProjectsId(List<String> projectsId) {
-        this.projectsId = projectsId;
-    }
-
     public void setSuspensions(List<Suspension> suspensions) {
         this.suspensions = suspensions;
     }
@@ -92,9 +84,6 @@ public class Usuario {
         return password;
     }
 
-    public List<String> getProjectsId() {
-        return projectsId;
-    }
 
     public List<Suspension> getSuspensions() {
         return suspensions;

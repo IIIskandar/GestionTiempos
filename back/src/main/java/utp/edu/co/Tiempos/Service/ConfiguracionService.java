@@ -9,6 +9,7 @@ import java.util.List;
 import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Documents.Suspension;
+import utp.edu.co.Tiempos.Documents.Tarea;
 
 /**
  *
@@ -40,4 +41,12 @@ public interface ConfiguracionService {
     Usuario iniciarSuspension(String id, Suspension suspension);
     
     Usuario finalizarSuspension(String id);
+    
+    List<Tarea> listaTareas();
+    
+    Tarea consultarTarea(String id);
+    
+    Tarea guardarTarea(String id, Tarea tarea);
+    
+    Tarea eliminarTarea(String id);
 }

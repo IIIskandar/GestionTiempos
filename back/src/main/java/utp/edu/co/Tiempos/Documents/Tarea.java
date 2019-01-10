@@ -20,10 +20,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Tarea {
     @Id
     private String id;
-    private String nombre;
-    private String tipo;
-    private String estado;
-    private String tiempoTrabajo;
+    private String name;
+    private String category;
+    private String status;
+    private Long jobTime;
     
     @DBRef(lazy = true)
     private List<Descripcion> descripciones;
@@ -31,48 +31,49 @@ public class Tarea {
     protected Tarea()
     {this.descripciones = new ArrayList<>();}
 
-    public Tarea(String nombre, String tipo, String estado, String tiempoTrabajo, List<Descripcion> descripciones) {
-        this.nombre = nombre;
-        this.tipo = tipo;
-        this.estado = estado;
-        this.tiempoTrabajo = tiempoTrabajo;
+    public Tarea(String name, String category, String status, Long jobTime, List<Descripcion> descripciones) {
+        this.name = name;
+        this.category = category;
+        this.status = status;
+        this.jobTime = jobTime;
         this.descripciones = descripciones;
     }
 
+    
     public String getId() {
         return id;
     }
-    
-    public String getNombre() {
-        return nombre;
+
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getCategory() {
+        return category;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getStatus() {
+        return status;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getTiempoTrabajo() {
-        return tiempoTrabajo;
+    public Long getJobTime() {
+        return jobTime;
     }
 
-    public void setTiempoTrabajo(String tiempoTrabajo) {
-        this.tiempoTrabajo = tiempoTrabajo;
+    public void setJobTime(Long jobTime) {
+        this.jobTime = jobTime;
     }
 
     public List<Descripcion> getDescripciones() {
