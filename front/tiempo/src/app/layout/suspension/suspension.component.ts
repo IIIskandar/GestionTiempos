@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-suspension',
@@ -7,13 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SuspensionComponent implements OnInit {
 
+  profileForm = new FormGroup({
+    tipo: new FormControl(''),
+    description: new FormControl(''),
+  });
+
   constructor() { }
 
   ngOnInit() {
   }
 
-  Submit(data) {
-    console.log(data);
+  onSubmit() {
+    console.log(this.profileForm.value);
   }
 
 }
