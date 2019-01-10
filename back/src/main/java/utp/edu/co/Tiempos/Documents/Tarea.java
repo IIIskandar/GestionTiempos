@@ -24,6 +24,7 @@ public class Tarea {
     private String tipo;
     private String estado;
     private String tiempoTrabajo;
+    
     @DBRef(lazy = true)
     private List<Descripcion> descripciones;
     

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
@@ -61,5 +62,17 @@ public class UsuarioController {
         }
         
         return ResponseEntity.ok(usuario);
+    }
+    
+    @PostMapping("/suspension/iniciar/{id}")
+    public ResponseEntity<?> iniciarSuspension(@PathVariable String id,@RequestBody Suspension suspension){
+        configuracionService.iniciarSuspension(id, suspension);
+        return ResponseEntity.ok(suspension);
+    }
+    
+    @PostMapping("/suspension/fin/{id}")
+    public ResponseEntity<?> finalizarSuspension(@PathVariable String id){
+        Usuario usuarioHelper = configuracionService.finalizarSuspension(id);
+        return ResponseEntity.ok(usuarioHelper);
     }
 }

@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  *
@@ -24,27 +24,35 @@ public class Usuario {
     @NotNull
     private String name;
     @NotNull
+    @Indexed(unique=true)
     private String cc;
     @NotNull
     private String password;
-    
     @DBRef(lazy = true)
     private List<String> projectsId;
-    @DBRef(lazy = true)
     private List<Suspension> suspensions;
+    private Long tiempoWC;
+    private Long tiempoSnacks;
+    private Long tiempoMeeting;
+    private String rol;
     
     protected Usuario(){   
         this.projectsId = new ArrayList<>();
         this.suspensions = new ArrayList<>();
     }
 
-    public Usuario(String name, String cc, String password, List<String> projectsId, List<Suspension> suspensions) {
+    public Usuario(String name, String cc, String password, List<String> projectsId, List<Suspension> suspensions, Long tiempoWC, Long tiempoSnacks, Long tiempoMeeting, String rol) {
         this.name = name;
         this.cc = cc;
         this.password = password;
         this.projectsId = projectsId;
         this.suspensions = suspensions;
+        this.tiempoWC = tiempoWC;
+        this.tiempoSnacks = tiempoSnacks;
+        this.tiempoMeeting = tiempoMeeting;
+        this.rol = rol;
     }
+
 
     public String getId() {
         return id;
@@ -91,7 +99,39 @@ public class Usuario {
     public List<Suspension> getSuspensions() {
         return suspensions;
     }
-    
+
+    public Long getTiempoWC() {
+        return tiempoWC;
+    }
+
+    public void setTiempoWC(Long tiempoWC) {
+        this.tiempoWC = tiempoWC;
+    }
+
+    public Long getTiempoSnacks() {
+        return tiempoSnacks;
+    }
+
+    public void setTiempoSnacks(Long tiempoSnacks) {
+        this.tiempoSnacks = tiempoSnacks;
+    }
+
+    public Long getTiempoMeeting() {
+        return tiempoMeeting;
+    }
+
+    public void setTiempoMeeting(Long tiempoMeeting) {
+        this.tiempoMeeting = tiempoMeeting;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
     
     
 }

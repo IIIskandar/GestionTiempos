@@ -37,5 +37,7 @@ public interface ConfiguracionService {
     
     Proyecto asignarUsuarioaProyecto(String idProyecto, String idUsuario);
     
-    Usuario guardarSuspension(String id, Suspension suspension);
+    Usuario iniciarSuspension(String id, Suspension suspension);
+    
+    Usuario finalizarSuspension(String id);
 }

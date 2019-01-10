@@ -6,6 +6,7 @@
 package utp.edu.co.Tiempos.Service.Implementation;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -119,17 +120,50 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
     
     
     @Override
-    public Usuario guardarSuspension(String id, Suspension suspension){
+    public Usuario iniciarSuspension(String id, Suspension suspension){
         Usuario usuarioToSus = consultarUsuario(id);
         if(usuarioToSus != null){
             List<Suspension> respuesta = new ArrayList<>();
             respuesta = usuarioToSus.getSuspensions();
+            Date fechaInicio = new Date();
+            suspension.setFechaInicio(fechaInicio);
             respuesta.add(suspension);
             usuarioToSus.setSuspensions(respuesta);
             usuarioRepository.save(usuarioToSus);
             return usuarioToSus;
         }
         return null;
+    }
+    
+    @Override
+    public Usuario finalizarSuspension(String id){
+        Usuario usuarioFinSus = consultarUsuario(id);
+        List<Suspension> respuesta = new ArrayList<>();
+        respuesta = usuarioFinSus.getSuspensions();
+        int aux = respuesta.size()-1;
+        Date fechaFin = new Date();
+        respuesta.get(aux).setFechaFin(fechaFin);
+        usuarioFinSus.setSuspensions(respuesta);
+        long contador = respuesta.get(aux).getFechaFin().getTime()-respuesta.get(aux).getFechaInicio().getTime();
+        contador = contador/1000;
+        contador = contador/60;
+        long sumatoriaTiemposMeeting=0;
+        long sumatoriaTiemposWC = 0;
+        long sumatoriaTiemposSnack=0; 
+        if(!(usuarioFinSus.getTiempoMeeting() == null))
+            sumatoriaTiemposMeeting = usuarioFinSus.getTiempoMeeting();
+        if(!(usuarioFinSus.getTiempoWC() == null))
+            sumatoriaTiemposWC = usuarioFinSus.getTiempoWC();
+        if(!(usuarioFinSus.getTiempoSnacks() == null))
+            sumatoriaTiemposSnack = usuarioFinSus.getTiempoSnacks();
+        if(respuesta.get(aux).getWCs() == 1)
+            usuarioFinSus.setTiempoWC(sumatoriaTiemposWC + contador);
+        if(respuesta.get(aux).getMeetings()== 1)
+            usuarioFinSus.setTiempoMeeting(sumatoriaTiemposMeeting + contador);
+        if(respuesta.get(aux).getSnacks() == 1)
+            usuarioFinSus.setTiempoSnacks(sumatoriaTiemposSnack + contador);
+        usuarioRepository.save(usuarioFinSus);
+        return usuarioFinSus;
     }
 
     //se le asigna un usuario al proyecto añadiendo el id del usuario en el array de usuariosID que tien el proyecto
@@ -141,13 +175,13 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         usuariosId = proyectoHelper.getUsersId();
         usuariosId.add(idUsuario);
         proyectoHelper.setUsersId(usuariosId);
-        proyectoRepository.save(proyectoHelper);
         Usuario usuarioHelper = consultarUsuario(idUsuario);
         List<String> proyectosId = new ArrayList<>();
         proyectosId = usuarioHelper.getProjectsId();
         proyectosId.add(idProyecto);
         usuarioHelper.setProjectsId(proyectosId);
         usuarioRepository.save(usuarioHelper);
+        proyectoRepository.save(proyectoHelper);
         
         return proyectoHelper;
     }

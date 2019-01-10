@@ -25,6 +25,8 @@ public class Descripcion {
     private Date fechaInicio;
     private Date fechaFin;
     private Long tiempoTrabajado;
+    //se guarda la cedula o el ida del usuario quien realizo este tramo de la tarea
+    private String realizadoPor;
 
     public Descripcion(String detalleTrabajado, Date fechaInicio, Date fechaFin, Long tiempoTrabajado) {
         this.detalleTrabajado = detalleTrabajado;

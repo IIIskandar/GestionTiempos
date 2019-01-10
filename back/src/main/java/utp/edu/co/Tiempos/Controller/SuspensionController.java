@@ -6,6 +6,7 @@
 package utp.edu.co.Tiempos.Controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +27,9 @@ public class SuspensionController {
         this.configuracionService = configuracionService;
     }
     
-    @PutMapping
-    public ResponseEntity<?> insert(@RequestBody String id, Suspension suspension){
+    @PostMapping("/{id}")
+    public ResponseEntity<?> iniciarSuspension(@RequestBody String id, Suspension suspension){
+        configuracionService.iniciarSuspension(id, suspension);
         return null;
     }
     

@@ -67,9 +67,9 @@ public class ProyectoController {
     //asigna un usuario al proyecto en el q se encuentra, para asignar el usuario deberia intrudcir la cc del usuario que quiere agregar
     //en un formulario y de ese formulario tenemos que sacar esa cedula para buscar al usuario por su cc
     @PostMapping("/asignarUsuario/{id}")
-    public ResponseEntity<?> asignarUsuario(@PathVariable("id") String id){
+    public ResponseEntity<?> asignarUsuario(@PathVariable("id") String id,@RequestBody Usuario usuario){
         Proyecto proyectoHelper = configuracionService.consultarProyecto(id);
-        Usuario usuarioHelper = configuracionService.consultarUsuariobyCC(cc);
+        Usuario usuarioHelper = configuracionService.consultarUsuariobyCC(usuario.getCc());
         proyectoHelper = configuracionService.asignarUsuarioaProyecto(id, usuarioHelper.getId());
         if(proyectoHelper.getUsersId().isEmpty()){
             return ResponseEntity.notFound().build();
