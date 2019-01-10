@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuspensionComponent } from './suspension.component';
+import { FormsModule as FormModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
@@ -13,7 +14,9 @@ import { SuspensionRoutingModule } from './suspension-routing.module';
   imports: [
     CommonModule,
     MatButtonModule,
-    SuspensionRoutingModule
+    SuspensionRoutingModule,
+    MatSelectModule,
+    FormModule
   ]
 })
 export class SuspensionModule { }

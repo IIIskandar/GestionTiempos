@@ -1,3 +1,17 @@
-<p>
-  suspension works!
-</p>
+<h2>Suspension</h2>
+<div class="ex1">
+  <form #suspension="ngForm" (ngSubmit) = "Submit(suspension.value)">
+    <a>Seleccione un tipo de suspension: </a>
+      <mat-select style="width: 20%;" placeholder="Tipo de suspension">
+        <mat-option type="input" value="Snack">Snack</mat-option>
+        <mat-option value="Wc">WC</mat-option>
+        <mat-option value="Reunion">Reunion</mat-option>
+      </mat-select>
+    <br><br>
+    <a>Ingrese una descripcion de la suspension</a>
+    <div>
+      <textarea type="input" name="descripcion" ngModel></textarea>
+    </div>
+    <button mat-raised-button color="primary" type="submit" value = "submit">Iniciar suspension</button>
+  </form>
+</div>

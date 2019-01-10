@@ -12,4 +12,8 @@ export class SuspensionComponent implements OnInit {
   ngOnInit() {
   }
 
+  Submit(data) {
+    console.log(data);
+  }
+
 }
