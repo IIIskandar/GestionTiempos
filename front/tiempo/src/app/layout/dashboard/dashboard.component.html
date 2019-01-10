@@ -1,0 +1,23 @@
+<div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+    <div fxFlex>
+        <app-stat [bgClass]="'danger'" [icon]="'turned_in'" count={{listurns.length}} [label]="'Turnos atendidos'"></app-stat>
+    </div>
+    <div fxFlex>
+        <app-stat [bgClass]="'warn'" [icon]="'turned_in_not'" count={{contador2}} [label]="'Turnos pendientes'"></app-stat>
+    </div>
+</div>
+
+
+<h2>Lista de turnos atendidos</h2>
+  
+<table>
+    <tr>
+      <th>Categoria</th>
+      <th>Turno</th>
+    </tr>
+    <tr *ngFor="let turno of listurns">
+      <td>{{turno.categoria}}</td>
+      <td>{{turno.nro_turno}}</td>
+    </tr>
+  </table>
+
