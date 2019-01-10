@@ -10,16 +10,27 @@ const routes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'forms'
+                redirectTo: 'dashboard'
             },
             {
                 path: 'dashboard',
                 loadChildren: './dashboard/dashboard.module#DashboardModule'
             },
             {
-                path: 'turnos',
+                path: 'proyectos',
                 loadChildren: './forms/forms.module#FormsModule'
             },
+            {
+                path: 'tareas',
+                loadChildren: './tarea/tarea.module#TareaModule'
+            },
+            {
+                path: 'suspension',
+                loadChildren: './suspension/suspension.module#SuspensionModule'
+            },
+            {
+                path: '**', pathMatch: 'full', redirectTo: 'dashboard'
+            }
         ]
     }
 ];

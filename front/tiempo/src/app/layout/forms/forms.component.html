@@ -1,36 +1,14 @@
-<div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
-    <div fxFlex>
-        <button (click)="pedirTurno();" mat-raised-button color="primary">
-            <a>Llamar turno</a>
-        </button>
-    </div>
-    <div fxFlex>
-        <button (click)="RepedirTurno();" mat-raised-button color="primary">
-                <a>Re llamar turno</a>
-        </button>
-    </div>
-    <div fxFlex>
-        <button (click)="cancelarTurno();" mat-raised-button color="primary">
-                <a>Cancelar turno llamado</a>
-        </button>
-    </div>
-    <!--
-    <div fxFlex>
-        <button (click)="iniciarAsesoria();" mat-raised-button color="primary">
-                <a>Iniciar asesoria</a>
-        </button>
-    </div>
--->
-    <div fxFlex>
-        <button (click)="finalizarAsesoria();" mat-raised-button color="primary">
-                <a>Finalziar asesoria</a>
-        </button>
-    </div>
-      <!--
-    <div fxFlex>
-        <button (click)="llamarTurnoPerdido();" mat-raised-button color="primary">
-                <a>Llamar turno perdido</a>
-        </button>
-    </div>
--->
-</div>
+<h2>Lista de proyectos</h2>
+  
+<table>
+    <tr>
+      <th>Nombre</th>
+      <th></th>
+    </tr>
+    <tr *ngFor="let turno of listurns">
+      <td id="nombre">nombre</td>
+      <td><button mat-raised-button color="primary" (click)="enviar(turno)">
+            <a>Ir a proyecto</a>
+      </button></td>
+    </tr>
+  </table>

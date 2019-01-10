@@ -42,10 +42,14 @@ export class TopnavComponent implements OnInit {
     }
 
     lista() {
-        this.router.navigate(['/turnos']);
+        this.router.navigate(['/proyectos']);
     }
 
     dashboard() {
         this.router.navigate(['/dashboard']);
+    }
+
+    suspension() {
+        this.router.navigate(['/suspension']);
     }
 }

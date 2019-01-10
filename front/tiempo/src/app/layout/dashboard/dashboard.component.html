@@ -1,23 +1,39 @@
 <div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
     <div fxFlex>
-        <app-stat [bgClass]="'danger'" [icon]="'turned_in'" count={{listurns.length}} [label]="'Turnos atendidos'"></app-stat>
+        <app-stat [bgClass]="'danger'" [icon]="'wc'" count="0" [label]="'Promedio WC'"></app-stat>
     </div>
     <div fxFlex>
-        <app-stat [bgClass]="'warn'" [icon]="'turned_in_not'" count={{contador2}} [label]="'Turnos pendientes'"></app-stat>
+        <app-stat [bgClass]="'warn'" [icon]="'fasfood'" count="1" [label]="'Promedio Snack'"></app-stat>
+    </div>
+    <div fxFlex>
+        <app-stat [bgClass]="'warn'" [icon]="'group'" count="0" [label]="'Promedio reuniones'"></app-stat>
     </div>
 </div>
 
 
-<h2>Lista de turnos atendidos</h2>
+<h2>Lista de suspensiones</h2>
   
 <table>
     <tr>
       <th>Categoria</th>
-      <th>Turno</th>
+      <th>Tiempo</th>
     </tr>
-    <tr *ngFor="let turno of listurns">
-      <td>{{turno.categoria}}</td>
-      <td>{{turno.nro_turno}}</td>
+    <tr *ngFor="">
+      <td></td>
+      <td></td>
     </tr>
   </table>
 
+  <h2>Lista de tareas realizadas</h2>
+  
+  <table>
+      <tr>
+        <th>Proyecto</th>
+        <th>Tarea</th>
+        <th>Tiempo</th>
+      </tr>
+      <tr *ngFor="">
+        <td></td>
+        <td></td>
+      </tr>
+    </table>

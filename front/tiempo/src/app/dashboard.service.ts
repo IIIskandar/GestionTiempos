@@ -16,23 +16,4 @@ export class DashboardService {
     return  throwError(error.error);
   }
 
-  listTurn() {
-    return this.http.get(`http://localhost:8080/turnero/v1/reportes/asesor/1`);
-  }
-
-  listTurnPen() {
-    return this.http.get(`http://localhost:8080/turnero/v1/turno/pendientes`);
-  }
-
-  Promedio1() {
-    return this.http.get(`http://localhost:8080/turnero/v1/reportes/categoria/1`);
-  }
-
-  Promedio2() {
-    return this.http.get(`http://localhost:8080/turnero/v1/reportes/categoria/2`);
-  }
-
-  Promedio3() {
-    return this.http.get(`http://localhost:8080/turnero/v1/reportes/categoria/3`);
-  }
 }
