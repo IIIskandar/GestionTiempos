@@ -1,0 +1,17 @@
+<h2>Crear nuevo proyecto</h2>
+
+<div class="ex1">
+  <form [formGroup]="proyectoForm"  (ngSubmit)="onSubmit()">
+    <div>
+        <br><br>
+        <a>Nombre del proyecto </a>
+        <input name="nombre"  formControlName="name">
+    </div>
+    <br><br>
+    <h4>Agregar tareas</h4>
+    <br><br>
+  
+    <br><br>
+    <button mat-raised-button color="primary" type="submit" value = "submit">Crear proyecto</button>
+  </form>
+</div>

@@ -29,7 +29,20 @@ const routes: Routes = [
                 loadChildren: './suspension/suspension.module#SuspensionModule'
             },
             {
-                path: '**', pathMatch: 'full', redirectTo: 'dashboard'
+                path: 'accion',
+                loadChildren: './accion/accion.module#AccionModule'
+            },
+            {
+                path: 'finalizar',
+                loadChildren: './finalizar/finalizar.module#FinalizarModule'
+            },
+            {
+                path: 'admin',
+                loadChildren: './adminproyect/adminproyect.module#AdminproyectModule'
+            },
+            {
+                path: 'crear',
+                loadChildren: './crear/crear.module#CrearModule'
             }
         ]
     }

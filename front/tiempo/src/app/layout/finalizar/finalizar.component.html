@@ -1,0 +1,16 @@
+<h2>Finalizar</h2>
+<div class="ex1">
+  <form [formGroup]="profileForm"  (ngSubmit)="onSubmit()">
+    <a>Seleccione el estado de la tarea: </a>
+      <mat-select style="width: 20%;" placeholder="Estado de tarea" formControlName="tipo">
+        <mat-option type="input" value="Snack">Pendiente</mat-option>
+        <mat-option value="Wc">Cerrada</mat-option>
+      </mat-select>
+    <br><br>
+    <a>Ingrese una descripcion del trabajo realizado</a>
+    <div>
+      <textarea type="input" name="descripcion" formControlName="description"></textarea>
+    </div>
+    <button mat-raised-button color="primary" type="submit" value = "submit">Finalizar tarea</button>
+  </form>
+</div>
