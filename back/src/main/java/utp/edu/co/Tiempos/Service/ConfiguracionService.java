@@ -6,6 +6,7 @@
 package utp.edu.co.Tiempos.Service;
 
 import java.util.List;
+import utp.edu.co.Tiempos.Documents.Descripcion;
 import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Documents.Suspension;
@@ -38,15 +39,17 @@ public interface ConfiguracionService {
     
     Proyecto asignarUsuarioaProyecto(String idProyecto, String idUsuario);
     
-    Usuario iniciarSuspension(String id, Suspension suspension);
-    
-    Usuario finalizarSuspension(String id);
-    
-    List<Tarea> listaTareas();
+    List<Tarea> listaTareas(String id);
     
     Tarea consultarTarea(String id);
     
     Tarea guardarTarea(String id, Tarea tarea);
     
     Tarea eliminarTarea(String id);
+    
+    List<Descripcion> listaRegistros(String id);
+    
+    Descripcion consultarRegistro(String id);
+    
+    Descripcion eliminarRegistro(String id);
 }

@@ -10,11 +10,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
+import utp.edu.co.Tiempos.Documents.Descripcion;
 import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Repository.ProyectoRepository;
-import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Documents.Tarea;
+import utp.edu.co.Tiempos.Repository.DescripcionRepository;
 import utp.edu.co.Tiempos.Repository.TareaRepository;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
@@ -29,11 +30,13 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
     private UsuarioRepository usuarioRepository;
     private ProyectoRepository proyectoRepository;
     private TareaRepository tareaRepository;
+    private DescripcionRepository descripcionRepository;
 
-    public DefaultServiceConfiguracion(TareaRepository tareaRepository, UsuarioRepository usuarioRepository, ProyectoRepository proyectoRepository) {
+    public DefaultServiceConfiguracion(TareaRepository tareaRepository, UsuarioRepository usuarioRepository, ProyectoRepository proyectoRepository, DescripcionRepository descripcionRepository) {
         this.tareaRepository = tareaRepository;
         this.usuarioRepository = usuarioRepository;
         this.proyectoRepository = proyectoRepository;
+        this.descripcionRepository = descripcionRepository;
     }
     
     //Lista los usuarios guardados
@@ -122,53 +125,6 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return null;
     }
     
-    
-    @Override
-    public Usuario iniciarSuspension(String id, Suspension suspension){
-        Usuario usuarioToSus = consultarUsuario(id);
-        if(usuarioToSus != null){
-            List<Suspension> respuesta = new ArrayList<>();
-            respuesta = usuarioToSus.getSuspensions();
-            Date fechaInicio = new Date();
-            suspension.setFechaInicio(fechaInicio);
-            respuesta.add(suspension);
-            usuarioToSus.setSuspensions(respuesta);
-            usuarioRepository.save(usuarioToSus);
-            return usuarioToSus;
-        }
-        return null;
-    }
-    
-    @Override
-    public Usuario finalizarSuspension(String id){
-        Usuario usuarioFinSus = consultarUsuario(id);
-        List<Suspension> respuesta = new ArrayList<>();
-        respuesta = usuarioFinSus.getSuspensions();
-        int aux = respuesta.size()-1;
-        Date fechaFin = new Date();
-        respuesta.get(aux).setFechaFin(fechaFin);
-        usuarioFinSus.setSuspensions(respuesta);
-        long contador = respuesta.get(aux).getFechaFin().getTime()-respuesta.get(aux).getFechaInicio().getTime();
-        contador = contador/1000;
-        contador = contador/60;
-        long sumatoriaTiemposMeeting=0;
-        long sumatoriaTiemposWC = 0;
-        long sumatoriaTiemposSnack=0; 
-        if(!(usuarioFinSus.getTiempoMeeting() == null))
-            sumatoriaTiemposMeeting = usuarioFinSus.getTiempoMeeting();
-        if(!(usuarioFinSus.getTiempoWC() == null))
-            sumatoriaTiemposWC = usuarioFinSus.getTiempoWC();
-        if(!(usuarioFinSus.getTiempoSnacks() == null))
-            sumatoriaTiemposSnack = usuarioFinSus.getTiempoSnacks();
-        if(respuesta.get(aux).getWCs() == 1)
-            usuarioFinSus.setTiempoWC(sumatoriaTiemposWC + contador);
-        if(respuesta.get(aux).getMeetings()== 1)
-            usuarioFinSus.setTiempoMeeting(sumatoriaTiemposMeeting + contador);
-        if(respuesta.get(aux).getSnacks() == 1)
-            usuarioFinSus.setTiempoSnacks(sumatoriaTiemposSnack + contador);
-        usuarioRepository.save(usuarioFinSus);
-        return usuarioFinSus;
-    }
 
     //se le asigna un usuario al proyecto añadiendo el id del usuario en el array de usuariosID que tien el proyecto
     //del mismo modo se hace para el usuario añadiendo el id del proyecto a su array de proyectosID
@@ -200,9 +156,10 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
     }
 
     @Override
-    public List<Tarea> listaTareas() {
+    public List<Tarea> listaTareas(String id) {
         List<Tarea> respuesta = new ArrayList<>();
-        respuesta = tareaRepository.findAll();
+        Proyecto proyectoHelper = consultarProyecto(id);
+        respuesta = proyectoHelper.getTareas();
         if(!respuesta.isEmpty()){
             return respuesta;
         }
@@ -242,4 +199,34 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         proyectoRepository.save(proyectoHelper);
         return representativo;
     }    
+
+    @Override
+    public List<Descripcion> listaRegistros(String id) {
+       List<Descripcion> respuesta = new ArrayList<>();
+        Tarea tareaHelper = consultarTarea(id);
+        respuesta = tareaHelper.getDescripciones();
+        if(!respuesta.isEmpty()){
+            return respuesta;
+        }
+        return null; 
+    }
+
+    @Override
+    public Descripcion consultarRegistro(String id) {
+        Optional<Descripcion> descripcionOptional = descripcionRepository.findById(id);
+        if(descripcionOptional.isPresent()){
+            return descripcionOptional.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Descripcion eliminarRegistro(String id) {
+        Descripcion descripcionToDel = consultarRegistro(id);
+        if(descripcionToDel != null){
+            tareaRepository.deleteById(id);
+            return descripcionToDel;
+        }
+        return null;
+    }
 }

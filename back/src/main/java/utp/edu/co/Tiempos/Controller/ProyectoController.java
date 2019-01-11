@@ -34,6 +34,7 @@ public class ProyectoController {
         this.configuracionService = configuracionService;
     }
     
+    //lista los proyectos
     @GetMapping
     public ResponseEntity<?> getAll(){
         List<Proyecto> listaUsuarios = configuracionService.listaProyectos();
@@ -43,6 +44,7 @@ public class ProyectoController {
         return ResponseEntity.ok(listaUsuarios);
     }
     
+    //crea un proyecto
     @PutMapping
     public ResponseEntity<?> insert(@RequestBody Proyecto proyecto){
         
@@ -55,6 +57,7 @@ public class ProyectoController {
         return ResponseEntity.ok(proyecto);
     }
     
+    //borra un proyecto
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id){
         Proyecto proyecto = configuracionService.eliminarProyecto(id);
@@ -79,15 +82,17 @@ public class ProyectoController {
         return ResponseEntity.ok(proyectoHelper.getUsersId());
     }
     
-    @GetMapping("/tareas")
-    public ResponseEntity<?> getAllTareas(){
-        List<Tarea> listaTareas = configuracionService.listaTareas();
+    //consulta las tareas que tiene un proyecto
+    @GetMapping("/{id}/tareas")
+    public ResponseEntity<?> getAllTareas(@PathVariable("id") String id){
+        List<Tarea> listaTareas = configuracionService.listaTareas(id);
         if (listaTareas == null || listaTareas.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(listaTareas);
     }
     
+    //crea una tarea dentro de un proyecto, el id es del proyecto en el que se va a crear la tarea
     @PutMapping("/{id}/tarea")
     public ResponseEntity<?> createTarea(@PathVariable("id") String id,@RequestBody Tarea tarea){
         
@@ -100,15 +105,7 @@ public class ProyectoController {
         return ResponseEntity.ok(tarea);
     }
     
-    @DeleteMapping("tarea/{id}")
-    public ResponseEntity<?> deleteTarea(@PathVariable("id") String id){
-        Tarea tarea = configuracionService.eliminarTarea(id);
-        if(tarea == null){
-            return ResponseEntity.notFound().build();
-        }
-        
-        return ResponseEntity.ok(tarea);
-    }
+    
 }
 
 

@@ -15,36 +15,40 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  * @author C-Lug
  */
-@Document(collection = "Descripciones")
+@Document(collection = "Registros")
 public class Descripcion {
     @Id
     private String id;
-    @NotNull
-    private String detalleTrabajado;
+    private String jobDetails;
     @CreatedDate
     private Date fechaInicio;
     private Date fechaFin;
-    private Long tiempoTrabajado;
-    //se guarda la cedula o el ida del usuario quien realizo este tramo de la tarea
-    private String realizadoPor;
+    private Long jobTime;
+    //se guarda la cedula o el id del usuario quien realizo esta parte de la tarea
+    private String madeBy;
 
-    public Descripcion(String detalleTrabajado, Date fechaInicio, Date fechaFin, Long tiempoTrabajado) {
-        this.detalleTrabajado = detalleTrabajado;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.tiempoTrabajado = tiempoTrabajado;
+    public Descripcion() {
     }
 
+    public Descripcion(String jobDetails, Date fechaInicio, Date fechaFin, Long jobTime, String madeBy) {
+        this.jobDetails = jobDetails;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.jobTime = jobTime;
+        this.madeBy = madeBy;
+    }
+
+    
     public String getId() {
         return id;
     }
 
-    public String getDetalleTrabajado() {
-        return detalleTrabajado;
+    public String getJobDetails() {
+        return jobDetails;
     }
 
-    public void setDetalleTrabajado(String detalleTrabajado) {
-        this.detalleTrabajado = detalleTrabajado;
+    public void setJobDetails(String jobDetails) {
+        this.jobDetails = jobDetails;
     }
 
     public Date getFechaInicio() {
@@ -63,13 +67,20 @@ public class Descripcion {
         this.fechaFin = fechaFin;
     }
 
-    public Long getTiempoTrabajado() {
-        return tiempoTrabajado;
+    public Long getJobTime() {
+        return jobTime;
     }
 
-    public void setTiempoTrabajado(Long tiempoTrabajado) {
-        this.tiempoTrabajado = tiempoTrabajado;
+    public void setJobTime(Long jobTime) {
+        this.jobTime = jobTime;
     }
-    
-    
+
+    public String getMadeBy() {
+        return madeBy;
+    }
+
+    public void setMadeBy(String madeBy) {
+        this.madeBy = madeBy;
+    }
+
 }

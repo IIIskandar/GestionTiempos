@@ -19,6 +19,7 @@ import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
+import utp.edu.co.Tiempos.Service.TimeService;
 
 /**
  *
@@ -28,9 +29,11 @@ import utp.edu.co.Tiempos.Service.ConfiguracionService;
 @RequestMapping("/tiempos/v1/usuarios")
 public class UsuarioController {
     private ConfiguracionService configuracionService;
+    private TimeService timeService;
 
-    public UsuarioController(ConfiguracionService configuracionService) {
+    public UsuarioController(ConfiguracionService configuracionService, TimeService timeService) {
         this.configuracionService = configuracionService;
+        this.timeService = timeService;
     }
     
     @GetMapping
@@ -66,13 +69,13 @@ public class UsuarioController {
     
     @PostMapping("/suspension/iniciar/{id}")
     public ResponseEntity<?> iniciarSuspension(@PathVariable String id,@RequestBody Suspension suspension){
-        configuracionService.iniciarSuspension(id, suspension);
+        timeService.iniciarSuspension(id, suspension);
         return ResponseEntity.ok(suspension);
     }
     
     @PostMapping("/suspension/fin/{id}")
     public ResponseEntity<?> finalizarSuspension(@PathVariable String id){
-        Usuario usuarioHelper = configuracionService.finalizarSuspension(id);
+        Usuario usuarioHelper = timeService.finalizarSuspension(id);
         return ResponseEntity.ok(usuarioHelper);
     }
 }
