@@ -7,6 +7,7 @@ package utp.edu.co.Tiempos.Controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,7 +35,16 @@ public class TareaController {
         this.timeService = timeService;
     }
     
-    
+     @GetMapping("/{id}")
+    public ResponseEntity<?> getTarea(@PathVariable("id") String id) {
+        Tarea tarea = configuracionService.consultarTarea(id);
+
+        if (tarea == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(tarea);
+    }
     
     //borra una tarea, con su id
     @DeleteMapping("{id}")
@@ -48,9 +58,9 @@ public class TareaController {
     }
     
     //iniciar un registro
-    @PutMapping("{id}/registro/inicio")
-    public ResponseEntity<?> iniciarRegistro(@PathVariable("id") String id, @RequestBody Descripcion descripcion){
-        descripcion = timeService.iniciarRegistro(id, descripcion);
+    @PutMapping("{id}/registro/inicio/{status}")
+    public ResponseEntity<?> iniciarRegistro(@PathVariable("id") String id, @PathVariable("status") String status, @RequestBody Descripcion descripcion){
+        descripcion = timeService.iniciarRegistro(id, status,descripcion);
          if(descripcion == null){
             return ResponseEntity.badRequest().build();
         }
@@ -58,9 +68,9 @@ public class TareaController {
         return ResponseEntity.ok(descripcion);
     }
     //finalizar el registro de una tarea
-    @PostMapping("{id}/registro/fin")
-    public ResponseEntity<?> finalizarRegistro(@PathVariable("id") String id, @RequestBody Descripcion descripcion){
-        Descripcion descripcionHelper = timeService.finalizarRegistro(id,descripcion);
+    @PostMapping("{id}/registro/fin/{status}")
+    public ResponseEntity<?> finalizarRegistro(@PathVariable("id") String id ,@PathVariable("status") String status ,@RequestBody Descripcion descripcion){
+        Descripcion descripcionHelper = timeService.finalizarRegistro(id,descripcion,status);
         return ResponseEntity.ok(descripcionHelper);
     }
 }

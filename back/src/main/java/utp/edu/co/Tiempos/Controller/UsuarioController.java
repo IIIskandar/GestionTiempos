@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import utp.edu.co.Tiempos.Documents.Suspension;
+import utp.edu.co.Tiempos.Documents.Tarea;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
@@ -45,6 +46,17 @@ public class UsuarioController {
         return ResponseEntity.ok(listaUsuarios);
     }
     
+    @GetMapping("/{cc}")
+    public ResponseEntity<?> getUsuario(@PathVariable("cc") String cc) {
+        Usuario usuario = configuracionService.consultarUsuariobyCC(cc);
+
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(usuario);
+    }
+    
     @PutMapping
     public ResponseEntity<?> insert(@RequestBody Usuario usuario){
         
@@ -67,15 +79,16 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
     
-    @PostMapping("/suspension/iniciar/{id}")
-    public ResponseEntity<?> iniciarSuspension(@PathVariable String id,@RequestBody Suspension suspension){
-        timeService.iniciarSuspension(id, suspension);
+    @PostMapping("/suspension/iniciar/{cc}")
+    public ResponseEntity<?> iniciarSuspension(@PathVariable("cc") String cc,@RequestBody Suspension suspension){
+        timeService.iniciarSuspension(cc, suspension);
         return ResponseEntity.ok(suspension);
     }
     
-    @PostMapping("/suspension/fin/{id}")
-    public ResponseEntity<?> finalizarSuspension(@PathVariable String id){
-        Usuario usuarioHelper = timeService.finalizarSuspension(id);
+    @PostMapping("/suspension/fin/{cc}")
+    public ResponseEntity<?> finalizarSuspension(@PathVariable("cc") String cc){
+        Usuario usuarioHelper = timeService.finalizarSuspension(cc);
         return ResponseEntity.ok(usuarioHelper);
     }
+    
 }

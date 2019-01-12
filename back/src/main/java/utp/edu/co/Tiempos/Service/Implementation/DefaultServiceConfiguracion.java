@@ -165,7 +165,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         }
         return null; 
     }
-
+    
     @Override
     public Tarea consultarTarea(String id) {   
     Optional<Tarea> tareaOptional = tareaRepository.findById(id);
@@ -174,9 +174,6 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         }
         return null;
     }
-
-
-    
 
     @Override
     public Tarea eliminarTarea(String id) {

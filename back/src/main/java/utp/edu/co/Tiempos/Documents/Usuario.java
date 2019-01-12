@@ -33,12 +33,13 @@ public class Usuario {
     private Long tiempoSnacks;
     private Long tiempoMeeting;
     private String rol;
+    private String status;
     
     protected Usuario(){   
         this.suspensions = new ArrayList<>();
     }
 
-    public Usuario(String name, String cc, String password, List<Suspension> suspensions, Long tiempoWC, Long tiempoSnacks, Long tiempoMeeting, String rol) {
+    public Usuario(String name, String cc, String password, List<Suspension> suspensions, Long tiempoWC, Long tiempoSnacks, Long tiempoMeeting, String rol, String status) {
         this.name = name;
         this.cc = cc;
         this.password = password;
@@ -47,6 +48,7 @@ public class Usuario {
         this.tiempoSnacks = tiempoSnacks;
         this.tiempoMeeting = tiempoMeeting;
         this.rol = rol;
+        this.status = status;
     }
 
 
@@ -121,6 +123,12 @@ public class Usuario {
         this.rol = rol;
     }
 
-    
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
     
 }

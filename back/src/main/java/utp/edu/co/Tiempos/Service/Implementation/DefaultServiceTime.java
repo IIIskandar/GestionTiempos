@@ -42,7 +42,7 @@ public class DefaultServiceTime implements TimeService{
         
     @Override
     public Usuario iniciarSuspension(String id, Suspension suspension){
-        Usuario usuarioToSus = configuracionService.consultarUsuario(id);
+        Usuario usuarioToSus = configuracionService.consultarUsuariobyCC(id);
         if(usuarioToSus != null){
             List<Suspension> respuesta = new ArrayList<>();
             respuesta = usuarioToSus.getSuspensions();
@@ -50,6 +50,7 @@ public class DefaultServiceTime implements TimeService{
             suspension.setFechaInicio(fechaInicio);
             respuesta.add(suspension);
             usuarioToSus.setSuspensions(respuesta);
+            usuarioToSus.setStatus("Suspension");
             usuarioRepository.save(usuarioToSus);
             return usuarioToSus;
         }
@@ -58,7 +59,7 @@ public class DefaultServiceTime implements TimeService{
     
     @Override
     public Usuario finalizarSuspension(String id){
-        Usuario usuarioFinSus = configuracionService.consultarUsuario(id);
+        Usuario usuarioFinSus = configuracionService.consultarUsuariobyCC(id);
         List<Suspension> respuesta = new ArrayList<>();
         respuesta = usuarioFinSus.getSuspensions();
         int aux = respuesta.size()-1;
@@ -83,13 +84,15 @@ public class DefaultServiceTime implements TimeService{
             usuarioFinSus.setTiempoMeeting(sumatoriaTiemposMeeting + contador);
         if(respuesta.get(aux).getSnacks() == 1)
             usuarioFinSus.setTiempoSnacks(sumatoriaTiemposSnack + contador);
+        usuarioFinSus.setStatus("disponible");
         usuarioRepository.save(usuarioFinSus);
         return usuarioFinSus;
     }
 
     @Override
-    public Descripcion iniciarRegistro(String id, Descripcion descripcion) {
+    public Descripcion iniciarRegistro(String id, String status, Descripcion descripcion) {
         Tarea tareaHelper = configuracionService.consultarTarea(id);
+        Usuario usuarioHelper = configuracionService.consultarUsuariobyCC(descripcion.getMadeBy());
         List<Descripcion> registros = new ArrayList<>();
         registros = tareaHelper.getDescripciones();
         Date fechaInicio = new Date();
@@ -97,19 +100,24 @@ public class DefaultServiceTime implements TimeService{
         Descripcion representativo = descripcionRepository.insert(descripcion);
         registros.add(descripcion);
         tareaHelper.setDescripciones(registros);
+        tareaHelper.setStatus(status);
+        usuarioHelper.setStatus(status);
+        usuarioRepository.save(usuarioHelper);
         tareaRepository.save(tareaHelper);
         return representativo;
     }
 
     @Override
-    public Descripcion finalizarRegistro(String id, Descripcion descripcion) {
+    public Descripcion finalizarRegistro(String id, Descripcion descripcion, String status) {
         long auxCont=0;
         Tarea tareaHelper = configuracionService.consultarTarea(id);
+        tareaHelper.setStatus(status);
         List<Descripcion> respuesta = new ArrayList<>();
         respuesta = tareaHelper.getDescripciones();
         int aux = respuesta.size()-1;
         Date fechaFin = new Date();
         Descripcion descripcionHelper = configuracionService.consultarRegistro(respuesta.get(aux).getId());
+        Usuario usuarioHelper = configuracionService.consultarUsuariobyCC(descripcionHelper.getMadeBy());
         descripcionHelper.setFechaFin(fechaFin);
         descripcionHelper.setJobDetails(descripcion.getJobDetails());
         long contador = descripcionHelper.getFechaFin().getTime()-descripcionHelper.getFechaInicio().getTime();
@@ -123,6 +131,8 @@ public class DefaultServiceTime implements TimeService{
         respuesta.set(aux, descripcionHelper);
         tareaHelper.setDescripciones(respuesta);
         tareaRepository.save(tareaHelper);
+        usuarioHelper.setStatus("disponible");
+        usuarioRepository.save(usuarioHelper);
         return descripcionHelper;
     }
 

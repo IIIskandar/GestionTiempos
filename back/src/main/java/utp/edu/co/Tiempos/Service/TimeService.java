@@ -20,7 +20,7 @@ public interface TimeService {
     
     Usuario finalizarSuspension(String id);
     
-    Descripcion iniciarRegistro(String id, Descripcion descripcion);
+    Descripcion iniciarRegistro(String id,String status, Descripcion descripcion);
     
-    Descripcion finalizarRegistro(String id, Descripcion descripcion);
+    Descripcion finalizarRegistro(String id, Descripcion descripcion, String status);
 }
