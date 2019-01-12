@@ -1,0 +1,20 @@
+<h2>Lista de proyectos</h2>
+  
+<table>
+    <tr>
+      <th>Nombre</th>
+      <th></th>
+    </tr>
+    <tr *ngFor="let turno of listurns">
+      <td id="nombre">nombre</td>
+      <td><button mat-raised-button color="primary" (click)="enviar(turno)">
+            <a>Editar proyecto</a>
+      </button></td>
+    </tr>
+</table>
+
+<br><br>
+
+<div class="ex1">
+  <button mat-raised-button color="primary" (click)="crear()">Crear proyecto</button>
+</div>

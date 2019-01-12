@@ -17,4 +17,8 @@ export class TareaComponent implements OnInit {
   ngOnInit() {
   }
 
+  enviar(turno) {
+    this.router.navigate(['/accion']);
+  }
+
 }
