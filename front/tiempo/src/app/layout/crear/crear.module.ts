@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
-  MatSliderModule, MatSlideToggleModule, MatButtonModule
+  MatSliderModule, MatSlideToggleModule, MatButtonModule, MatIconModule
 } from '@angular/material';
 import { CrearRoutingModule } from './crear-routing.module';
 
@@ -17,7 +17,8 @@ import { CrearRoutingModule } from './crear-routing.module';
     CrearRoutingModule,
     MatSelectModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconModule
   ]
 })
 export class CrearModule { }

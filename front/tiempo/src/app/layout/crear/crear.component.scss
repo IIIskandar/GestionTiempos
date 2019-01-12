@@ -46,4 +46,10 @@ textarea {
     resize: none;
   }
 
-  
+input[type=text], select, textarea {
+    width: 15%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }

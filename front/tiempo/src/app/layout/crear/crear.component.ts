@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder  } from '@angular/forms';
-
 @Component({
   selector: 'app-crear',
   templateUrl: './crear.component.html',
@@ -10,20 +9,58 @@ export class CrearComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder) { }
 
+  myForm: FormGroup;
 
+  a: any;
+  b: any;
 
-  proyectoForm = new FormGroup({
-    name: new FormControl('')
-  });
 
   ngOnInit() {
+    this.myForm = this.formBuilder.group({
+      nombre: '',
+      tareas: this.formBuilder.array([]),
+      usuarios: this.formBuilder.array([])
+    });
   }
 
-  createItem() {
 
+
+  get tareasForms() {
+    return this.myForm.get('tareas') as FormArray;
   }
-  onSubmit() {
-    console.log(this.proyectoForm.value);
 
+  get usuariosForms() {
+    return this.myForm.get('usuarios') as FormArray;
+  }
+
+  addTarea() {
+    const tarea = this.formBuilder.group({
+      nombre: ''
+    });
+    this.tareasForms.push(tarea);
+  }
+
+  deteleTarea() {
+    this.a = this.tareasForms.length;
+    this.tareasForms.removeAt(this.a - 1);
+    this.a = 0;
+  }
+
+
+  addUser() {
+    const user = this.formBuilder.group({
+      cc: ''
+    });
+    this.usuariosForms.push(user);
+  }
+
+  deteleUser() {
+    this.b = this.usuariosForms.length;
+    this.usuariosForms.removeAt(this.a - 1);
+    this.b = 0;
+  }
+
+  enviar() {
+    console.log(this.myForm.value);
   }
 }

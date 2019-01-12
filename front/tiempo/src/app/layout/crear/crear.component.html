@@ -1,17 +1,39 @@
 <h2>Crear nuevo proyecto</h2>
 
 <div class="ex1">
-  <form [formGroup]="proyectoForm"  (ngSubmit)="onSubmit()">
+  <form [formGroup]="myForm">
     <div>
         <br><br>
         <a>Nombre del proyecto </a>
-        <input name="nombre"  formControlName="name">
+        <input type="text" name="nombre"  formControlName="nombre">
     </div>
     <br><br>
     <h4>Agregar tareas</h4>
+    <div formArrayName="tareas">
+
+        <div *ngFor="let tarea of tareasForms.controls; let i=index" [formGroupName]="i">
+            <br>
+            <a>Nombre de la tarea </a>
+            <input type="text" formControlName="nombre">
+        </div>
+    </div>
     <br><br>
-  
+    <button mat-icon-button (click)="deteleTarea()"><mat-icon>remove_circle</mat-icon></button>
+    <button mat-icon-button (click)="addTarea()"><mat-icon>add_circle</mat-icon></button>
     <br><br>
-    <button mat-raised-button color="primary" type="submit" value = "submit">Crear proyecto</button>
+    <h4>Agregar usuarios</h4>
+    <div formArrayName="usuarios">
+
+        <div *ngFor="let usuario of usuariosForms.controls; let i=index" [formGroupName]="i">
+            <br>
+            <a>Cedula del usuario </a>
+            <input type="text"  formControlName="cc">
+        </div>
+    </div>
+    <br><br>
+    <button mat-icon-button (click)="deteleUser()"><mat-icon>remove_circle</mat-icon></button>
+    <button mat-icon-button (click)="addUser()"><mat-icon>add_circle</mat-icon></button>
+    <br><br>
+    <button mat-raised-button color="primary" (click)="enviar()" value = "submit">Crear proyecto</button>
   </form>
 </div>
