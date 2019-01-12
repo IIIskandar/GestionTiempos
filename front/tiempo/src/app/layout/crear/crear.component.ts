@@ -17,10 +17,13 @@ export class CrearComponent implements OnInit {
 
   ngOnInit() {
     this.myForm = this.formBuilder.group({
-      nombre: '',
+      nombre: ['', [Validators.required]],
       tareas: this.formBuilder.array([]),
       usuarios: this.formBuilder.array([])
     });
+
+    this.addTarea();
+    this.addUser();
   }
 
 
@@ -35,7 +38,7 @@ export class CrearComponent implements OnInit {
 
   addTarea() {
     const tarea = this.formBuilder.group({
-      nombre: ''
+      nombre: ['', [Validators.required]]
     });
     this.tareasForms.push(tarea);
   }
@@ -49,7 +52,7 @@ export class CrearComponent implements OnInit {
 
   addUser() {
     const user = this.formBuilder.group({
-      cc: ''
+      cc: ['', [Validators.required]]
     });
     this.usuariosForms.push(user);
   }

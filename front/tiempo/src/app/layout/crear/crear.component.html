@@ -1,11 +1,11 @@
 <h2>Crear nuevo proyecto</h2>
 
 <div class="ex1">
-  <form [formGroup]="myForm">
+  <form [formGroup]="myForm" noValidate>
     <div>
         <br><br>
         <a>Nombre del proyecto </a>
-        <input type="text" name="nombre"  formControlName="nombre">
+        <input type="text" name="nombre"  formControlName="nombre" placeholder="Ej. Juan">
     </div>
     <br><br>
     <h4>Agregar tareas</h4>
@@ -14,7 +14,7 @@
         <div *ngFor="let tarea of tareasForms.controls; let i=index" [formGroupName]="i">
             <br>
             <a>Nombre de la tarea </a>
-            <input type="text" formControlName="nombre">
+            <input type="text" formControlName="nombre" placeholder="Ej. Testeo">
         </div>
     </div>
     <br><br>
@@ -27,13 +27,13 @@
         <div *ngFor="let usuario of usuariosForms.controls; let i=index" [formGroupName]="i">
             <br>
             <a>Cedula del usuario </a>
-            <input type="text"  formControlName="cc">
+            <input type="text"  formControlName="cc" placeholder="Ej. 1088...">
         </div>
     </div>
     <br><br>
     <button mat-icon-button (click)="deteleUser()"><mat-icon>remove_circle</mat-icon></button>
     <button mat-icon-button (click)="addUser()"><mat-icon>add_circle</mat-icon></button>
     <br><br>
-    <button mat-raised-button color="primary" (click)="enviar()" value = "submit">Crear proyecto</button>
+    <button mat-raised-button color="primary" (click)="enviar()" [disabled]="myForm.invalid">Crear proyecto</button>
   </form>
 </div>
