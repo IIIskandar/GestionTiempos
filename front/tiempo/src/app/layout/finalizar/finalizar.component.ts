@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-finalizar',
@@ -11,8 +11,8 @@ export class FinalizarComponent implements OnInit {
   constructor() { }
 
   profileForm = new FormGroup({
-    tipo: new FormControl(''),
-    description: new FormControl(''),
+    tipo: new FormControl ('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
   });
 
   ngOnInit() {
