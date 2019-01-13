@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
                     localStorage.setItem('isLoggedin', 'true');
                     localStorage.setItem('nombre', this.datos.name);
                     localStorage.setItem('status', this.datos.status);
-                    console.log(res);
+                    localStorage.setItem('cc', this.datos.cc);
                     if ( this.datos.rol === 'admin') {
                         this.router.navigate(['/admin']);
                     } else {
