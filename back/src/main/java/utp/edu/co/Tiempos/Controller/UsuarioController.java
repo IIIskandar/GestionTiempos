@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Documents.Tarea;
 import utp.edu.co.Tiempos.Documents.Usuario;
@@ -89,6 +90,12 @@ public class UsuarioController {
     public ResponseEntity<?> finalizarSuspension(@PathVariable("cc") String cc){
         Usuario usuarioHelper = timeService.finalizarSuspension(cc);
         return ResponseEntity.ok(usuarioHelper);
+    }
+    
+    @GetMapping("/{cc}/proyectos")
+    public ResponseEntity<?> listarProyectosUsuario(@PathVariable("cc") String cc){
+        List<Proyecto> proyectosUser = configuracionService.consultarProyectosUsuario(cc);
+        return ResponseEntity.ok(proyectosUser);
     }
     
 }

@@ -226,4 +226,17 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         }
         return null;
     }
+    
+    @Override
+    public List<Proyecto> consultarProyectosUsuario(String cc){
+        List<Proyecto> proyectos = listaProyectos();
+        List<Proyecto> proyectosUsuario = new ArrayList<>();
+        for (Proyecto proyectoAux : proyectos) {
+            for (Usuario usuario : proyectoAux.getUsersId()) {
+                if(cc.equals(usuario.getCc()))
+                  proyectosUsuario.add(proyectoAux);
+            }
+        }
+        return proyectosUsuario;
+    }
 }

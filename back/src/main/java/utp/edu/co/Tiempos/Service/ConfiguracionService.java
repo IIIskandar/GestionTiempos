@@ -52,4 +52,6 @@ public interface ConfiguracionService {
     Descripcion consultarRegistro(String id);
     
     Descripcion eliminarRegistro(String id);
+    
+    List<Proyecto> consultarProyectosUsuario (String ccUsuario);
 }

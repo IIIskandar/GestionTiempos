@@ -15,5 +15,4 @@ import utp.edu.co.Tiempos.Documents.Proyecto;
  */
 @Repository
 public interface ProyectoRepository extends MongoRepository<Proyecto, String>{
-    
 }
