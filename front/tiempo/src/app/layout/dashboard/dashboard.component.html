@@ -1,12 +1,12 @@
 <div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
     <div fxFlex>
-        <app-stat [bgClass]="'danger'" [icon]="'wc'" count="0" [label]="'Total tiempo WC'"></app-stat>
+        <app-stat [bgClass]="'danger'" [icon]="'wc'" count={{timewc}} [label]="'Total tiempo WC'"></app-stat>
     </div>
     <div fxFlex>
-        <app-stat [bgClass]="'warn'" [icon]="'fasfood'" count="1" [label]="'Total tiempo Snack'"></app-stat>
+        <app-stat [bgClass]="'warn'" [icon]="'fasfood'" count={{timesnack}} [label]="'Total tiempo Snack'"></app-stat>
     </div>
     <div fxFlex>
-        <app-stat [bgClass]="'warn'" [icon]="'group'" count="0" [label]="'Total tiempo reuniones'"></app-stat>
+        <app-stat [bgClass]="'warn'" [icon]="'group'" count={{timemeeting}} [label]="'Total tiempo reuniones'"></app-stat>
     </div>
 </div>
 
@@ -16,24 +16,12 @@
 <table>
     <tr>
       <th>Categoria</th>
-      <th>Tiempo</th>
+      <th>Fecha inicio</th>
+      <th>Fecha fin</th>
     </tr>
-    <tr *ngFor="">
-      <td></td>
-      <td></td>
+    <tr *ngFor="let suspension of listSuspension">
+      <td>{{suspension.categoria}}</td>
+      <td>{{suspension.fechaInicio}}</td>
+      <td>{{suspension.fechaFin}}</td>
     </tr>
   </table>
-
-  <h2>Lista de tareas realizadas</h2>
-  
-  <table>
-      <tr>
-        <th>Proyecto</th>
-        <th>Tarea</th>
-        <th>Tiempo</th>
-      </tr>
-      <tr *ngFor="">
-        <td></td>
-        <td></td>
-      </tr>
-    </table>

@@ -6,10 +6,11 @@
         Gestion de tiempos
     </div>
     <span class="nav-spacer"></span>
+    <div><a>{{name}}</a></div>
     <button mat-icon-button (click)="suspension()">
             <mat-icon>pause_circle_outline</mat-icon>
     </button>
-    <button mat-icon-button>
+    <button mat-icon-button (click)="finSuspension()">
         <mat-icon>play_circle_outline</mat-icon>
     </button>
     <button mat-icon-button (click)="lista()">

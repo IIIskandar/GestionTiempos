@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder  } from '@angular/forms';
+import { Router, NavigationEnd } from '@angular/router';
+import { AdminService } from '../../services/admin.service';
+import { timeInterval } from 'rxjs/operators';
 @Component({
   selector: 'app-crear',
   templateUrl: './crear.component.html',
@@ -7,13 +10,15 @@ import { FormGroup, FormControl, Validators, FormArray, FormBuilder  } from '@an
 })
 export class CrearComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder,
+    private Admin: AdminService) { }
 
   myForm: FormGroup;
 
   a: any;
   b: any;
-
+  proyect: any;
+  j: 0;
 
   ngOnInit() {
     this.myForm = this.formBuilder.group({
@@ -64,6 +69,32 @@ export class CrearComponent implements OnInit {
   }
 
   enviar() {
-    console.log(this.myForm.value);
+    this.Admin.crearProyecto(localStorage.getItem('cc'), this.myForm.value.nombre)
+      .subscribe(
+        res => {
+            this.proyect = res;
+            this.agregarUser();
+            this.agregarTarea();
+        }
+      );
   }
+
+  agregarUser() {
+    for (let i = 0; i < this.myForm.value.usuarios.length; i++) {
+      setTimeout(() => {  }, 50);
+      this.Admin.addUsuario(this.myForm.value.usuarios[i].cc, this.proyect.id)
+        .subscribe(
+         );
+    }
+  }
+
+  agregarTarea() {
+    for (let i = 0; i < this.myForm.value.tareas.length; i++) {
+      setTimeout(() => {  }, 50);
+      this.Admin.addTarea(this.myForm.value.tareas[i].nombre, '', this.proyect.id)
+            .subscribe(
+            );
+    }
+  }
+
 }
