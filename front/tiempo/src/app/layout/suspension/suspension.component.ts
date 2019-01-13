@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-suspension',
@@ -9,8 +9,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class SuspensionComponent implements OnInit {
 
   profileForm = new FormGroup({
-    tipo: new FormControl(''),
-    description: new FormControl(''),
+    tipo: new FormControl ('', [Validators.required]),
+    description: new FormControl ('', [Validators.required]),
   });
 
   constructor() { }

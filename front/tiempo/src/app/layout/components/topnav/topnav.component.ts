@@ -18,8 +18,11 @@ export class TopnavComponent implements OnInit {
         });
     }
 
+    name: any;
+
     ngOnInit() {
         this.pushRightClass = 'push-right';
+        this.name = localStorage.getItem('nombre');
     }
 
     isToggled(): boolean {
@@ -34,6 +37,8 @@ export class TopnavComponent implements OnInit {
 
     onLoggedout() {
         localStorage.removeItem('isLoggedin');
+        localStorage.removeItem('nombre');
+        localStorage.removeItem('status');
         this.router.navigate(['/login']);
     }
 
