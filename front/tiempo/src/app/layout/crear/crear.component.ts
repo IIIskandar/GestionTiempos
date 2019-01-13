@@ -74,27 +74,26 @@ export class CrearComponent implements OnInit {
         res => {
             this.proyect = res;
             this.agregarUser();
-            this.agregarTarea();
+            setTimeout(() => {this.agregarTarea(); } , 2000);
         }
       );
   }
 
   agregarUser() {
     for (let i = 0; i < this.myForm.value.usuarios.length; i++) {
-      setTimeout(() => {  }, 50);
-      this.Admin.addUsuario(this.myForm.value.usuarios[i].cc, this.proyect.id)
+      setTimeout(() => { this.Admin.addUsuario(this.myForm.value.usuarios[i].cc, this.proyect.id)
         .subscribe(
-         );
+         ); }, 500);
     }
   }
 
   agregarTarea() {
     for (let i = 0; i < this.myForm.value.tareas.length; i++) {
-      setTimeout(() => {  }, 50);
-      this.Admin.addTarea(this.myForm.value.tareas[i].nombre, '', this.proyect.id)
-            .subscribe(
-            );
+      setTimeout(() => { this.Admin.addTarea(this.myForm.value.tareas[i].nombre, '', this.proyect.id)
+      .subscribe(
+      ); }, 500);
     }
+    alert('Proyecto creado correctamente');
   }
 
 }
