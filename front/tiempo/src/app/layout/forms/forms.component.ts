@@ -24,7 +24,7 @@ export class FormsComponent implements OnInit {
 
     ngOnInit() {
         if (localStorage.getItem('isLoggedin') === 'true') {
-            this.admin.listProyect()
+            this.admin.listProyectUser(localStorage.getItem('cc'))
             .subscribe(
               res => {
                 this.aux1 = res;
