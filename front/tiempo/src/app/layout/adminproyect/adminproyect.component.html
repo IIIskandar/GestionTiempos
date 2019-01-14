@@ -5,9 +5,9 @@
       <th>Nombre</th>
       <th></th>
     </tr>
-    <tr *ngFor="let turno of listurns">
-      <td id="nombre">nombre</td>
-      <td><button mat-raised-button color="primary" (click)="enviar(turno)">
+    <tr *ngFor="let proyect of listProyect">
+      <td id="nombre">{{proyect.nombre}}</td>
+      <td><button mat-raised-button color="primary" (click)="enviar(proyect)">
             <a>Editar proyecto</a>
       </button></td>
     </tr>

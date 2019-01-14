@@ -60,21 +60,33 @@ export class TopnavComponent implements OnInit {
         this.router.navigate(['/dashboard']);
     }
 
+    admin() {
+        this.router.navigate(['/admin']);
+    }
+
     suspension() {
-        this.router.navigate(['/suspension']);
+        if (localStorage.getItem('status') === 'suspension') {
+            alert('No puedes iniciar una suspension sin haber finalizado una');
+        } else {
+            this.router.navigate(['/suspension']);
+        }
     }
 
     finSuspension() {
         this.cc = localStorage.getItem('cc');
-        this.suspension1.finalizarSuspension(this.cc)
+        if (localStorage.getItem('status') === 'suspension') {
+            this.suspension1.finalizarSuspension(this.cc)
             .subscribe(
                 success => {
-                    localStorage.setItem('stattus', 'disponible');
+                    localStorage.setItem('status', 'disponible');
                     alert('Suspension finalizada correctamente');
                   },
                     error => {
                       alert('Error al finalizar la suspension');
                     }
             );
+        } else {
+            alert('No puedes finalizar una suspension sin haberla iniciado primero');
+        }
     }
 }

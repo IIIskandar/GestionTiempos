@@ -21,7 +21,7 @@ const routes: Routes = [
                 loadChildren: './forms/forms.module#FormsModule'
             },
             {
-                path: 'tareas',
+                path: 'tareas/:id',
                 loadChildren: './tarea/tarea.module#TareaModule'
             },
             {
@@ -29,11 +29,11 @@ const routes: Routes = [
                 loadChildren: './suspension/suspension.module#SuspensionModule'
             },
             {
-                path: 'accion',
+                path: 'accion/:id/:tarea',
                 loadChildren: './accion/accion.module#AccionModule'
             },
             {
-                path: 'finalizar',
+                path: 'finalizar/:id/:tarea',
                 loadChildren: './finalizar/finalizar.module#FinalizarModule'
             },
             {

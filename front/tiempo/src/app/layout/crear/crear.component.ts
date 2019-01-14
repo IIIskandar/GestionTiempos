@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder  } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { AdminService } from '../../services/admin.service';
-import { timeInterval } from 'rxjs/operators';
+
 @Component({
   selector: 'app-crear',
   templateUrl: './crear.component.html',
@@ -11,7 +11,8 @@ import { timeInterval } from 'rxjs/operators';
 export class CrearComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
-    private Admin: AdminService) { }
+    private Admin: AdminService,
+    private router: Router) { }
 
   myForm: FormGroup;
 
@@ -21,12 +22,19 @@ export class CrearComponent implements OnInit {
   j: 0;
 
   ngOnInit() {
-    this.myForm = this.formBuilder.group({
-      nombre: ['', [Validators.required]],
-      tareas: this.formBuilder.array([]),
-      usuarios: this.formBuilder.array([])
-    });
-
+    if (localStorage.getItem('isLoggedin') === 'true') {
+      this.myForm = this.formBuilder.group({
+        nombre: ['', [Validators.required]],
+        tareas: this.formBuilder.array([]),
+        usuarios: this.formBuilder.array([])
+      });
+  } else {
+      localStorage.removeItem('isLoggedin');
+      this.router.navigate(['/login']);
+  }
+    if (localStorage.getItem('rol') !== 'admin') {
+      this.router.navigate(['/dashboard']);
+    }
     this.addTarea();
     this.addUser();
   }
@@ -74,26 +82,29 @@ export class CrearComponent implements OnInit {
         res => {
             this.proyect = res;
             this.agregarUser();
-            setTimeout(() => {this.agregarTarea(); } , 2000);
         }
       );
   }
 
   agregarUser() {
     for (let i = 0; i < this.myForm.value.usuarios.length; i++) {
-      setTimeout(() => { this.Admin.addUsuario(this.myForm.value.usuarios[i].cc, this.proyect.id)
+      console.log('user' + i);
+      this.Admin.addUsuario(this.myForm.value.usuarios[i].cc, this.proyect.id)
         .subscribe(
-         ); }, 500);
+         );
     }
+    setTimeout(() => {this.agregarTarea(); } , 2000);
   }
 
   agregarTarea() {
     for (let i = 0; i < this.myForm.value.tareas.length; i++) {
-      setTimeout(() => { this.Admin.addTarea(this.myForm.value.tareas[i].nombre, '', this.proyect.id)
+      console.log('tarea' + i);
+       this.Admin.addTarea(this.myForm.value.tareas[i].nombre, '', this.proyect.id)
       .subscribe(
-      ); }, 500);
+      );
     }
-    alert('Proyecto creado correctamente');
+    setTimeout(() => {alert('Proyecto creado correctamente'); } , 2000);
+    this.router.navigate(['/admin']);
   }
 
 }

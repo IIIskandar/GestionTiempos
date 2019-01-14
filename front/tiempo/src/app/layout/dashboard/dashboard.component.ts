@@ -84,7 +84,6 @@ export class DashboardComponent implements OnInit {
                                 } else {
                                     this.fechaInicio = this.aux1.suspensions[i].fechaInicio.replace('T', '  ').replace('+0000', '');
                                     this.fechaFin = this.aux1.suspensions[i].fechaFin.replace('T', '  ').replace('+0000', '');
-                                    console.log(this.fechaFin);
                                     this.listSuspension[i] = {categoria: 'Meeting', fechaInicio: this.fechaInicio, fechaFin: this.fechaFin};
                                 }
                             }

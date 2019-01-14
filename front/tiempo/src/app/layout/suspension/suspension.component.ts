@@ -31,49 +31,50 @@ export class SuspensionComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.profileForm.value);
     this.enviar();
   }
 
   enviar() {
-    if ( this.profileForm.value.tipo === 'Wc') {
-      this.suspension1.crearSuspension(this.cc, 1, 0, 0, this.profileForm.value.description)
-      .subscribe(
-        success => {
-          localStorage.setItem('stattus', 'suspension');
-          alert('Suspension iniciada correctamente');
-          this.router.navigate(['/dashboard']);
-        },
-          error => {
-            alert('Error al iniciar la suspension');
-          }
-      );
-    }
-    if ( this.profileForm.value.tipo === 'Snack') {
-      this.suspension1.crearSuspension(this.cc, 0, 1, 0, this.profileForm.value.description)
-      .subscribe(
-        success => {
-          localStorage.setItem('stattus', 'suspension');
-          alert('Suspension iniciada correctamente');
-          this.router.navigate(['/dashboard']);
-        },
-          error => {
-            alert('Error al iniciar la suspension');
-          }
-      );
-    }
-    if ( this.profileForm.value.tipo === 'Reunion') {
-      this.suspension1.crearSuspension(this.cc, 0, 0, 1, this.profileForm.value.description)
-      .subscribe(
-        success => {
-          localStorage.setItem('stattus', 'suspension');
-          alert('Suspension iniciada correctamente');
-          this.router.navigate(['/dashboard']);
-        },
-          error => {
-            alert('Error al iniciar la suspension');
-          }
-      );
+    if ( localStorage.getItem('status') !== 'suspension') {
+      if ( this.profileForm.value.tipo === 'Wc') {
+        this.suspension1.crearSuspension(this.cc, 1, 0, 0, this.profileForm.value.description)
+        .subscribe(
+          success => {
+            localStorage.setItem('status', 'suspension');
+            alert('Suspension iniciada correctamente');
+            this.router.navigate(['/dashboard']);
+          },
+            error => {
+              alert('Error al iniciar la suspension');
+            }
+        );
+      }
+      if ( this.profileForm.value.tipo === 'Snack') {
+        this.suspension1.crearSuspension(this.cc, 0, 1, 0, this.profileForm.value.description)
+        .subscribe(
+          success => {
+            localStorage.setItem('status', 'suspension');
+            alert('Suspension iniciada correctamente');
+            this.router.navigate(['/dashboard']);
+          },
+            error => {
+              alert('Error al iniciar la suspension');
+            }
+        );
+      }
+      if ( this.profileForm.value.tipo === 'Reunion') {
+        this.suspension1.crearSuspension(this.cc, 0, 0, 1, this.profileForm.value.description)
+        .subscribe(
+          success => {
+            localStorage.setItem('status', 'suspension');
+            alert('Suspension iniciada correctamente');
+            this.router.navigate(['/dashboard']);
+          },
+            error => {
+              alert('Error al iniciar la suspension');
+            }
+        );
+      }
     }
   }
 }

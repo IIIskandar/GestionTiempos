@@ -3,8 +3,8 @@
   <form [formGroup]="profileForm"  (ngSubmit)="onSubmit()" noValidate>
     <a>Seleccione el estado de la tarea: </a>
       <mat-select style="width: 20%;" placeholder="Estado de tarea" formControlName="tipo">
-        <mat-option type="input" value="Snack">Pendiente</mat-option>
-        <mat-option value="Wc">Cerrada</mat-option>
+        <mat-option type="input" value="Pendiente">Pendiente</mat-option>
+        <mat-option value="Cerrada">Cerrada</mat-option>
       </mat-select>
     <br><br>
     <a>Ingrese una descripcion del trabajo realizado</a>

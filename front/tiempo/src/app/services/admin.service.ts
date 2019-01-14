@@ -33,4 +33,28 @@ export class AdminService {
       'status': 'Abierto'
     });
   }
+
+  listProyect() {
+    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos`);
+  }
+
+  listProyectUser(cc) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/usuarios/` + cc + `/proyectos`);
+  }
+
+  Tareas(id) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/` + id + `/tareas`);
+  }
+
+  iniciarTarea(id, cc) {
+    return this.http.put(`http://localhost:8081/tiempos/v1/tareas/` + id + `/registro/inicio/En%20Tarea` , {
+      'madeBy': cc
+    });
+  }
+
+  finalizarTarea(id, status, descripcion) {
+    return this.http.post(`http://localhost:8081/tiempos/v1/tareas/` + id + `/registro/fin/` + status , {
+      'jobDetails': descripcion
+    });
+  }
 }
