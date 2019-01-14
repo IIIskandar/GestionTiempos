@@ -36,7 +36,7 @@ export class AccionComponent implements OnInit {
         .subscribe(
           succes => {
             alert('Tarea inicada correctamente');
-            localStorage.setItem('status', 'En Tarea');
+            localStorage.setItem('status', 'En tarea');
           }
         );
       } else {
