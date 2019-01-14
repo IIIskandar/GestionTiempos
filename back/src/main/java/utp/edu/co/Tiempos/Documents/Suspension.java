@@ -19,6 +19,7 @@ public class Suspension {
     private Integer wcs;
     private Integer snacks;
     private Integer meetings;
+    private Long tiempoSuspension;
     private Date fechaInicio;
     private Date fechaFin;
     private String detalleSuspension;
@@ -29,21 +30,21 @@ public class Suspension {
         
     }
 
-    public Suspension(Integer wcs, Integer snacks, Integer meetings, Date fechaInicio, Date fechaFin, String detalleSuspension) {
+    public Suspension(Integer wcs, Integer snacks, Integer meetings,Long tiempoSuspension, Date fechaInicio, Date fechaFin, String detalleSuspension) {
         this.wcs = wcs;
         this.snacks = snacks;
         this.meetings = meetings;
+        this.tiempoSuspension = tiempoSuspension;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.detalleSuspension = detalleSuspension;
     }
 
-
-    public Integer getWCs() {
+    public Integer getWcs() {
         return wcs;
     }
 
-    public void setWCs(Integer wcs) {
+    public void setWcs(Integer wcs) {
         this.wcs = wcs;
     }
 
@@ -62,6 +63,15 @@ public class Suspension {
     public void setMeetings(Integer meetings) {
         this.meetings = meetings;
     }
+
+    public Long getTiempoSuspension() {
+        return tiempoSuspension;
+    }
+
+    public void setTiempoSuspension(Long tiempoSuspension) {
+        this.tiempoSuspension = tiempoSuspension;
+    }
+    
 
     public Date getFechaInicio() {
         return fechaInicio;

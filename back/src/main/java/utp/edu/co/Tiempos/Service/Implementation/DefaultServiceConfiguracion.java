@@ -111,8 +111,22 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
 
     @Override
     public Proyecto guardarProyecto(Proyecto proyecto) {
-       Proyecto representativo = proyectoRepository.insert(proyecto);
-       return representativo;
+        long conT=0;
+        long conU=0;
+        if(!proyecto.getTareas().isEmpty()){
+            conT = proyecto.getTareas().size();
+            for (int i = 0; i < conT; i++) {
+                tareaRepository.insert(proyecto.getTareas().get(i));
+            }
+        }
+        if(!proyecto.getUsersId().isEmpty()){
+            conU = proyecto.getUsersId().size();
+            for (int i = 0; i < conU; i++) {
+                usuarioRepository.insert(proyecto.getUsersId().get(i));
+            }
+        }
+        Proyecto representativo = proyectoRepository.insert(proyecto);
+        return representativo;
     }
 
     @Override

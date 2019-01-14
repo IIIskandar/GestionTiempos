@@ -20,6 +20,7 @@ import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Tarea;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
+import utp.edu.co.Tiempos.Service.TimeService;
 
 /**
  *
@@ -31,9 +32,11 @@ import utp.edu.co.Tiempos.Service.ConfiguracionService;
 public class ProyectoController {
     
     private ConfiguracionService configuracionService;
+    private TimeService timeService;
 
-    public ProyectoController(ConfiguracionService configuracionService) {
+    public ProyectoController(ConfiguracionService configuracionService, TimeService timeService) {
         this.configuracionService = configuracionService;
+        this.timeService = timeService;
     }
     
     //lista los proyectos
@@ -105,6 +108,13 @@ public class ProyectoController {
         }
         
         return ResponseEntity.ok(tarea);
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<?> consultarTiempoProyecto(@PathVariable("id") String id){
+        
+        long aux = timeService.contabilizarProyecto(id);
+        return ResponseEntity.ok(aux);
     }
     
     

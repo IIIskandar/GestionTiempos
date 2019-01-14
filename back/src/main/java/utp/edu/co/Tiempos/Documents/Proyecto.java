@@ -25,6 +25,7 @@ public class Proyecto {
     @Indexed(unique=true)
     private String name;
     private String creator;
+    private Long jobTime;
     @DBRef(lazy = true)
     private List<Tarea> tareas;
     @DBRef
@@ -34,9 +35,10 @@ public class Proyecto {
         this.tareas = new ArrayList<>();
         this.UsersId = new ArrayList<>();}
 
-    public Proyecto(String name, String creator, List<Tarea> tareas, List<Usuario> UsersId) {
+    public Proyecto(String name, String creator,Long jobTime, List<Tarea> tareas, List<Usuario> UsersId) {
         this.name = name;
         this.creator = creator;
+        this.jobTime = jobTime;
         this.tareas = tareas;
         this.UsersId = UsersId;
     }
@@ -60,6 +62,14 @@ public class Proyecto {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public Long getJobTime() {
+        return jobTime;
+    }
+
+    public void setJobTime(Long jobTime) {
+        this.jobTime = jobTime;
     }
 
     public List<Tarea> getTareas() {

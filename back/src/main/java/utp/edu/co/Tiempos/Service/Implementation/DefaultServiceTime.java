@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import utp.edu.co.Tiempos.Documents.Descripcion;
+import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Documents.Tarea;
 import utp.edu.co.Tiempos.Documents.Usuario;
@@ -63,12 +64,16 @@ public class DefaultServiceTime implements TimeService{
         List<Suspension> respuesta = new ArrayList<>();
         respuesta = usuarioFinSus.getSuspensions();
         int aux = respuesta.size()-1;
+        //guarda la fecha fin de la suspension
         Date fechaFin = new Date();
         respuesta.get(aux).setFechaFin(fechaFin);
         usuarioFinSus.setSuspensions(respuesta);
         long contador = respuesta.get(aux).getFechaFin().getTime()-respuesta.get(aux).getFechaInicio().getTime();
         contador = contador/1000;
         contador = contador/60;
+        //guarda el tiempo que se tardo en la suspension
+        respuesta.get(aux).setTiempoSuspension(contador);
+        usuarioFinSus.setSuspensions(respuesta);
         long sumatoriaTiemposMeeting=0;
         long sumatoriaTiemposWC = 0;
         long sumatoriaTiemposSnack=0; 
@@ -78,7 +83,7 @@ public class DefaultServiceTime implements TimeService{
             sumatoriaTiemposWC = usuarioFinSus.getTiempoWC();
         if(!(usuarioFinSus.getTiempoSnacks() == null))
             sumatoriaTiemposSnack = usuarioFinSus.getTiempoSnacks();
-        if(respuesta.get(aux).getWCs() == 1)
+        if(respuesta.get(aux).getWcs() == 1)
             usuarioFinSus.setTiempoWC(sumatoriaTiemposWC + contador);
         if(respuesta.get(aux).getMeetings()== 1)
             usuarioFinSus.setTiempoMeeting(sumatoriaTiemposMeeting + contador);
@@ -134,6 +139,17 @@ public class DefaultServiceTime implements TimeService{
         usuarioHelper.setStatus("disponible");
         usuarioRepository.save(usuarioHelper);
         return descripcionHelper;
+    }
+    
+    @Override
+    public Long contabilizarProyecto(String id) {
+        long contador=0;
+        Proyecto proyectoAux = configuracionService.consultarProyecto(id);
+        List<Tarea> tareasAux = proyectoAux.getTareas();
+        for (Tarea tarea : tareasAux) {
+            contador = tarea.getJobTime() + contador;
+        }
+        return contador;
     }
 
 }

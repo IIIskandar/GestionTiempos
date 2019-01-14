@@ -23,4 +23,7 @@ public interface TimeService {
     Descripcion iniciarRegistro(String id,String status, Descripcion descripcion);
     
     Descripcion finalizarRegistro(String id, Descripcion descripcion, String status);
+    
+    Long contabilizarProyecto(String id);
+    
 }
