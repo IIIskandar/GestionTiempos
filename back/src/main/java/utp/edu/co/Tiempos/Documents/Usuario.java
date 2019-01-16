@@ -29,24 +29,21 @@ public class Usuario {
     @NotNull
     private String password;
     private List<Suspension> suspensions;
-    private Long tiempoWC;
-    private Long tiempoSnacks;
-    private Long tiempoMeeting;
+    private List<TiempoSuspensiones> tiempoSuspensiones;
     private String rol;
     private String status;
     
     protected Usuario(){   
         this.suspensions = new ArrayList<>();
+        this.tiempoSuspensiones = new ArrayList<>();
     }
 
-    public Usuario(String name, String cc, String password, List<Suspension> suspensions, Long tiempoWC, Long tiempoSnacks, Long tiempoMeeting, String rol, String status) {
+    public Usuario(String name, String cc, String password, List<Suspension> suspensions, List<TiempoSuspensiones> tiempoSuspensiones, String rol, String status) {
         this.name = name;
         this.cc = cc;
         this.password = password;
         this.suspensions = suspensions;
-        this.tiempoWC = tiempoWC;
-        this.tiempoSnacks = tiempoSnacks;
-        this.tiempoMeeting = tiempoMeeting;
+        this.tiempoSuspensiones = tiempoSuspensiones;
         this.rol = rol;
         this.status = status;
     }
@@ -91,30 +88,14 @@ public class Usuario {
         return suspensions;
     }
 
-    public Long getTiempoWC() {
-        return tiempoWC;
+    public List<TiempoSuspensiones> getTiempoSuspensiones() {
+        return tiempoSuspensiones;
     }
 
-    public void setTiempoWC(Long tiempoWC) {
-        this.tiempoWC = tiempoWC;
+    public void setTiempoSuspensiones(List<TiempoSuspensiones> tiempoSuspensiones) {
+        this.tiempoSuspensiones = tiempoSuspensiones;
     }
-
-    public Long getTiempoSnacks() {
-        return tiempoSnacks;
-    }
-
-    public void setTiempoSnacks(Long tiempoSnacks) {
-        this.tiempoSnacks = tiempoSnacks;
-    }
-
-    public Long getTiempoMeeting() {
-        return tiempoMeeting;
-    }
-
-    public void setTiempoMeeting(Long tiempoMeeting) {
-        this.tiempoMeeting = tiempoMeeting;
-    }
-
+    
     public String getRol() {
         return rol;
     }

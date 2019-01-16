@@ -9,6 +9,7 @@ import utp.edu.co.Tiempos.Documents.Descripcion;
 import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Documents.Tarea;
 import utp.edu.co.Tiempos.Documents.Usuario;
+import utp.edu.co.Tiempos.dto.SuspensionDTO;
 
 /**
  *
@@ -16,7 +17,7 @@ import utp.edu.co.Tiempos.Documents.Usuario;
  */
 public interface TimeService {
     
-    Usuario iniciarSuspension(String id, Suspension suspension);
+    Usuario iniciarSuspension(String id, SuspensionDTO suspensiondto);
     
     Usuario finalizarSuspension(String id);
     

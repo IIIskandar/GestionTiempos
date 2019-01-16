@@ -8,11 +8,13 @@ package utp.edu.co.Tiempos.Service.Implementation;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import utp.edu.co.Tiempos.Documents.Descripcion;
 import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Documents.Tarea;
+import utp.edu.co.Tiempos.Documents.TiempoSuspensiones;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Repository.DescripcionRepository;
 import utp.edu.co.Tiempos.Repository.ProyectoRepository;
@@ -20,6 +22,7 @@ import utp.edu.co.Tiempos.Repository.TareaRepository;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
+import utp.edu.co.Tiempos.dto.SuspensionDTO;
 
 /**
  *
@@ -32,27 +35,54 @@ public class DefaultServiceTime implements TimeService{
         private TareaRepository tareaRepository;
         private ProyectoRepository proyectoRepository;
         private DescripcionRepository descripcionRepository;
+        private ModelMapper modMapper;
 
-    public DefaultServiceTime(ConfiguracionService configuracionService, UsuarioRepository usuarioRepository, TareaRepository tareaRepository, ProyectoRepository proyectoRepository, DescripcionRepository descripcionRepository) {
+    public DefaultServiceTime(ConfiguracionService configuracionService, UsuarioRepository usuarioRepository, TareaRepository tareaRepository, ProyectoRepository proyectoRepository, DescripcionRepository descripcionRepository, ModelMapper modMapper) {
         this.configuracionService = configuracionService;
         this.usuarioRepository = usuarioRepository;
         this.tareaRepository = tareaRepository;
         this.proyectoRepository = proyectoRepository;
         this.descripcionRepository = descripcionRepository;
+        this.modMapper = modMapper;
     }
         
     @Override
-    public Usuario iniciarSuspension(String id, Suspension suspension){
+    public Usuario iniciarSuspension(String id, SuspensionDTO suspensiondto){
+        boolean nombreB=false;
         Usuario usuarioToSus = configuracionService.consultarUsuariobyCC(id);
         if(usuarioToSus != null){
             List<Suspension> respuesta = new ArrayList<>();
+            //obtengo las suspeniones del usuario
             respuesta = usuarioToSus.getSuspensions();
+            //mapeo la suspensionDTO q me llego
+            Suspension aux=modMapper.map(suspensiondto,Suspension.class);
+            //tomo la fecha de inicio y la guardo en la suspension
             Date fechaInicio = new Date();
-            suspension.setFechaInicio(fechaInicio);
-            respuesta.add(suspension);
+            aux.setFechaInicio(fechaInicio);
+            //agrego la suspension a la lista de suspensiones
+            respuesta.add(aux);
+            //guardo la lista de suspensiones en el usuario
             usuarioToSus.setSuspensions(respuesta);
-            usuarioToSus.setStatus("Suspension");
-            usuarioRepository.save(usuarioToSus);
+            //compruebo si el nombre de la suspension ya esta en la lista de tiempos
+            List<TiempoSuspensiones> listaTiempos = usuarioToSus.getTiempoSuspensiones();
+            for(int i=0; i<listaTiempos.size(); i++){
+                if(listaTiempos.get(i).getNombre().equals(suspensiondto.getTipoSuspension()))
+                    nombreB=true;
+            }
+            //si el nombre ya esta guardo el usuario sin hacer ningun cambio en la lista de tiempo
+            if (nombreB){
+                usuarioToSus.setStatus("Suspension");
+                usuarioRepository.save(usuarioToSus);}
+            //sino esta, tomo el nombre y lo agrego a la lista de tiempos y luego lo guardo en el
+            else{
+                TiempoSuspensiones auxTiempo= new TiempoSuspensiones();
+                auxTiempo.setNombre(aux.getTipoSuspension());
+                auxTiempo.setAcumulado(0L);
+                listaTiempos.add(auxTiempo);
+                usuarioToSus.setTiempoSuspensiones(listaTiempos);
+                usuarioToSus.setStatus("Suspension");
+                usuarioRepository.save(usuarioToSus);
+            }
             return usuarioToSus;
         }
         return null;
@@ -62,33 +92,37 @@ public class DefaultServiceTime implements TimeService{
     public Usuario finalizarSuspension(String id){
         Usuario usuarioFinSus = configuracionService.consultarUsuariobyCC(id);
         List<Suspension> respuesta = new ArrayList<>();
+        //obtengo los tiempos de las suspensiones
+        List<TiempoSuspensiones> tiempos = usuarioFinSus.getTiempoSuspensiones();
+        //obtengo las suspensiones
         respuesta = usuarioFinSus.getSuspensions();
         int aux = respuesta.size()-1;
         //guarda la fecha fin de la suspension
         Date fechaFin = new Date();
+        //le asigno la fecha cierre a la ultima suspension
         respuesta.get(aux).setFechaFin(fechaFin);
-        usuarioFinSus.setSuspensions(respuesta);
+        //calculo el tiempo que se demoro la suspension en horas
         long contador = respuesta.get(aux).getFechaFin().getTime()-respuesta.get(aux).getFechaInicio().getTime();
+        //convierto a segundos
         contador = contador/1000;
+        //convierto a minutos
         contador = contador/60;
+        //convierto a horas
+        //contador = contador/60;
         //guarda el tiempo que se tardo en la suspension
         respuesta.get(aux).setTiempoSuspension(contador);
+        //guardo esa suspension en la lista del usuario
         usuarioFinSus.setSuspensions(respuesta);
-        long sumatoriaTiemposMeeting=0;
-        long sumatoriaTiemposWC = 0;
-        long sumatoriaTiemposSnack=0; 
-        if(!(usuarioFinSus.getTiempoMeeting() == null))
-            sumatoriaTiemposMeeting = usuarioFinSus.getTiempoMeeting();
-        if(!(usuarioFinSus.getTiempoWC() == null))
-            sumatoriaTiemposWC = usuarioFinSus.getTiempoWC();
-        if(!(usuarioFinSus.getTiempoSnacks() == null))
-            sumatoriaTiemposSnack = usuarioFinSus.getTiempoSnacks();
-        if(respuesta.get(aux).getWcs() == 1)
-            usuarioFinSus.setTiempoWC(sumatoriaTiemposWC + contador);
-        if(respuesta.get(aux).getMeetings()== 1)
-            usuarioFinSus.setTiempoMeeting(sumatoriaTiemposMeeting + contador);
-        if(respuesta.get(aux).getSnacks() == 1)
-            usuarioFinSus.setTiempoSnacks(sumatoriaTiemposSnack + contador);
+        //miro si hay tiempo acumulado en las suspensiones y lo guardo en sumatorias
+        List<Long> sumatorias = new ArrayList<>();
+        for (int i = 0; i < tiempos.size(); i++) {
+            if(!(tiempos.get(i) == null))
+                sumatorias.add(tiempos.get(i).getAcumulado());
+        }
+        //
+        for (int i = 0; i< tiempos.size(); i++){
+            if(respuesta.get(aux).getTipoSuspension().equals(tiempos.get(i).getNombre()))
+                usuarioFinSus.getTiempoSuspensiones().get(i).setAcumulado(contador+sumatorias.get(i));}
         usuarioFinSus.setStatus("disponible");
         usuarioRepository.save(usuarioFinSus);
         return usuarioFinSus;

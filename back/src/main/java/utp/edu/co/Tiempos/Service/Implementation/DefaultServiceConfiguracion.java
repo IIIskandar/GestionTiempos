@@ -9,16 +9,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import utp.edu.co.Tiempos.Documents.Descripcion;
 import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Repository.ProyectoRepository;
 import utp.edu.co.Tiempos.Documents.Tarea;
+import utp.edu.co.Tiempos.Documents.TipoSuspensiones;
 import utp.edu.co.Tiempos.Repository.DescripcionRepository;
 import utp.edu.co.Tiempos.Repository.TareaRepository;
+import utp.edu.co.Tiempos.Repository.TipoSuspensionesRepository;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
+import utp.edu.co.Tiempos.dto.TipoSuspensionesDTO;
 
 /**
  *
@@ -31,12 +35,16 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
     private ProyectoRepository proyectoRepository;
     private TareaRepository tareaRepository;
     private DescripcionRepository descripcionRepository;
+    private TipoSuspensionesRepository tipoSuspensionesRepository;
+    private ModelMapper modMapper;
 
-    public DefaultServiceConfiguracion(TareaRepository tareaRepository, UsuarioRepository usuarioRepository, ProyectoRepository proyectoRepository, DescripcionRepository descripcionRepository) {
+    public DefaultServiceConfiguracion(TareaRepository tareaRepository, UsuarioRepository usuarioRepository, ProyectoRepository proyectoRepository, DescripcionRepository descripcionRepository, TipoSuspensionesRepository tipoSuspensionesRepository, ModelMapper modMapper) {
         this.tareaRepository = tareaRepository;
         this.usuarioRepository = usuarioRepository;
         this.proyectoRepository = proyectoRepository;
         this.descripcionRepository = descripcionRepository;
+        this.tipoSuspensionesRepository = tipoSuspensionesRepository;
+        this.modMapper = modMapper;
     }
     
     //Lista los usuarios guardados
@@ -252,5 +260,44 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
             }
         }
         return proyectosUsuario;
+    }
+    
+    @Override
+    public TipoSuspensionesDTO crearTipoSuspension(TipoSuspensionesDTO tiposuspensiondto){
+        TipoSuspensiones aux = modMapper.map(tiposuspensiondto,TipoSuspensiones.class);
+        TipoSuspensiones representativo = tipoSuspensionesRepository.insert(aux);
+        return modMapper.map(representativo, TipoSuspensionesDTO.class);
+    }
+    
+    @Override
+    public List<TipoSuspensiones> listaTipoSuspensiones() {
+        List<TipoSuspensiones> respuesta = new ArrayList<>();
+        respuesta = tipoSuspensionesRepository.findAll();
+        if(!respuesta.isEmpty()){
+            return respuesta;
+        }
+        return null;  
+    }
+    
+    @Override
+    public TipoSuspensionesDTO consultarSuspension(String nombre) {   
+    Optional<TipoSuspensiones> tipOptional = tipoSuspensionesRepository.findByName(nombre);
+        if(tipOptional.isPresent()){
+            return modMapper.map(tipOptional.get(), TipoSuspensionesDTO.class);
+        }
+        return null;
+    }
+    
+    @Override
+    public TipoSuspensionesDTO eliminarTipoSuspension(String nombre) {
+        
+        TipoSuspensionesDTO tipoSuspensiones = consultarSuspension(nombre);
+        TipoSuspensiones tipoSus = modMapper.map(tipoSuspensiones, TipoSuspensiones.class);
+        String id = tipoSus.getId();
+        if(tipoSuspensiones != null){
+            tareaRepository.deleteById(id);
+            return tipoSuspensiones;
+        }
+        return null;
     }
 }

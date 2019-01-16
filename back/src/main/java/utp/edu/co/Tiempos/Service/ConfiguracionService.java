@@ -11,6 +11,9 @@ import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Documents.Tarea;
+import utp.edu.co.Tiempos.Documents.TipoSuspensiones;
+import utp.edu.co.Tiempos.dto.SuspensionDTO;
+import utp.edu.co.Tiempos.dto.TipoSuspensionesDTO;
 
 /**
  *
@@ -54,4 +57,12 @@ public interface ConfiguracionService {
     Descripcion eliminarRegistro(String id);
     
     List<Proyecto> consultarProyectosUsuario (String ccUsuario);
+    
+    TipoSuspensionesDTO crearTipoSuspension(TipoSuspensionesDTO tiposuspensiondto);
+    
+    List<TipoSuspensiones> listaTipoSuspensiones();
+    
+    TipoSuspensionesDTO consultarSuspension(String nombre);
+    
+    TipoSuspensionesDTO eliminarTipoSuspension(String nombre);
 }

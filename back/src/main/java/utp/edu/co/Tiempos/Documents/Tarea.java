@@ -24,6 +24,7 @@ public class Tarea {
     private String category;
     private String status;
     private Long jobTime;
+    private Long expectedTime;
     
     @DBRef(lazy = true)
     private List<Descripcion> descripciones;
@@ -31,11 +32,12 @@ public class Tarea {
     protected Tarea()
     {this.descripciones = new ArrayList<>();}
 
-    public Tarea(String name, String category, String status, Long jobTime, List<Descripcion> descripciones) {
+    public Tarea(String name, String category, String status, Long jobTime, Long expectedTime, List<Descripcion> descripciones) {
         this.name = name;
         this.category = category;
         this.status = status;
         this.jobTime = jobTime;
+        this.expectedTime = expectedTime;
         this.descripciones = descripciones;
     }
 
@@ -74,6 +76,14 @@ public class Tarea {
 
     public void setJobTime(Long jobTime) {
         this.jobTime = jobTime;
+    }
+
+    public Long getExpectedTime() {
+        return expectedTime;
+    }
+
+    public void setExpectedTime(Long expectedTime) {
+        this.expectedTime = expectedTime;
     }
 
     public List<Descripcion> getDescripciones() {

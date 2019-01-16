@@ -3,37 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package utp.edu.co.Tiempos.Documents;
+package utp.edu.co.Tiempos.dto;
 
-import java.util.Date;
-import java.util.List;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.mongodb.core.mapping.Document;
+
 
 /**
  *
  * @author C-Lug
  */
-@Document
-public class Suspension {
-    
+public class SuspensionDTO {
     private String tipoSuspension;
     private Long tiempoSuspension;
-    private Date fechaInicio;
-    private Date fechaFin;
     private String detalleSuspension;
-    
-    
-    
-    protected Suspension(){
-        
+
+    public SuspensionDTO() {
     }
 
-    public Suspension(String tipoSuspension,Long tiempoSuspension, Date fechaInicio, Date fechaFin, String detalleSuspension) {
+    public SuspensionDTO(String tipoSuspension, Long tiempoSuspension, String detalleSuspension) {
         this.tipoSuspension = tipoSuspension;
         this.tiempoSuspension = tiempoSuspension;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
         this.detalleSuspension = detalleSuspension;
     }
 
@@ -44,30 +32,13 @@ public class Suspension {
     public void setTipoSuspension(String tipoSuspension) {
         this.tipoSuspension = tipoSuspension;
     }
-    
+
     public Long getTiempoSuspension() {
         return tiempoSuspension;
     }
 
     public void setTiempoSuspension(Long tiempoSuspension) {
         this.tiempoSuspension = tiempoSuspension;
-    }
-    
-
-    public Date getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(Date fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public Date getFechaFin() {
-        return fechaFin;
-    }
-
-    public void setFechaFin(Date fechaFin) {
-        this.fechaFin = fechaFin;
     }
 
     public String getDetalleSuspension() {
@@ -77,5 +48,6 @@ public class Suspension {
     public void setDetalleSuspension(String detalleSuspension) {
         this.detalleSuspension = detalleSuspension;
     }
-  
+    
+    
 }

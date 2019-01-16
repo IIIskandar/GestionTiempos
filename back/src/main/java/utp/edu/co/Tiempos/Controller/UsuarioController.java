@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Documents.Tarea;
+import utp.edu.co.Tiempos.Documents.TipoSuspensiones;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
+import utp.edu.co.Tiempos.dto.SuspensionDTO;
+import utp.edu.co.Tiempos.dto.TipoSuspensionesDTO;
 
 /**
  *
@@ -82,10 +85,12 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
     
+    
     @PostMapping("/suspension/iniciar/{cc}")
-    public ResponseEntity<?> iniciarSuspension(@PathVariable("cc") String cc,@RequestBody Suspension suspension){
+    public ResponseEntity<?> iniciarSuspension(@PathVariable("cc") String cc,@RequestBody SuspensionDTO suspension){
         timeService.iniciarSuspension(cc, suspension);
         return ResponseEntity.ok(suspension);
+        
     }
     
     @PostMapping("/suspension/fin/{cc}")
