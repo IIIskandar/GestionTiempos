@@ -7,20 +7,20 @@
     </div>
     <span class="nav-spacer"></span>
     <div><a>{{name}}</a></div>
-    <button mat-icon-button (click)="admin()">
+    <button type="button" mat-icon-button class="hidden-sm" (click)="admin()">
         <mat-icon>settings</mat-icon>
     </button>
-    <button mat-icon-button (click)="suspension()">
+    <button type="button" mat-icon-button class="hidden-sm" (click)="suspension()">
             <mat-icon>pause_circle_outline</mat-icon>
     </button>
-    <button mat-icon-button (click)="finSuspension()">
+    <button type="button" mat-icon-button class="hidden-sm" (click)="finSuspension()">
         <mat-icon>play_circle_outline</mat-icon>
     </button>
-    <button mat-icon-button (click)="lista()">
+    <button type="button" mat-icon-button class="hidden-sm" (click)="lista()">
         <mat-icon>list</mat-icon>
     </button>
-    <button mat-icon-button (click)="dashboard()">
-        <mat-icon>assessment</mat-icon>
+    <button type="button" mat-icon-button class="hidden-sm" (click)="dashboard()">
+        <mat-icon>dashboard</mat-icon>
     </button>
     <button class="hidden-sm" mat-icon-button [matMenuTriggerFor]="profile">
         <mat-icon>account_circle</mat-icon>
@@ -35,3 +35,23 @@
         <mat-icon>exit_to_app</mat-icon>
     </button>
 </mat-toolbar>
+
+<div id="sidebar" class="visible-md">
+    <mat-nav-list>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/dashboard']">
+            <mat-icon class="sidenav-icon">dashboard</mat-icon>Dashboard
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/proyectos']">
+            <mat-icon class="sidenav-icon">list</mat-icon>Proyectos
+        </a>
+        <a mat-list-item (click)="suspension()">
+            <mat-icon class="sidenav-icon">play_circle_outline</mat-icon>Iniciar Suspension
+        </a>
+        <a mat-list-item (click)="finSuspension()">
+            <mat-icon class="sidenav-icon">pause_circle_outline</mat-icon>Finalizar Suspension
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/admin']">
+            <mat-icon class="sidenav-icon">settings</mat-icon>Administrador
+        </a>
+    </mat-nav-list>
+</div>
