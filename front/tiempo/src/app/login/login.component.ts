@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
                     if ( this.datos.rol === 'admin') {
                         this.router.navigate(['/admin']);
                     } else {
-                        this.router.navigate(['/dashboard']);
+                        this.router.navigate(['/dashboard/proyectos']);
                     }
                 } else {
                     alert('Contraseña incorrecta');

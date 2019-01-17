@@ -1,27 +1,80 @@
+<h4 *ngIf="nombreBool">Trabajando en tarea {{nombreTarea}}</h4>
 <div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
     <div fxFlex>
-        <app-stat [bgClass]="'danger'" [icon]="'wc'" count={{timewc}} [label]="'Total tiempo WC'"></app-stat>
+        <app-stat [bgClass]="'danger'" [icon]="'work'" count="0" [label]="'Numero de proyectos'"></app-stat>
     </div>
     <div fxFlex>
-        <app-stat [bgClass]="'warn'" [icon]="'fasfood'" count={{timesnack}} [label]="'Total tiempo Snack'"></app-stat>
+        <app-stat [bgClass]="'warn'" [icon]="'schedule'" count="0" [label]="'Total tiempo trabajado'"></app-stat>
     </div>
     <div fxFlex>
-        <app-stat [bgClass]="'warn'" [icon]="'group'" count={{timemeeting}} [label]="'Total tiempo reuniones'"></app-stat>
+        <app-stat [bgClass]="'info'" [icon]="'schedule'" count="0" [label]="'Total tiempo suspensiones'"></app-stat>
     </div>
 </div>
 
+<div fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+    <div fxFlex *ngIf="suspension">
+        <h2>Lista de suspensiones</h2>
+        
+        <table>
+            <tr>
+            <th>Categoria</th>
+            <th>Fecha inicio</th>
+            <th>Fecha fin</th>
+            <th>Tiempo total</th>
+            </tr>
+            <tr *ngFor="let suspension of listSus">
+            <td>{{suspension.categoria}}</td>
+            <td>{{suspension.fechaInicio}}</td>
+            <td>{{suspension.fechaFin}}</td>
+            <td>{{suspension.tT}}</td>
+            </tr>
+        </table>
+    </div>
 
-<h2>Lista de suspensiones</h2>
-  
-<table>
-    <tr>
-      <th>Categoria</th>
-      <th>Fecha inicio</th>
-      <th>Fecha fin</th>
-    </tr>
-    <tr *ngFor="let suspension of listSuspension">
-      <td>{{suspension.categoria}}</td>
-      <td>{{suspension.fechaInicio}}</td>
-      <td>{{suspension.fechaFin}}</td>
-    </tr>
-  </table>
+    <div fxFlex *ngIf="tareas">
+            <h2>Lista de tareas realizadas</h2>
+            
+            <table>
+                <tr>
+                <th>Nombre proyecto</th>
+                <th>Nombre tarea</th>
+                <th>Estado</th>
+                <th>Tiempo total</th>
+                </tr>
+                <tr *ngFor="let suspension of listSus">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                </tr>
+            </table>
+        </div>
+
+        <div fxFlex *ngIf="proyectos">
+                <h2>Lista de proyectos</h2>
+                
+                <table>
+                        <tr>
+                          <th>Nombre</th>
+                          <th></th>
+                        </tr>
+                        <tr *ngFor="let proyect of listProyect">
+                          <td id="nombre">{{proyect.nombre}}</td>
+                          <td><button mat-raised-button color="primary" (click)="enviar(proyect.id, proyect.nombre)">
+                                <a>Ir a proyecto</a>
+                          </button></td>
+                        </tr>
+                </table>
+            </div>
+
+    <div fxFlex>
+            <mat-card class="example-card">
+                    <mat-card-header>
+                            <mat-card-title>Control de tiempo de proyectos</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <canvas baseChart width="400" height="400" [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"></canvas>
+                    </mat-card-content>
+            </mat-card>
+    </div>
+</div>

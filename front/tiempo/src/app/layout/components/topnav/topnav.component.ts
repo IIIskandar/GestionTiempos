@@ -10,6 +10,10 @@ import { SuspensionService  } from '../../../services/suspension.service';
 })
 export class TopnavComponent implements OnInit {
     public pushRightClass: string;
+    administrador: boolean;
+    iSuspension: boolean;
+    fSuspension: boolean;
+    tarea: boolean;
 
     constructor(
         public router: Router,
@@ -27,6 +31,26 @@ export class TopnavComponent implements OnInit {
 
     ngOnInit() {
         this.pushRightClass = 'push-right';
+        if ( localStorage.getItem('rol') === 'admin' ) {
+            this.administrador = true;
+        } else {
+            this.administrador = false;
+        }
+        if ( localStorage.getItem('status') === 'suspension' ) {
+            this.fSuspension = true;
+        } else {
+            this.fSuspension = false;
+        }
+        if ( localStorage.getItem('status') !== 'suspension' ) {
+            this.iSuspension = true;
+        } else {
+            this.iSuspension = false;
+        }
+        if ( localStorage.getItem('status') === 'En tarea') {
+            this.tarea = true;
+        } else {
+            this.tarea = false;
+        }
         this.name = localStorage.getItem('nombre');
     }
 
@@ -57,11 +81,15 @@ export class TopnavComponent implements OnInit {
     }
 
     dashboard() {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard/proyectos']);
     }
 
     admin() {
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/crear']);
+    }
+
+    finTarea() {
+        this.router.navigate(['/finalizar/' + localStorage.getItem('idProyect') + '/' + localStorage.getItem('idTarea')]);
     }
 
     suspension() {
@@ -79,6 +107,7 @@ export class TopnavComponent implements OnInit {
             .subscribe(
                 success => {
                     localStorage.setItem('status', 'disponible');
+                    setTimeout(() => {this.ngOnInit(); } , 500);
                     alert('Suspension finalizada correctamente');
                   },
                     error => {

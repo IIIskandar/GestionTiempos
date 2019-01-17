@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CrearComponent } from './crear.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
@@ -14,6 +15,7 @@ import { CrearRoutingModule } from './crear-routing.module';
   imports: [
     CommonModule,
     MatButtonModule,
+    FlexLayoutModule,
     CrearRoutingModule,
     MatSelectModule,
     FormsModule,

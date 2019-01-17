@@ -1,4 +1,4 @@
-<h2>Lista de tareas</h2>
+<h2>Lista de tareas del proyecto {{nombreProyect}}</h2>
   
 <table>
     <tr>
@@ -6,12 +6,12 @@
       <th>Categoria</th>
       <th>Estado</th>
     </tr>
-    <tr *ngFor="let tarea of listTareas">
+    <tr *ngFor="let tarea of listT">
       <td>{{tarea.name}}</td>
       <td>{{tarea.category}}</td>
       <td>{{tarea.status}}</td>
-      <td><button mat-raised-button color="primary" (click)="enviar(tarea)">
-            <a>Ir a tarea</a>
+      <td><button mat-raised-button color="primary" [disabled]="comprobar(tarea)" (click)="iniciar(tarea)">
+            <a>Iniciar tarea</a>
     </button></td>
     </tr>
   </table>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { SuspensionService } from '../../services/suspension.service';
+import { componentRefresh } from '@angular/core/src/render3/instructions';
+
 @Component({
   selector: 'app-suspension',
   templateUrl: './suspension.component.html',
@@ -42,7 +44,8 @@ export class SuspensionComponent implements OnInit {
           success => {
             localStorage.setItem('status', 'suspension');
             alert('Suspension iniciada correctamente');
-            this.router.navigate(['/dashboard']);
+            this.router.navigateByUrl('/dashboard/proyectos');
+            window.location.reload();
           },
             error => {
               alert('Error al iniciar la suspension');
@@ -55,7 +58,8 @@ export class SuspensionComponent implements OnInit {
           success => {
             localStorage.setItem('status', 'suspension');
             alert('Suspension iniciada correctamente');
-            this.router.navigate(['/dashboard']);
+            this.router.navigateByUrl('/dashboard/proyectos');
+            window.location.reload();
           },
             error => {
               alert('Error al iniciar la suspension');
@@ -68,7 +72,8 @@ export class SuspensionComponent implements OnInit {
           success => {
             localStorage.setItem('status', 'suspension');
             alert('Suspension iniciada correctamente');
-            this.router.navigate(['/dashboard']);
+            this.router.navigateByUrl('/dashboard/proyectos');
+            window.location.reload();
           },
             error => {
               alert('Error al iniciar la suspension');

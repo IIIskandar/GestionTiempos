@@ -33,7 +33,7 @@ export class CrearComponent implements OnInit {
       this.router.navigate(['/login']);
   }
     if (localStorage.getItem('rol') !== 'admin') {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard/proyectos']);
     }
     this.addTarea();
     this.addUser();

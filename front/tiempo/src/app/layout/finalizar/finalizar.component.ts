@@ -44,7 +44,8 @@ export class FinalizarComponent implements OnInit {
         success => {
           alert('Tarea finalizada correctamente');
           localStorage.setItem('status' , 'disponible');
-          this.router.navigate(['/tareas/' + this.idproyect ]);
+          localStorage.removeItem('nombreTarea');
+          this.router.navigate(['/dashboard/proyectos']);
         }
       );
   }

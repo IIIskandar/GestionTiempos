@@ -10,10 +10,10 @@ const routes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'dashboard'
+                redirectTo: 'dashboard/proyectos'
             },
             {
-                path: 'dashboard',
+                path: 'dashboard/:info',
                 loadChildren: './dashboard/dashboard.module#DashboardModule'
             },
             {
@@ -21,16 +21,12 @@ const routes: Routes = [
                 loadChildren: './forms/forms.module#FormsModule'
             },
             {
-                path: 'tareas/:id',
+                path: 'tareas/:id/:nombre',
                 loadChildren: './tarea/tarea.module#TareaModule'
             },
             {
                 path: 'suspension',
                 loadChildren: './suspension/suspension.module#SuspensionModule'
-            },
-            {
-                path: 'accion/:id/:tarea',
-                loadChildren: './accion/accion.module#AccionModule'
             },
             {
                 path: 'finalizar/:id/:tarea',
