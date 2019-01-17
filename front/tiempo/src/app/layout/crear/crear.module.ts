@@ -17,6 +17,7 @@ import { CrearRoutingModule } from './crear-routing.module';
     MatButtonModule,
     FlexLayoutModule,
     CrearRoutingModule,
+    MatCardModule,
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,

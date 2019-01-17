@@ -8,6 +8,7 @@
             <input type="text" name="nombre"  formControlName="nombre" placeholder="Ej. Hospital">
         </div>
         <br><br>
+        <mat-card>
         <div fxLayout.lt-md="column">
             <div fxFlex fxLayoutGap="20px">
                 <h4>Agregar tareas</h4>
@@ -15,10 +16,17 @@
                     <button mat-icon-button (click)="deteleTarea()"><mat-icon>remove_circle</mat-icon></button>
                     <button mat-icon-button (click)="addTarea()"><mat-icon>add_circle</mat-icon></button>
                     <br>
-                    <div *ngFor="let tarea of tareasForms.controls; let i=index" [formGroupName]="i">
+                    <div fxLayout="row" fxLayout.lt-md="column" *ngFor="let tarea of tareasForms.controls; let i=index" [formGroupName]="i" class="ex1">
+                        <div fxFlex>
                         <br>
-                        <a>Nombre de la tarea </a>
-                        <input type="text" formControlName="nombre" placeholder="Ej. Testeo">
+                        <a>Nombre </a>
+                        <input type="text1" formControlName="nombre" placeholder="Ej. Testeo">
+                        </div>
+                        <div fxFlex>
+                        <br>
+                        <a>Categoria </a>
+                        <input type="text1" formControlName="categoria" placeholder="Ej. Ingenieria de software">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -36,6 +44,7 @@
                 </div>
             </div>
         </div>
+        </mat-card>
         <button mat-raised-button color="primary" (click)="enviar()" [disabled]="myForm.invalid">Crear proyecto</button>
         <br><br>
     </div>

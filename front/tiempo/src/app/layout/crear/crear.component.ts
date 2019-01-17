@@ -51,7 +51,8 @@ export class CrearComponent implements OnInit {
 
   addTarea() {
     const tarea = this.formBuilder.group({
-      nombre: ['', [Validators.required]]
+      nombre: ['', [Validators.required]],
+      categoria: ['', [Validators.required]]
     });
     this.tareasForms.push(tarea);
   }

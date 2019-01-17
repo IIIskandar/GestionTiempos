@@ -18,7 +18,6 @@ import { DashboardComponent } from './dashboard.component';
         StatModule,
         Ng2Charts,
         MatCardModule,
-        MatCardModule,
         MatTableModule,
         MatButtonModule,
         MatIconModule,
