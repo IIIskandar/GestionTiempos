@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit {
     aux1: any;
     listSus: Array<{categoria: string, fechaInicio: string, fechaFin: string, tT: string}> = [];
 
-    public pieChartLabels: string[] = ['Tiempo esperado', 'Tiempo gastado'];
+    public pieChartLabels: string[] = ['Tiempo trabajado', 'Tiempo en suspension'];
     public pieChartData: number[] = [300, 500];
     public pieChartType: string;
 
