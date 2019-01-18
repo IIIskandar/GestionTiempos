@@ -14,6 +14,9 @@ import {
   imports: [
     CommonModule,
     MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
     MatCardModule,
     AdminproyectRoutingModule,
     FlexLayoutModule.withConfig({addFlexToParent: false})
