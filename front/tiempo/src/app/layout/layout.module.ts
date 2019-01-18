@@ -7,7 +7,8 @@ import {
     MatListModule,
     MatMenuModule,
     MatSidenavModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatTooltipModule
 } from '@angular/material';
 import { TranslateModule } from '@ngx-translate/core';
 import { TopnavComponent } from './components/topnav/topnav.component';
@@ -22,6 +23,7 @@ import { LayoutComponent } from './layout.component';
         MatToolbarModule,
         MatButtonModule,
         MatSidenavModule,
+        MatTooltipModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,

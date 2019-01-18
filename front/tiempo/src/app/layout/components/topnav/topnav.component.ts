@@ -84,8 +84,12 @@ export class TopnavComponent implements OnInit {
         this.router.navigate(['/dashboard/proyectos']);
     }
 
-    admin() {
+    crear() {
         this.router.navigate(['/crear']);
+    }
+
+    admin() {
+        this.router.navigate(['/admin']);
     }
 
     finTarea() {
