@@ -50,7 +50,7 @@ public class ProyectoController {
     }
     
     //crea un proyecto
-    @PutMapping
+    @PostMapping
     public ResponseEntity<?> insert(@RequestBody Proyecto proyecto){
         
         proyecto = configuracionService.guardarProyecto(proyecto);
@@ -98,7 +98,7 @@ public class ProyectoController {
     }
     
     //crea una tarea dentro de un proyecto, el id es del proyecto en el que se va a crear la tarea
-    @PutMapping("/{id}/tarea")
+    @PostMapping("/{id}/tarea")
     public ResponseEntity<?> createTarea(@PathVariable("id") String id,@RequestBody Tarea tarea){
         
         tarea = configuracionService.guardarTarea(id,tarea);

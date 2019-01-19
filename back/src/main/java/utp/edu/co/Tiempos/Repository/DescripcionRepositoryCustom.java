@@ -5,15 +5,14 @@
  */
 package utp.edu.co.Tiempos.Repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 import utp.edu.co.Tiempos.Documents.Descripcion;
+import utp.edu.co.Tiempos.dto.TiempoUsuarioDTO;
 
 /**
  *
  * @author C-Lug
  */
-@Repository
-public interface DescripcionRepository extends MongoRepository<Descripcion, String>, DescripcionRepositoryCustom{
-    
+public interface DescripcionRepositoryCustom {
+    List<TiempoUsuarioDTO> consultarTiempoUsuario(String cc);
 }

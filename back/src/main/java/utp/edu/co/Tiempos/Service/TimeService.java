@@ -10,6 +10,7 @@ import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Documents.Tarea;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.dto.SuspensionDTO;
+import utp.edu.co.Tiempos.dto.TiempoUsuarioDTO;
 
 /**
  *
@@ -27,4 +28,5 @@ public interface TimeService {
     
     Long contabilizarProyecto(String id);
     
+    TiempoUsuarioDTO tiempoUsuarios(String cc);
 }

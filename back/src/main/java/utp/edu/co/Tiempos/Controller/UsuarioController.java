@@ -25,6 +25,7 @@ import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
 import utp.edu.co.Tiempos.dto.SuspensionDTO;
+import utp.edu.co.Tiempos.dto.TiempoUsuarioDTO;
 import utp.edu.co.Tiempos.dto.TipoSuspensionesDTO;
 
 /**
@@ -63,7 +64,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
     
-    @PutMapping
+    @PostMapping
     public ResponseEntity<?> insert(@RequestBody Usuario usuario){
         
         usuario = configuracionService.guardarUsuario(usuario);
@@ -103,6 +104,12 @@ public class UsuarioController {
     public ResponseEntity<?> listarProyectosUsuario(@PathVariable("cc") String cc){
         List<Proyecto> proyectosUser = configuracionService.consultarProyectosUsuario(cc);
         return ResponseEntity.ok(proyectosUser);
+    }
+    
+    @GetMapping("/tiempo/{cc}")
+    public ResponseEntity<?> tiempoUsuario(@PathVariable("cc") String cc){
+        TiempoUsuarioDTO tiempoUsuario = timeService.tiempoUsuarios(cc);
+        return ResponseEntity.ok(tiempoUsuario);
     }
     
 }

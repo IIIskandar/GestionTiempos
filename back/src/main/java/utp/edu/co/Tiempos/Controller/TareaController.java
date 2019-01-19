@@ -37,7 +37,7 @@ public class TareaController {
         this.timeService = timeService;
     }
     
-     @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getTarea(@PathVariable("id") String id) {
         Tarea tarea = configuracionService.consultarTarea(id);
 
@@ -60,7 +60,7 @@ public class TareaController {
     }
     
     //iniciar un registro
-    @PutMapping("{id}/registro/inicio/{status}")
+    @PostMapping("{id}/registro/inicio/{status}")
     public ResponseEntity<?> iniciarRegistro(@PathVariable("id") String id, @PathVariable("status") String status, @RequestBody Descripcion descripcion){
         descripcion = timeService.iniciarRegistro(id, status,descripcion);
          if(descripcion == null){

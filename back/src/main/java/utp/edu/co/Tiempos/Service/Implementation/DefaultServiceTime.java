@@ -23,6 +23,7 @@ import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
 import utp.edu.co.Tiempos.dto.SuspensionDTO;
+import utp.edu.co.Tiempos.dto.TiempoUsuarioDTO;
 
 /**
  *
@@ -80,7 +81,7 @@ public class DefaultServiceTime implements TimeService{
                 auxTiempo.setAcumulado(0L);
                 listaTiempos.add(auxTiempo);
                 usuarioToSus.setTiempoSuspensiones(listaTiempos);
-                usuarioToSus.setStatus("Suspension");
+                usuarioToSus.setStatus("suspension");
                 usuarioRepository.save(usuarioToSus);
             }
             return usuarioToSus;
@@ -183,7 +184,15 @@ public class DefaultServiceTime implements TimeService{
         for (Tarea tarea : tareasAux) {
             contador = tarea.getJobTime() + contador;
         }
+        proyectoAux.setJobTime(contador);
+        proyectoRepository.save(proyectoAux);
         return contador;
+    }
+
+    @Override
+    public TiempoUsuarioDTO tiempoUsuarios(String cc) {
+        List<TiempoUsuarioDTO> tiempos = descripcionRepository.consultarTiempoUsuario(cc);
+        return tiempos.get(0);
     }
 
 }
