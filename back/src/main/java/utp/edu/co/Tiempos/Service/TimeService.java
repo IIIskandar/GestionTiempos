@@ -5,11 +5,15 @@
  */
 package utp.edu.co.Tiempos.Service;
 
+import java.util.List;
 import utp.edu.co.Tiempos.Documents.Descripcion;
 import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Documents.Tarea;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.dto.SuspensionDTO;
+import utp.edu.co.Tiempos.dto.TareaCategoriaDTO;
+import utp.edu.co.Tiempos.dto.TiempoSuspensionTipoDTO;
+import utp.edu.co.Tiempos.dto.TiempoTareaUsuarioDTO;
 import utp.edu.co.Tiempos.dto.TiempoUsuarioDTO;
 
 /**
@@ -29,4 +33,12 @@ public interface TimeService {
     Long contabilizarProyecto(String id);
     
     TiempoUsuarioDTO tiempoUsuarios(String cc);
+    
+    List<TareaCategoriaDTO> tiempoPorCategoria();
+    
+    List<TiempoSuspensionTipoDTO> tiempoPorTipoSus();
+    
+    List<TiempoTareaUsuarioDTO> tiempoTareaUsuario(String idTarea, String cc);
+    
+    Long TiempoSuspensionUsuarioTotal(String cc);
 }

@@ -15,6 +15,6 @@ import utp.edu.co.Tiempos.Documents.Usuario;
  * @author C-Lug
  */
 @Repository
-public interface UsuarioRepository extends MongoRepository<Usuario, String>{
+public interface UsuarioRepository extends MongoRepository<Usuario, String>, UsuarioRepositoryCustom{
     Optional<Usuario> findByCc(String cc);
 }

@@ -5,6 +5,7 @@
  */
 package utp.edu.co.Tiempos.Controller;
 
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +20,8 @@ import utp.edu.co.Tiempos.Documents.Descripcion;
 import utp.edu.co.Tiempos.Documents.Tarea;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
+import utp.edu.co.Tiempos.dto.TareaCategoriaDTO;
+import utp.edu.co.Tiempos.dto.TiempoTareaUsuarioDTO;
 
 /**
  *
@@ -74,5 +77,17 @@ public class TareaController {
     public ResponseEntity<?> finalizarRegistro(@PathVariable("id") String id ,@PathVariable("status") String status ,@RequestBody Descripcion descripcion){
         Descripcion descripcionHelper = timeService.finalizarRegistro(id,descripcion,status);
         return ResponseEntity.ok(descripcionHelper);
+    }
+    
+    @GetMapping("/tiempoCategorias")
+    public ResponseEntity<?> tiempoPorCategoria(){
+        List<TareaCategoriaDTO> tiempoCategoria = timeService.tiempoPorCategoria();
+        return ResponseEntity.ok(tiempoCategoria);
+    }
+    
+    @GetMapping("/tiempoUsuario/{id}/{cc}")
+    public ResponseEntity<?> tiempoTareaUsuario(@PathVariable("id") String id ,@PathVariable("cc") String cc){
+        List<TiempoTareaUsuarioDTO> tiempo = timeService.tiempoTareaUsuario(id, cc);
+        return ResponseEntity.ok(tiempo);
     }
 }

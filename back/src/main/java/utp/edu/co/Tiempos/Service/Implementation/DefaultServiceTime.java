@@ -18,11 +18,15 @@ import utp.edu.co.Tiempos.Documents.TiempoSuspensiones;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Repository.DescripcionRepository;
 import utp.edu.co.Tiempos.Repository.ProyectoRepository;
+import utp.edu.co.Tiempos.Repository.SuspensionRepository;
 import utp.edu.co.Tiempos.Repository.TareaRepository;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
 import utp.edu.co.Tiempos.dto.SuspensionDTO;
+import utp.edu.co.Tiempos.dto.TareaCategoriaDTO;
+import utp.edu.co.Tiempos.dto.TiempoSuspensionTipoDTO;
+import utp.edu.co.Tiempos.dto.TiempoTareaUsuarioDTO;
 import utp.edu.co.Tiempos.dto.TiempoUsuarioDTO;
 
 /**
@@ -37,14 +41,17 @@ public class DefaultServiceTime implements TimeService{
         private ProyectoRepository proyectoRepository;
         private DescripcionRepository descripcionRepository;
         private ModelMapper modMapper;
+        private SuspensionRepository suspensionRepository;
 
-    public DefaultServiceTime(ConfiguracionService configuracionService, UsuarioRepository usuarioRepository, TareaRepository tareaRepository, ProyectoRepository proyectoRepository, DescripcionRepository descripcionRepository, ModelMapper modMapper) {
+
+    public DefaultServiceTime(ConfiguracionService configuracionService, UsuarioRepository usuarioRepository, TareaRepository tareaRepository, ProyectoRepository proyectoRepository, DescripcionRepository descripcionRepository, ModelMapper modMapper, SuspensionRepository suspensionRepository) {
         this.configuracionService = configuracionService;
         this.usuarioRepository = usuarioRepository;
         this.tareaRepository = tareaRepository;
         this.proyectoRepository = proyectoRepository;
         this.descripcionRepository = descripcionRepository;
         this.modMapper = modMapper;
+        this.suspensionRepository = suspensionRepository;
     }
         
     @Override
@@ -193,6 +200,35 @@ public class DefaultServiceTime implements TimeService{
     public TiempoUsuarioDTO tiempoUsuarios(String cc) {
         List<TiempoUsuarioDTO> tiempos = descripcionRepository.consultarTiempoUsuario(cc);
         return tiempos.get(0);
+    }
+
+    @Override
+    public List<TareaCategoriaDTO> tiempoPorCategoria() {
+        List<TareaCategoriaDTO> tiemposCategoria = tareaRepository.consultarTiempoCategoria();
+        return tiemposCategoria;
+    }
+
+    @Override
+    public List<TiempoSuspensionTipoDTO> tiempoPorTipoSus() {
+        List<TiempoSuspensionTipoDTO> tiemposSuspension = usuarioRepository.tiempoPorTipoSuspension();
+        return tiemposSuspension;
+    }
+
+    @Override
+    public Long TiempoSuspensionUsuarioTotal(String cc) {
+        long contador = 0;
+        Usuario usuarioAux = configuracionService.consultarUsuariobyCC(cc);
+        List<TiempoSuspensiones> tiempos = usuarioAux.getTiempoSuspensiones();
+        for (TiempoSuspensiones tiempo : tiempos) {
+            contador = tiempo.getAcumulado() + contador;
+        }
+        return contador;
+    }
+
+    @Override
+    public List<TiempoTareaUsuarioDTO> tiempoTareaUsuario(String idTarea, String cc) {
+        List<TiempoTareaUsuarioDTO> tiemposUsuarioTarea = tareaRepository.consultarTiempoTareaUsuario(idTarea, cc);
+        return tiemposUsuarioTarea;
     }
 
 }

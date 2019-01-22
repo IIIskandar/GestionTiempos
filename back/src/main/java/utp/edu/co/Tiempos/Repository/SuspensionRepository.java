@@ -14,6 +14,6 @@ import utp.edu.co.Tiempos.Documents.Suspension;
  * @author C-Lug
  */
 @Repository
-public interface SuspensionRepository extends MongoRepository<Suspension, String>{
+public interface SuspensionRepository extends MongoRepository<Suspension, String>, SuspensionRepositoryCustom{
     
 }

@@ -112,4 +112,10 @@ public class UsuarioController {
         return ResponseEntity.ok(tiempoUsuario);
     }
     
+    @GetMapping("/tiempoSuspensiones/{cc}")
+    public ResponseEntity<?> tiempoSuspensionUsuario(@PathVariable("cc") String cc){
+        Long tiempoSuspensionUsuario = timeService.TiempoSuspensionUsuarioTotal(cc);
+        return ResponseEntity.ok(tiempoSuspensionUsuario);
+    }
+    
 }

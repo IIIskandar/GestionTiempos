@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import utp.edu.co.Tiempos.Documents.TipoSuspensiones;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
+import utp.edu.co.Tiempos.dto.TiempoSuspensionTipoDTO;
 import utp.edu.co.Tiempos.dto.TipoSuspensionesDTO;
 
 /**
@@ -59,5 +60,11 @@ public class SuspensionController {
         }
         
         return ResponseEntity.ok(auxiliar);
+    }
+    
+    @GetMapping("/tiempo")
+    public ResponseEntity<?> tiempoPorSuspension(){
+        List<TiempoSuspensionTipoDTO> tiempoSuspension = timeService.tiempoPorTipoSus();
+        return ResponseEntity.ok(tiempoSuspension);
     }
 }
