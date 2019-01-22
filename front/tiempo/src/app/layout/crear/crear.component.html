@@ -18,14 +18,16 @@
                     <br>
                     <div fxLayout="row" fxLayout.lt-md="column" *ngFor="let tarea of tareasForms.controls; let i=index" [formGroupName]="i" class="ex1">
                         <div fxFlex>
-                        <br>
-                        <a>Nombre </a>
-                        <input type="text1" formControlName="nombre" placeholder="Ej. Testeo">
+                            <br>
+                            <input type="text1" formControlName="nombre" placeholder="NOMBRE">
                         </div>
                         <div fxFlex>
-                        <br>
-                        <a>Categoria </a>
-                        <input type="text1" formControlName="categoria" placeholder="Ej. Ingenieria de software">
+                            <br>
+                            <input type="text1" formControlName="categoria" placeholder="CATEGORIA">
+                        </div>
+                        <div fxFlex>
+                            <br>
+                            <input type="text1" formControlName="tiempo" placeholder="TIEMPO ESPERADO">
                         </div>
                     </div>
                 </div>
@@ -38,8 +40,7 @@
                     <br>
                     <div *ngFor="let usuario of usuariosForms.controls; let i=index" [formGroupName]="i">
                         <br>
-                        <a>Cedula del usuario </a>
-                        <input type="text"  formControlName="cc" placeholder="Ej. 1088...">
+                        <input type="text"  formControlName="cc" placeholder="NOMBRE">
                     </div>
                 </div>
             </div>

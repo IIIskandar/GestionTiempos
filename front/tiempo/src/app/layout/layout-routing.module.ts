@@ -39,6 +39,22 @@ const routes: Routes = [
             {
                 path: 'crear',
                 loadChildren: './crear/crear.module#CrearModule'
+            },
+            {
+                path: 'adminSuspension',
+                loadChildren: './adminSuspension/adminSuspension.module#AdminSuspensionModule'
+            },
+            {
+                path: 'adminUser',
+                loadChildren: './admin-user/admin-user.module#AdminUserModule'
+            },
+            {
+                path: 'adminCategoria',
+                loadChildren: './admin-category/admin-category.module#AdminCategoryModule'
+            },
+            {
+                path: 'adminConfig',
+                loadChildren: './admin-crear/admin-crear.module#AdminCrearModule'
             }
         ]
     }

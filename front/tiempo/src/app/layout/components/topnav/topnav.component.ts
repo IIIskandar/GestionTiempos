@@ -80,6 +80,10 @@ export class TopnavComponent implements OnInit {
         this.router.navigate(['/proyectos']);
     }
 
+    configuacion() {
+        this.router.navigate(['/adminConfig']);
+    }
+
     dashboard() {
         this.router.navigate(['/dashboard/proyectos']);
     }
