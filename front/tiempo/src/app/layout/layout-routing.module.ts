@@ -49,10 +49,6 @@ const routes: Routes = [
                 loadChildren: './admin-user/admin-user.module#AdminUserModule'
             },
             {
-                path: 'adminCategoria',
-                loadChildren: './admin-category/admin-category.module#AdminCategoryModule'
-            },
-            {
                 path: 'adminConfig',
                 loadChildren: './admin-crear/admin-crear.module#AdminCrearModule'
             },

@@ -17,29 +17,33 @@
         <table>
             <tr>
             <th>Nombre</th>
-            <th>Tiempo total</th>
+            <th>Tiempo trabajado</th>
             <th></th>
             </tr>
-            <tr *ngFor="">
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            <tr *ngFor="let proyect of listProyect">
+                <td id="nombre">{{proyect.nombre}}</td>
+                <td id="jobTime">{{proyect.jobTime}}</td>
+                <td><button mat-raised-button color="primary" (click)="enviar(proyect.id, proyect.nombre)">
+                      <a>Ir a proyecto</a>
+                </button></td>
+              </tr>
         </table>
         </mat-card>
         <br>
         <mat-card>
-        <h2>Tiempos por usuario</h2>
+        <h2>Lista de usuarios</h2>
         <table>
             <tr>
             <th>Nombre</th>
-            <th>Tiempo</th>
+            <th>Rol</th>
             <th></th>
             </tr>
-            <tr *ngFor="">
-            <td></td>
-            <td></td>
-            <td></td>
+            <tr *ngFor="let user of listUser">
+            <td id="nombre">{{user.nombre}}</td>
+            <td id="rol">{{user.rol}}</td>
+            <td><button mat-raised-button color="primary" (click)="enviar(user.cc)">
+                <a>Ir a usuario</a>
+          </button></td>
             </tr>
         </table>
         </mat-card>
@@ -53,9 +57,9 @@
             <th>Nombre</th>
             <th>Tiempo</th>
             </tr>
-            <tr *ngFor="">
-            <td></td>
-            <td></td>
+            <tr *ngFor="let categoria of listCategory">
+            <td id="nombre">{{categoria.nombre}}</td>
+            <td id="tiempo">{{categoria.tiempo}}</td>
             </tr>
         </table>
         </mat-card>
@@ -67,11 +71,13 @@
             <th>Tipo suspension</th>
             <th>Tiempo</th>
             </tr>
-            <tr *ngFor="">
-            <td></td>
-            <td></td>
+            <tr *ngFor="let suspension of listSus">
+            <td>{{suspension.nombre}}</td>
+            <td>{{suspension.tiempo}}</td>
             </tr>
         </table>
         </mat-card>
     </div>
+    <br>
 </div>
+<br>

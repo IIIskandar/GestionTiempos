@@ -54,6 +54,7 @@ export class CrearComponent implements OnInit {
     const tarea = this.formBuilder.group({
       name: ['', [Validators.required]],
       category: ['', [Validators.required]],
+      status: 'activa',
       expectedTime: ['', [Validators.required]]
     });
     this.tareasForms.push(tarea);
@@ -80,34 +81,12 @@ export class CrearComponent implements OnInit {
   }
 
   enviar() {
-    console.log(JSON.stringify(this.myForm.value));
     this.Admin.crearProyecto(this.myForm.value)
       .subscribe(
         success => {
           alert('Proyecto creado correctamente');
+          this.router.navigate(['/admin']);
         }
       );
   }
-
-  agregarUser() {
-    for (let i = 0; i < this.myForm.value.usuarios.length; i++) {
-      console.log('user' + i);
-      this.Admin.addUsuario(this.myForm.value.usuarios[i].cc, this.proyect.id)
-        .subscribe(
-         );
-    }
-    setTimeout(() => {this.agregarTarea(); } , 2000);
-  }
-
-  agregarTarea() {
-    for (let i = 0; i < this.myForm.value.tareas.length; i++) {
-      console.log('tarea' + i);
-       this.Admin.addTarea(this.myForm.value.tareas[i].nombre, '', this.proyect.id)
-      .subscribe(
-      );
-    }
-    setTimeout(() => {alert('Proyecto creado correctamente'); } , 2000);
-    this.router.navigate(['/admin']);
-  }
-
 }

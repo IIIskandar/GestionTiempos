@@ -3,9 +3,7 @@
   <form [formGroup]="profileForm"  (ngSubmit)="onSubmit()" noValidate>
     <a>Seleccione un tipo de suspension: </a>
       <mat-select style="width: 20%;" placeholder="Tipo de suspension" formControlName="tipo">
-        <mat-option type="input" value="Snack">Snack</mat-option>
-        <mat-option value="Wc">WC</mat-option>
-        <mat-option value="Reunion">Reunion</mat-option>
+        <mat-option *ngFor="let suspension of listSus" value={{suspension.nombre}}>{{suspension.nombre}}</mat-option>
       </mat-select>
     <br><br>
     <a>Ingrese una descripcion de la suspension</a>

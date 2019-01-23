@@ -1,3 +1,16 @@
-<p>
-  admin-suspension works!
-</p>
+<h2>Crear nuevo tipo de suspension</h2>
+
+<form [formGroup]="myForm" noValidate>
+    <div fxLayout="column" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+        <mat-card>
+        <div fxLayout.lt-md="column">
+          <br><br>
+          <a>Nombre del tipo de suspension </a>
+          <input type="text" name="name"  formControlName="name" placeholder="Ej. Reunion">
+          <br>
+        </div>
+        </mat-card>
+        <button mat-raised-button color="primary"  (click)="crear()" [disabled]="myForm.invalid">Crear tipo de suspension</button>
+        <br><br>
+    </div>
+</form>

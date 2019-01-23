@@ -13,22 +13,10 @@ export class AdminService {
     return  throwError(error.error);
   }
 
+
   crearProyecto(proyect) {
-    return this.http.post(`http://localhost:8081/tiempos/v1/proyectos/`, JSON.stringify(proyect));
-  }
-
-  addUsuario(cc, id) {
-    return this.http.post(`http://localhost:8081/tiempos/v1/proyectos/asignarUsuario/` + id, {
-      'cc': cc,
-    });
-  }
-
-  addTarea(nombre, category, id) {
-    return this.http.put(`http://localhost:8081/tiempos/v1/proyectos/` + id + `/tarea` , {
-      'name': nombre,
-      'category': category,
-      'status': 'Abierto'
-    });
+    const head = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`http://localhost:8081/tiempos/v1/proyectos/`, JSON.stringify(proyect), {headers: head});
   }
 
   listProyect() {
@@ -62,4 +50,31 @@ export class AdminService {
   timeSusUSer(cc) {
     return this.http.get(`http://localhost:8081/tiempos/v1/usuarios/tiempoSuspensiones/` + cc);
   }
+
+  getUsers() {
+    return this.http.get(`http://localhost:8081/tiempos/v1/usuarios/` );
+  }
+
+  getTiempoCategoria() {
+    return this.http.get(`http://localhost:8081/tiempos/v1/tareas/tiempoCategorias` );
+  }
+
+  getTiempoSus() {
+    return this.http.get(`http://localhost:8081/tiempos/v1/suspension/tiempo` );
+  }
+
+  getSus() {
+    return this.http.get(`http://localhost:8081/tiempos/v1/suspension/listar` );
+  }
+
+  crearUser(user) {
+    const head = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`http://localhost:8081/tiempos/v1/usuarios`, JSON.stringify(user), {headers: head});
+  }
+
+  crearTipoSus(suspension) {
+    const head = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`http://localhost:8081/tiempos/v1/suspension/crear`, JSON.stringify(suspension), {headers: head});
+  }
+
 }

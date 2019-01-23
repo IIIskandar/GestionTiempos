@@ -40,16 +40,18 @@ export class DashboardComponent implements OnInit {
     auxTime: any;
     timeJobUser: any;
     timeSusUser: any;
-    aux: Array<any> = [];
+    aux: any;
     aux1: any;
+    c: any;
+    s: any;
+    contador: any;
     listSus: Array<{categoria: string, fechaInicio: string, fechaFin: string, tT: string}> = [];
 
     public pieChartLabels: string[] = ['Tiempo trabajado', 'Tiempo en suspension'];
-    public pieChartData: number[] = [300, 500];
+    public pieChartData: number[] = [];
     public pieChartType: string;
 
     ngOnInit() {
-        this.pieChartType = 'pie';
         this.info = this.route.snapshot.paramMap.get('info');
         if ( this.info === 'suspensiones') {
             this.suspension = true;
@@ -78,7 +80,8 @@ export class DashboardComponent implements OnInit {
             this.getProyectos();
             this.timeJob();
             this.timeSus();
-            this.numProyect = this.listProyect.length + 1;
+            setTimeout(() => {this.pieChartData = [this.timeJobUser, this.timeSusUser]; } , 500);
+            setTimeout(() => {this.pieChartType = 'pie'; } , 500);
         } else {
             localStorage.removeItem('isLoggedin');
             this.router.navigate(['/login']);
@@ -90,55 +93,26 @@ export class DashboardComponent implements OnInit {
             .subscribe(
                 res => {
                     this.user = res;
-                    if ( this.user.tiempoWC === null) {
-                        this.timewc = 0;
-                    } else {
-                        this.timewc = this.user.tiempoWC;
-                    }
-                    if ( this.user.tiempoSnacks === null) {
-                        this.timesnack = 0;
-                    } else {
-                        this.timesnack = this.user.tiempoSnacks;
-                    }
-                    if ( this.user.tiempoMeeting === null) {
-                        this.timemeeting = 0;
-                    } else {
-                        this.timemeeting = this.user.tiempoMeeting;
-                    }
-
-                    this.aux1 = res;
-                    this.aux[0] = this.aux1.suspensions;
-                    if ( this.aux[0] === null) {
+                    this.aux = this.user.suspensions;
+                    if ( this.aux === null) {
                     this.listSus[0] =  {categoria: ' ', fechaInicio: ' ', fechaFin: ' ', tT: ' '};
                     } else {
-                        for (let i = 0 ; i < this.aux[0].length ; i++) {
-                            if (this.aux1.suspensions[i].wcs === 1) {
-                                if (this.aux1.suspensions[i].fechaFin === null) {
-                                } else {
-                                    this.fInicio = this.aux1.suspensions[i].fechaInicio.replace('T', '  ').replace('+0000', '');
-                                    this.fFin = this.aux1.suspensions[i].fechaFin.replace('T', '  ').replace('+0000', '');
-                                    this.TT = this.aux1.suspensions[i].tiempoTotal;
-                                    this.listSus[i] = {categoria: 'Wc', fechaInicio: this.fInicio, fechaFin: this.fFin, tT: this.TT};
-                                }
+                        for (let i = 0 ; i < this.aux.length ; i++) {
+                            if (this.aux[i].fechaFin === null) {
+                            } else {
+                                this.fInicio = this.aux[i].fechaInicio.replace('T', '  ').replace('+0000', '');
+                                this.fFin = this.aux[i].fechaFin.replace('T', '  ').replace('+0000', '');
+                                this.TT = this.aux[i].tiempoSuspension;
+                                this.c = this.aux[i].tipoSuspension;
+                                this.s = this.aux[i].tiempoSuspension;
+                                this.listSus[i] = {categoria: this.c, fechaInicio: this.fInicio, fechaFin: this.fFin, tT: this.TT};
                             }
-                            if (this.aux1.suspensions[i].snacks === 1) {
-                                if (this.aux1.suspensions[i].fechaFin === null) {
-                                } else {
-                                    this.fInicio = this.aux1.suspensions[i].fechaInicio.replace('T', '  ').replace('+0000', '');
-                                    this.fFin = this.aux1.suspensions[i].fechaFin.replace('T', '  ').replace('+0000', '');
-                                    this.TT = this.aux1.suspensions[i].tiempoTotal;
-                                    this.listSus[i] = {categoria: 'Snak', fechaInicio: this.fInicio, fechaFin: this.fFin, tT: this.TT};
-                                }
-                            }
-                            if (this.aux1.suspensions[i].meetings === 1) {
-                                if (this.aux1.suspensions[i].fechaFin === null) {
-                                } else {
-                                    this.fInicio = this.aux1.suspensions[i].fechaInicio.replace('T', '  ').replace('+0000', '');
-                                    this.fFin = this.aux1.suspensions[i].fechaFin.replace('T', '  ').replace('+0000', '');
-                                    this.TT = this.aux1.suspensions[i].tiempoTotal;
-                                    this.listSus[i] = {categoria: 'Meeting', fechaInicio: this.fInicio, fechaFin: this.fFin, tT: this.TT};
-                                }
-                            }
+                        }
+                    }
+                    if ( this.listSus.length >= 5) {
+                        this.contador = this.listSus.length;
+                        for (let i = 0; i < (this.contador - 5); i++) {
+                            this.listSus.splice(1, 1);
                         }
                     }
                     return(this.listSus);
@@ -154,6 +128,7 @@ export class DashboardComponent implements OnInit {
                   for (let i = 0; i < this.aux1.length; i++) {
                     this.listProyect[i] = {nombre: this.aux1[i].name, id: this.aux1[i].id};
                   }
+                this.numProyect = this.listProyect.length;
               }
             );
     }
@@ -168,6 +143,8 @@ export class DashboardComponent implements OnInit {
                 res => {
                     this.auxTime = res;
                     this.timeJobUser = this.auxTime.jobTimeUser;
+                }, error => {
+                    this.timeJobUser = 0;
                 }
             );
     }
@@ -176,7 +153,6 @@ export class DashboardComponent implements OnInit {
         this.admin.timeSusUSer(localStorage.getItem('cc'))
             .subscribe(
                 res => {
-                    console.log(res);
                     this.timeSusUser = res;
                 }
             );

@@ -121,6 +121,8 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
     public Proyecto guardarProyecto(Proyecto proyecto) {
         long conT=0;
         long conU=0;
+        Usuario usuarioHelper;
+        List<Usuario> listaUsuarios = new ArrayList();
         if(!proyecto.getTareas().isEmpty()){
             conT = proyecto.getTareas().size();
             for (int i = 0; i < conT; i++) {
@@ -130,9 +132,11 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         if(!proyecto.getUsersId().isEmpty()){
             conU = proyecto.getUsersId().size();
             for (int i = 0; i < conU; i++) {
-                usuarioRepository.insert(proyecto.getUsersId().get(i));
+                usuarioHelper = consultarUsuariobyCC(proyecto.getUsersId().get(i).getCc());
+                listaUsuarios.add(usuarioHelper);
             }
         }
+        proyecto.setUsersId(listaUsuarios);
         Proyecto representativo = proyectoRepository.insert(proyecto);
         return representativo;
     }

@@ -13,11 +13,9 @@ export class SuspensionService {
     return  throwError(error.error);
   }
 
-  crearSuspension(cc, wc, snack, meeting, detalle) {
+  crearSuspension(cc, tipo, detalle) {
     return this.http.post(`http://localhost:8081/tiempos/v1/usuarios/suspension/iniciar/` + cc , {
-      'wcs': wc,
-      'meetings': meeting,
-      'snacks': snack,
+      'tipoSuspension': tipo,
       'detalleSuspension' : detalle
     });
   }

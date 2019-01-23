@@ -1,3 +1,27 @@
-<p>
-  admin-user works!
-</p>
+<h2>Crear nuevo usuario</h2>
+
+<form [formGroup]="myForm" noValidate>
+    <div fxLayout="column" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+        <mat-card>
+        <div fxLayout.lt-md="column">
+          <br><br>
+          <a>Nombre del usuario </a>
+          <input type="text" name="name"  formControlName="name" placeholder="Ej. Juan">
+          <br><br>
+          <a>Cedula del usuario </a>
+          <input type="text" name="name"  formControlName="cc" placeholder="Ej. 1088...">
+          <br><br>
+          <a>Rol del usuario </a>
+          <mat-select style="width: 20%;" placeholder="Rol del usuario" formControlName="rol">
+              <mat-option type="input" value="user">Usuario</mat-option>
+              <mat-option value="admin">Administrador</mat-option>
+            </mat-select>
+          <br><br>
+          <a>Password del usuario </a>
+          <input type="text" name="name"  formControlName="password" placeholder="******">
+        </div>
+        </mat-card>
+        <button mat-raised-button color="primary"  (click)="crear()" [disabled]="myForm.invalid">Crear usuario</button>
+        <br><br>
+    </div>
+</form>

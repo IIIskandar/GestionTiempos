@@ -15,9 +15,13 @@ export class TareaComponent implements OnInit {
 
     aux1: any;
     aux: Array<any> = [];
-    listT: Array<{name: string, category: string, status: string, id: string}> = [];
+    listT: Array<{n: string, c: string, s: string, id: string, exTime: string, jT: string}> = [];
     idProyect: any;
+    auxC: any;
+    auxEx: any;
+    auxJob: any;
     cc: any;
+    n: any;
     status: any;
     nombreProyect: any;
 
@@ -32,7 +36,11 @@ export class TareaComponent implements OnInit {
         res => {
           this.aux1 = res;
             for (let i = 0; i < this.aux1.length; i++) {
-              this.listT[i] = {name: this.aux1[i].name, category: 'pendiente', status: this.aux1[i].status, id: this.aux1[i].id};
+              this.auxC = this.aux1[i].category;
+              this.auxEx = this.aux1[i].expectedTime;
+              this.auxJob = this.aux1[i].jobTime;
+              this.n = this.aux1[i].name;
+              this.listT[i] = {n: this.n, c: this.auxC , s: this.aux1[i].status, id: this.aux1[i].id, exTime: this.auxEx, jT: this.auxJob};
             }
         }
       );
