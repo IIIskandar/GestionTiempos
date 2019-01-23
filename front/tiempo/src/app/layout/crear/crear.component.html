@@ -5,7 +5,7 @@
         <div fxFlex class="ex1">
             <br><br>
             <a>Nombre del proyecto </a>
-            <input type="text" name="nombre"  formControlName="nombre" placeholder="Ej. Hospital">
+            <input type="text" name="name"  formControlName="name" placeholder="Ej. Hospital">
         </div>
         <br><br>
         <mat-card>
@@ -19,22 +19,22 @@
                     <div fxLayout="row" fxLayout.lt-md="column" *ngFor="let tarea of tareasForms.controls; let i=index" [formGroupName]="i" class="ex1">
                         <div fxFlex>
                             <br>
-                            <input type="text1" formControlName="nombre" placeholder="NOMBRE">
+                            <input type="text1" formControlName="name" placeholder="NOMBRE">
                         </div>
                         <div fxFlex>
                             <br>
-                            <input type="text1" formControlName="categoria" placeholder="CATEGORIA">
+                            <input type="text1" formControlName="category" placeholder="CATEGORIA">
                         </div>
                         <div fxFlex>
                             <br>
-                            <input type="text1" formControlName="tiempo" placeholder="TIEMPO ESPERADO">
+                            <input type="text1" type="number" formControlName="expectedTime" placeholder="TIEMPO ESPERADO">
                         </div>
                     </div>
                 </div>
             </div>
             <div fxFlex fxLayoutGap="20px">
                 <h4>Agregar usuarios</h4>
-                <div formArrayName="usuarios" class="ex1">
+                <div formArrayName="usersId" class="ex1">
                     <button mat-icon-button (click)="deteleUser()"><mat-icon>remove_circle</mat-icon></button>
                     <button mat-icon-button (click)="addUser()"><mat-icon>add_circle</mat-icon></button>
                     <br>

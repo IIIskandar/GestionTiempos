@@ -36,7 +36,10 @@ export class DashboardComponent implements OnInit {
     tareas: boolean;
     fFin: any;
     TT: any;
-    // suspensiones
+    numProyect: any;
+    auxTime: any;
+    timeJobUser: any;
+    timeSusUser: any;
     aux: Array<any> = [];
     aux1: any;
     listSus: Array<{categoria: string, fechaInicio: string, fechaFin: string, tT: string}> = [];
@@ -73,6 +76,9 @@ export class DashboardComponent implements OnInit {
             }
             this.getSuspension(this.cc);
             this.getProyectos();
+            this.timeJob();
+            this.timeSus();
+            this.numProyect = this.listProyect.length + 1;
         } else {
             localStorage.removeItem('isLoggedin');
             this.router.navigate(['/login']);
@@ -154,6 +160,26 @@ export class DashboardComponent implements OnInit {
 
     enviar(id, nombre) {
         this.router.navigate(['/tareas/' + id + '/' + nombre]);
+    }
+
+    timeJob() {
+        this.admin.timeJobUSer(localStorage.getItem('cc'))
+            .subscribe(
+                res => {
+                    this.auxTime = res;
+                    this.timeJobUser = this.auxTime.jobTimeUser;
+                }
+            );
+    }
+
+    timeSus() {
+        this.admin.timeSusUSer(localStorage.getItem('cc'))
+            .subscribe(
+                res => {
+                    console.log(res);
+                    this.timeSusUser = res;
+                }
+            );
     }
 }
 

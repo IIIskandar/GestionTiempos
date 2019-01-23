@@ -13,11 +13,8 @@ export class AdminService {
     return  throwError(error.error);
   }
 
-  crearProyecto(cc, name) {
-    return this.http.put(`http://localhost:8081/tiempos/v1/proyectos/`, {
-      'name': name,
-      'creator': cc
-    });
+  crearProyecto(proyect) {
+    return this.http.post(`http://localhost:8081/tiempos/v1/proyectos/`, JSON.stringify(proyect));
   }
 
   addUsuario(cc, id) {
@@ -56,5 +53,13 @@ export class AdminService {
     return this.http.post(`http://localhost:8081/tiempos/v1/tareas/` + id + `/registro/fin/` + status , {
       'jobDetails': descripcion
     });
+  }
+
+  timeJobUSer(cc) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/usuarios/tiempo/` + cc);
+  }
+
+  timeSusUSer(cc) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/usuarios/tiempoSuspensiones/` + cc);
   }
 }

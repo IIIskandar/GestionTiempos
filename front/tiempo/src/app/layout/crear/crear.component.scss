@@ -54,6 +54,14 @@ input[type=text], select, textarea {
     resize: vertical;
   }
 
+input[type=number], select, textarea {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
   input[type=text1], select, textarea {
     width: 70%;
     padding: 10px;
