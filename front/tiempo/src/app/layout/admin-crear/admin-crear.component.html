@@ -1,3 +1,67 @@
-<p>
-  admin-crear works!
-</p>
+<div fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+  <div fxFlex>
+    <mat-card>
+    <h2>Lista de categorias</h2>
+    <table>
+        <tr>
+        <th>Nombre</th>
+        <th></th>
+        </tr>
+        <tr *ngFor="">
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <button mat-raised-button color="primary" (click)="categoria()">Crear categoria</button>
+    </mat-card>
+    <br>
+    <mat-card>
+    <h2>Lista tipos de suspension</h2>
+    <table>
+        <tr>
+        <th>Nombre</th>
+        <th></th>
+        <th></th>
+        </tr>
+        <tr *ngFor="">
+        <td></td>
+        <td></td>
+        </tr>
+    </table>
+    <button mat-raised-button color="primary" (click)="suspension()">Crear tipo de suspension</button>
+    </mat-card>
+    <br>
+  </div>
+  <div fxFlex>
+    <mat-card>
+    <h2>Lista de usuarios</h2>
+    <table>
+        <tr>
+        <th>Nombre</th>
+        <th></th>
+        </tr>
+        <tr *ngFor="">
+        <td></td>
+        <td></td>
+        </tr>
+    </table>
+    <button mat-raised-button color="primary" (click)="usuario()">Crear usuario</button>
+    </mat-card>
+    <br>
+    <mat-card>
+      <h2>Lista de proyectos</h2>
+      <table>
+          <tr>
+          <th>Nombre</th>
+          <th></th>
+          </tr>
+          <tr *ngFor="">
+              <td></td>
+              <td></td>
+          </tr>
+      </table>
+      <button mat-raised-button color="primary" (click)="crearProyecto()">Crear proyecto</button>
+      </mat-card>
+      <br>
+  </div>
+</div>
