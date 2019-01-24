@@ -32,9 +32,10 @@ export class AdminService {
   }
 
   iniciarTarea(id, cc) {
-    return this.http.put(`http://localhost:8081/tiempos/v1/tareas/` + id + `/registro/inicio/En%20Tarea` , {
+    const head = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`http://localhost:8081/tiempos/v1/tareas/` + id + `/registro/inicio/En%20Tarea` , {
       'madeBy': cc
-    });
+    }, {headers: head});
   }
 
   finalizarTarea(id, status, descripcion) {
