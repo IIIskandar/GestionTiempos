@@ -97,4 +97,8 @@ export class AdminService {
   tiempoJobProyect(id) {
     return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/` + id);
   }
+
+  listProyectTime() {
+    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/tiemposProyectos`);
+  }
 }

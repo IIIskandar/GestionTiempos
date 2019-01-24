@@ -38,7 +38,7 @@ export class AdminproyectComponent implements OnInit {
   }
 
   getProyectos() {
-    this.admin.listProyect()
+    this.admin.listProyectTime()
         .subscribe(
           res => {
             this.aux1 = res;
