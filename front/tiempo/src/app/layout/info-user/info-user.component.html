@@ -1,0 +1,80 @@
+<h2>Detalles del usuario {{nombreUser}}</h2>
+<div>
+  <h4>Seleccione intervalo de tiempo</h4> 
+  <form>
+          <input matInput [matDatepicker]="picker1" placeholder="Fecha inicial">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+          <input matInput [matDatepicker]="picker2" placeholder="Fecha final">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+  </form>
+</div>
+
+<div fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+  <div fxFlex>
+      <mat-card>
+      <h2>Lista de proyectos</h2>
+      <table>
+          <tr>
+          <th>Nombre</th>
+          <th>Tiempo trabajado</th>
+          <th></th>
+          </tr>
+          <tr *ngFor="">
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+      </table>
+      </mat-card>
+      <br>
+      <mat-card>
+      <h2>Lista de usuarios</h2>
+      <table>
+          <tr>
+          <th>Nombre</th>
+          <th>Rol</th>
+          <th></th>
+          </tr>
+          <tr *ngFor="">
+          <td></td>
+          <td></td>
+          <td></td>
+          </tr>
+      </table>
+      </mat-card>
+  </div>
+      
+  <div fxFlex>
+      <mat-card>
+      <h2>Tiempos por categoria</h2>
+      <table>
+          <tr>
+          <th>Nombre</th>
+          <th>Tiempo</th>
+          </tr>
+          <tr *ngFor="">
+          <td></td>
+          <td></td>
+          </tr>
+      </table>
+      </mat-card>
+      <br>
+      <mat-card>
+      <h2>Tiempos por suspension</h2>
+      <table>
+          <tr>
+          <th>Tipo suspension</th>
+          <th>Tiempo</th>
+          </tr>
+          <tr *ngFor="">
+          <td></td>
+          <td></td>
+          </tr>
+      </table>
+      </mat-card>
+  </div>
+  <br>
+</div>
+<br>

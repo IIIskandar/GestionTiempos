@@ -55,7 +55,15 @@ const routes: Routes = [
             {
                 path: 'editProyect',
                 loadChildren: './edit-proyect/edit-proyect.module#EditProyectModule'
-            }
+            },
+            {
+                path: 'infoProyect/:id/:nombre',
+                loadChildren: './info-proyect/info-proyect.module#InfoProyectModule'
+            },
+            {
+                path: 'infoUser/:id/:nombre',
+                loadChildren: './info-user/info-user.module#InfoUserModule'
+            },
         ]
     }
 ];

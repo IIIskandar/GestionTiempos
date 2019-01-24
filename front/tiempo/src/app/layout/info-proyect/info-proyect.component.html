@@ -1,0 +1,56 @@
+<h2>Detalles del proyecto {{nombreProyect}}</h2>
+<div>
+  <h4>Seleccione intervalo de tiempo</h4> 
+  <form>
+          <input matInput [matDatepicker]="picker1" placeholder="Fecha inicial">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+          <input matInput [matDatepicker]="picker2" placeholder="Fecha final">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+  </form>
+</div>
+
+<div fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+  <div fxFlex>
+        <mat-card>
+        <h2>Lista de usuarios</h2>
+        <table>
+            <tr>
+            <th>CC</th>
+            <th>Nombre</th>
+            <th>Tiempo trabajado</th>
+            </tr>
+            <tr *ngFor="let user of listUser">
+            <td>{{user.cc}}</td>
+            <td>{{user.nombre}}</td>
+            <td>{{user.jT}}</td>
+            </tr>
+        </table>
+        </mat-card>
+        <br>
+    </div>
+    <div fxFlex>
+        <mat-card>
+        <h2>Lista de tareas</h2>
+        <table>
+            <tr>
+            <th>Nombre</th>
+            <th>Categoria</th>
+            <th>Estado</th>
+            <th>Tiempo trabajado</th>
+            <th>Tiempo esperado</th>
+            </tr>
+            <tr *ngFor="">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            </tr>
+        </table>
+        </mat-card>
+  </div>
+  <br>
+</div>
+<br>

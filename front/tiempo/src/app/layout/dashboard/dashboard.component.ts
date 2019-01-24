@@ -40,12 +40,16 @@ export class DashboardComponent implements OnInit {
     auxTime: any;
     timeJobUser: any;
     timeSusUser: any;
+    timeJobUserF: any;
+    timeSusUserF: any;
     aux: any;
     aux1: any;
+    aux2: any;
     c: any;
     s: any;
     contador: any;
     listSus: Array<{categoria: string, fechaInicio: string, fechaFin: string, tT: string}> = [];
+    listTareas: Array<{nP: string, nT: string, s: string, tT: string}> = [];
 
     public pieChartLabels: string[] = ['Tiempo trabajado', 'Tiempo en suspension'];
     public pieChartData: number[] = [];
@@ -80,12 +84,29 @@ export class DashboardComponent implements OnInit {
             this.getProyectos();
             this.timeJob();
             this.timeSus();
+            this.getTareas();
+            setTimeout(() => {this.timeJobUserF = this.getTime(this.timeJobUser); } , 500);
+            setTimeout(() => {this.timeSusUserF = this.getTime(this.timeSusUser); } , 500);
             setTimeout(() => {this.pieChartData = [this.timeJobUser, this.timeSusUser]; } , 500);
             setTimeout(() => {this.pieChartType = 'pie'; } , 500);
         } else {
             localStorage.removeItem('isLoggedin');
             this.router.navigate(['/login']);
         }
+    }
+
+    getTareas() {
+        this.admin.listTareasUser(this.cc)
+            .subscribe(
+                res => {
+                    this.aux2 = res;
+                    for (let i = 0; i < this.aux2.length; i++) {
+                        this.listTareas[i] = {nP: this.aux2[i].nameProyecto, nT: this.aux2[i].nameTarea,
+                            s: this.aux2[i].status, tT: this.aux2[i].jobTimeUser};
+                        this.listTareas[i].tT = this.getTime(this.aux2[i].jobTimeUser );
+                    }
+                }
+            );
     }
 
     getSuspension(cc) {
@@ -103,6 +124,7 @@ export class DashboardComponent implements OnInit {
                                 this.fInicio = this.aux[i].fechaInicio.replace('T', '  ').replace('+0000', '');
                                 this.fFin = this.aux[i].fechaFin.replace('T', '  ').replace('+0000', '');
                                 this.TT = this.aux[i].tiempoSuspension;
+                                this.TT = this.getTime(this.TT);
                                 this.c = this.aux[i].tipoSuspension;
                                 this.s = this.aux[i].tiempoSuspension;
                                 this.listSus[i] = {categoria: this.c, fechaInicio: this.fInicio, fechaFin: this.fFin, tT: this.TT};
@@ -148,6 +170,13 @@ export class DashboardComponent implements OnInit {
                 }
             );
     }
+
+    getTime(value: number): string {
+        const  temp = value * 60;
+        const hours = Math.floor((temp / 3600));
+        const minutes: number = Math.floor(temp / 60);
+        return hours + ':' + minutes;
+      }
 
     timeSus() {
         this.admin.timeSusUSer(localStorage.getItem('cc'))

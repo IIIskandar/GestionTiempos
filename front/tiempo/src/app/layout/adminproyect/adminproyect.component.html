@@ -41,7 +41,7 @@
             <tr *ngFor="let user of listUser">
             <td id="nombre">{{user.nombre}}</td>
             <td id="rol">{{user.rol}}</td>
-            <td><button mat-raised-button color="primary" (click)="enviar(user.cc)">
+            <td><button mat-raised-button color="primary" (click)="enviarUser(user.cc, user.nombre)">
                 <a>Ir a usuario</a>
           </button></td>
             </tr>

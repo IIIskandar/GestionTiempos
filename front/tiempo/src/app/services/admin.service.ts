@@ -78,4 +78,11 @@ export class AdminService {
     return this.http.post(`http://localhost:8081/tiempos/v1/suspension/crear`, JSON.stringify(suspension), {headers: head});
   }
 
+  listTareasUser(cc) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/usuarios/tiempoTarea/` + cc);
+  }
+
+  listUserProyect(id) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/usuariosProyecto/` + id);
+  }
 }

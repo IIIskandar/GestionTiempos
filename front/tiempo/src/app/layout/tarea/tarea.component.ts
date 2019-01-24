@@ -70,7 +70,7 @@ export class TareaComponent implements OnInit {
 
 
   comprobar(d) {
-    if ( d.status === 'Cerrada') {
+    if ( d.s === 'Cerrada') {
       return true;
     } else {
       return false;

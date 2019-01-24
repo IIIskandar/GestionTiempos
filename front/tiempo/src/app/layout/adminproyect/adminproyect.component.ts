@@ -88,10 +88,13 @@ export class AdminproyectComponent implements OnInit {
       );
   }
 
-  enviar(nombre) {
-    this.router.navigate(['/editar']);
+  enviar(id, nombre) {
+    this.router.navigate(['/infoProyect/' + id + '/' + nombre]);
   }
 
+  enviarUser(id, nombre) {
+    this.router.navigate(['/infoUser/' + id + '/' + nombre]);
+  }
   crear() {
     this.router.navigate(['/crear']);
   }

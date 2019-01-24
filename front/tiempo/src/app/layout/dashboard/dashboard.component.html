@@ -4,10 +4,10 @@
         <app-stat [bgClass]="'danger'" [icon]="'work'" count={{numProyect}} [label]="'Numero de proyectos'"></app-stat>
     </div>
     <div fxFlex>
-        <app-stat [bgClass]="'warn'" [icon]="'schedule'" count={{timeJobUser}} [label]="'Total tiempo trabajado'"></app-stat>
+        <app-stat [bgClass]="'warn'" [icon]="'schedule'" count={{timeJobUserF}} [label]="'Total tiempo trabajado'"></app-stat>
     </div>
     <div fxFlex>
-        <app-stat [bgClass]="'info'" [icon]="'schedule'" count={{timeSusUser}} [label]="'Total tiempo suspensiones'"></app-stat>
+        <app-stat [bgClass]="'info'" [icon]="'schedule'" count={{timeSusUserF}} [label]="'Total tiempo suspensiones'"></app-stat>
     </div>
 </div>
 
@@ -39,13 +39,13 @@
                 <th>Nombre proyecto</th>
                 <th>Nombre tarea</th>
                 <th>Estado</th>
-                <th>Tiempo total</th>
+                <th>Tiempo trabajado</th>
                 </tr>
-                <tr *ngFor="">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <tr *ngFor="let tarea of listTareas">
+                <td>{{tarea.nP}}</td>
+                <td>{{tarea.nT}}</td>
+                <td>{{tarea.s}}</td>
+                <td>{{tarea.tT}}</td>
                 </tr>
             </table>
         </div>
