@@ -7,6 +7,7 @@ package utp.edu.co.Tiempos.Service;
 
 import java.util.List;
 import utp.edu.co.Tiempos.Documents.Descripcion;
+import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Documents.Tarea;
 import utp.edu.co.Tiempos.Documents.Usuario;
@@ -34,6 +35,8 @@ public interface TimeService {
     Descripcion finalizarRegistro(String id, Descripcion descripcion, String status);
     
     Long contabilizarProyecto(String id);
+    
+    List<Proyecto> contabilizarProyectos();
     
     TiempoUsuarioDTO tiempoUsuarios(String cc);
     

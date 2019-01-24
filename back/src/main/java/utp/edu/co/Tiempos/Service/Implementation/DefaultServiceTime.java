@@ -198,7 +198,24 @@ public class DefaultServiceTime implements TimeService{
         proyectoRepository.save(proyectoAux);
         return contador;
     }
-
+    
+    @Override
+    public List<Proyecto> contabilizarProyectos() {
+        long contador=0;
+        List<Proyecto> proyectosAux = configuracionService.listaProyectos();
+        for (Proyecto proyectoAux : proyectosAux) {
+            List<Tarea> tareasAux = proyectoAux.getTareas();
+            for (Tarea tarea : tareasAux) {
+                if(!(tarea.getJobTime()== null))
+                contador = tarea.getJobTime() + contador;
+            }
+        proyectoAux.setJobTime(contador);
+        proyectoRepository.save(proyectoAux);
+        contador = 0;
+        }
+        return proyectosAux;
+    }
+    
     @Override
     public TiempoUsuarioDTO tiempoUsuarios(String cc) {
         List<TiempoUsuarioDTO> tiempos = descripcionRepository.consultarTiempoUsuario(cc);

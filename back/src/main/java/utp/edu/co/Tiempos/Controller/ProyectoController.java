@@ -118,6 +118,13 @@ public class ProyectoController {
         return ResponseEntity.ok(aux);
     }
     
+    @GetMapping("/tiemposProyectos")
+    public ResponseEntity<?> consultarTiempoProyectos(){
+        
+        List<Proyecto> aux = timeService.contabilizarProyectos();
+        return ResponseEntity.ok(aux);
+    }
+    
     @GetMapping("usuariosProyecto/{id}")
     public ResponseEntity<?> proyectosPorUsuario(@PathVariable("id") String idProyecto){
         List<UsuariosPorProyectoDTO> tareasUsuario= timeService.usuariosPorProyecto(idProyecto);
