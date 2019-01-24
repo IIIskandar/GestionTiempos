@@ -24,13 +24,14 @@ export class InfoProyectComponent implements OnInit {
   auxN: any;
   name: any;
   listUser: Array<{cc: string, nombre: string, jT: string}> = [];
-  listTareas: Array<{nP: string, nT: string, s: string, tT: string}> = [];
+  listTareas: Array<{nT: string, c: string, s: string, tT: string, tE: string}> = [];
 
   ngOnInit() {
     if (localStorage.getItem('isLoggedin') === 'true') {
       this.idProyect = this.route.snapshot.paramMap.get('id');
       this.nombreProyect = this.route.snapshot.paramMap.get('nombre');
       this.getUsers();
+      this.getTareas();
   } else {
       localStorage.removeItem('isLoggedin');
       this.router.navigate(['/login']);
@@ -45,22 +46,36 @@ export class InfoProyectComponent implements OnInit {
         .subscribe(
             res => {
                 this.aux2 = res;
-                console.log(res);
-                for (let i = 0; i < this.aux2.length; i++) {
-                  this.login.getUser(this.aux2[i].cc)
-                    .subscribe(
-                        res1 => {
-                          this.auxN = res1;
-                          this.listUser[i] = {cc: this.aux2[i].cc, nombre: this.auxN.name,
-                            jT: this.aux2[i].jobTimeUser};
-                        this.listUser[i].jT = this.getTime(this.aux2[i].jobTimeUser );
-                        }
-                    );
-              }
+                if (this.aux2 !== null) {
+                  for (let i = 0; i < this.aux2.length; i++) {
+                    this.login.getUser(this.aux2[i].cc)
+                      .subscribe(
+                          res1 => {
+                            this.auxN = res1;
+                            this.listUser[i] = {cc: this.aux2[i].cc, nombre: this.auxN.name,
+                              jT: this.aux2[i].jobTimeUser};
+                          this.listUser[i].jT = this.getTime(this.aux2[i].jobTimeUser );
+                          }
+                      );
+                  }
+                }
             }
         );
   }
 
+  getTareas() {
+    this.admin.listTareaProyect(this.idProyect)
+        .subscribe(
+            res => {
+                this.aux1 = res;
+                for (let i = 0; i < this.aux1.length; i++) {
+                  this.listTareas[i] = {nT: this.aux1[i].name, c: this.aux1[i].category,
+                    s: this.aux1[i].status, tT: this.aux1[i].jobTime, tE: this.aux1[i].expectedTime };
+                  this.listTareas[i].tT = this.getTime(this.aux1[i].jobTime );
+                }
+            }
+        );
+  }
 
   getTime(value: number): string {
     const  temp = value * 60;

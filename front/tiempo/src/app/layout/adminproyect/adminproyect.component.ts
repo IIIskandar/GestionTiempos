@@ -47,6 +47,7 @@ export class AdminproyectComponent implements OnInit {
                 if (this.aux1[i].jobTime === null) {
                   this.listProyect[i].jobTime = '0';
                 }
+                this.listProyect[i].jobTime = this.getTime(this.aux1[i].jobTime );
               }
           }
         );
@@ -71,6 +72,7 @@ export class AdminproyectComponent implements OnInit {
           this.aux3 = res;
           for (let i = 0; i < this.aux3.length; i++) {
             this.listCategory[i] = {nombre: this.aux3[i].category, tiempo: this.aux3[i].jobTimeCategory};
+            this.listCategory[i].tiempo = this.getTime(this.aux3[i].jobTimeCategory );
           }
         }
       );
@@ -83,6 +85,7 @@ export class AdminproyectComponent implements OnInit {
           this.aux4 = res;
           for (let i = 0; i < this.aux4.length; i++) {
             this.listSus[i] = {nombre: this.aux4[i].tipo, tiempo: this.aux4[i].jobTimeSuspension};
+            this.listSus[i].tiempo = this.getTime(this.aux4[i].jobTimeSuspension );
           }
         }
       );
@@ -97,6 +100,13 @@ export class AdminproyectComponent implements OnInit {
   }
   crear() {
     this.router.navigate(['/crear']);
+  }
+
+  getTime(value: number): string {
+    const  temp = value * 60;
+    const hours = Math.floor((temp / 3600));
+    const minutes: number = Math.floor(temp / 60);
+    return hours + ':' + minutes;
   }
 
 }

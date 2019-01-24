@@ -41,12 +41,12 @@
             <th>Tiempo trabajado</th>
             <th>Tiempo esperado</th>
             </tr>
-            <tr *ngFor="">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <tr *ngFor="let tarea of listTareas">
+            <td>{{tarea.nT}}</td>
+            <td>{{tarea.c}}</td>
+            <td>{{tarea.s}}</td>
+            <td>{{tarea.tT}}</td>
+            <td>{{tarea.tE}}</td>
             </tr>
         </table>
         </mat-card>

@@ -176,7 +176,7 @@ export class DashboardComponent implements OnInit {
         const hours = Math.floor((temp / 3600));
         const minutes: number = Math.floor(temp / 60);
         return hours + ':' + minutes;
-      }
+    }
 
     timeSus() {
         this.admin.timeSusUSer(localStorage.getItem('cc'))

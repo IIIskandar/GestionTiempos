@@ -85,4 +85,16 @@ export class AdminService {
   listUserProyect(id) {
     return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/usuariosProyecto/` + id);
   }
+
+  listTareaProyect(id) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/` + id + '/tareas');
+  }
+
+  detalleProyect(cc) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/usuarios/tiempoProyecto/` + cc);
+  }
+
+  tiempoJobProyect(id) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/` + id);
+  }
 }

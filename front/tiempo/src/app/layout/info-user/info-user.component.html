@@ -13,67 +13,39 @@
 
 <div fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
   <div fxFlex>
-      <mat-card>
-      <h2>Lista de proyectos</h2>
-      <table>
-          <tr>
-          <th>Nombre</th>
-          <th>Tiempo trabajado</th>
-          <th></th>
-          </tr>
-          <tr *ngFor="">
-              <td></td>
-              <td></td>
-              <td></td>
+        <mat-card>
+        <h2>Lista de proyectos</h2>
+        <table>
+            <tr>
+            <th>Nombre</th>
+            <th>Tiempo trabajado</th>
             </tr>
-      </table>
-      </mat-card>
-      <br>
-      <mat-card>
-      <h2>Lista de usuarios</h2>
-      <table>
-          <tr>
-          <th>Nombre</th>
-          <th>Rol</th>
-          <th></th>
-          </tr>
-          <tr *ngFor="">
-          <td></td>
-          <td></td>
-          <td></td>
-          </tr>
-      </table>
-      </mat-card>
-  </div>
-      
-  <div fxFlex>
-      <mat-card>
-      <h2>Tiempos por categoria</h2>
-      <table>
-          <tr>
-          <th>Nombre</th>
-          <th>Tiempo</th>
-          </tr>
-          <tr *ngFor="">
-          <td></td>
-          <td></td>
-          </tr>
-      </table>
-      </mat-card>
-      <br>
-      <mat-card>
-      <h2>Tiempos por suspension</h2>
-      <table>
-          <tr>
-          <th>Tipo suspension</th>
-          <th>Tiempo</th>
-          </tr>
-          <tr *ngFor="">
-          <td></td>
-          <td></td>
-          </tr>
-      </table>
-      </mat-card>
+            <tr *ngFor="let proyect of listProyect">
+            <td>{{proyect.nombre}}</td>
+            <td>{{proyect.tT}}</td>
+            </tr>
+        </table>
+        </mat-card>
+        <br>
+    </div>
+    <div fxFlex>
+        <mat-card>
+        <h2>Lista de tareas realizadas</h2>
+        <table>
+            <tr>
+            <th>Nombre del proyecto</th>
+            <th>Nombre de la tarea</th>
+            <th>Estado</th>
+            <th>Tiempo trabajado</th>
+            </tr>
+            <tr *ngFor="let tarea of listTareas">
+            <td>{{tarea.nP}}</td>
+            <td>{{tarea.nT}}</td>
+            <td>{{tarea.s}}</td>
+            <td>{{tarea.tT}}</td>
+            </tr>
+        </table>
+        </mat-card>
   </div>
   <br>
 </div>
