@@ -24,9 +24,10 @@ export class CrearComponent implements OnInit {
   ngOnInit() {
     if (localStorage.getItem('isLoggedin') === 'true') {
       this.myForm = this.formBuilder.group({
-        nombre: ['', [Validators.required]],
+        name: ['', [Validators.required]],
+        creator: localStorage.getItem('cc'),
         tareas: this.formBuilder.array([]),
-        usuarios: this.formBuilder.array([])
+        usersId: this.formBuilder.array([])
       });
   } else {
       localStorage.removeItem('isLoggedin');
@@ -46,13 +47,15 @@ export class CrearComponent implements OnInit {
   }
 
   get usuariosForms() {
-    return this.myForm.get('usuarios') as FormArray;
+    return this.myForm.get('usersId') as FormArray;
   }
 
   addTarea() {
     const tarea = this.formBuilder.group({
-      nombre: ['', [Validators.required]],
-      categoria: ['', [Validators.required]]
+      name: ['', [Validators.required]],
+      category: ['', [Validators.required]],
+      status: 'activa',
+      expectedTime: ['', [Validators.required]]
     });
     this.tareasForms.push(tarea);
   }
@@ -78,34 +81,12 @@ export class CrearComponent implements OnInit {
   }
 
   enviar() {
-    this.Admin.crearProyecto(localStorage.getItem('cc'), this.myForm.value.nombre)
+    this.Admin.crearProyecto(this.myForm.value)
       .subscribe(
-        res => {
-            this.proyect = res;
-            this.agregarUser();
+        success => {
+          alert('Proyecto creado correctamente');
+          this.router.navigate(['/admin']);
         }
       );
   }
-
-  agregarUser() {
-    for (let i = 0; i < this.myForm.value.usuarios.length; i++) {
-      console.log('user' + i);
-      this.Admin.addUsuario(this.myForm.value.usuarios[i].cc, this.proyect.id)
-        .subscribe(
-         );
-    }
-    setTimeout(() => {this.agregarTarea(); } , 2000);
-  }
-
-  agregarTarea() {
-    for (let i = 0; i < this.myForm.value.tareas.length; i++) {
-      console.log('tarea' + i);
-       this.Admin.addTarea(this.myForm.value.tareas[i].nombre, '', this.proyect.id)
-      .subscribe(
-      );
-    }
-    setTimeout(() => {alert('Proyecto creado correctamente'); } , 2000);
-    this.router.navigate(['/admin']);
-  }
-
 }

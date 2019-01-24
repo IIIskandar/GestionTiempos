@@ -4,12 +4,15 @@
     <tr>
       <th>Nombre</th>
       <th>Categoria</th>
-      <th>Estado</th>
+      <th>Tiempo trabajado</th>
+      <th>Tiempo esperado</th>
+
     </tr>
     <tr *ngFor="let tarea of listT">
-      <td>{{tarea.name}}</td>
-      <td>{{tarea.category}}</td>
-      <td>{{tarea.status}}</td>
+      <td>{{tarea.n}}</td>
+      <td>{{tarea.c}}</td>
+      <td>{{tarea.jT}}</td>
+      <td>{{tarea.exTime}}</td>
       <td><button mat-raised-button color="primary" [disabled]="comprobar(tarea)" (click)="iniciar(tarea)">
             <a>Iniciar tarea</a>
     </button></td>

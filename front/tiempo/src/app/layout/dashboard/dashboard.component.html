@@ -1,13 +1,13 @@
 <h4 *ngIf="nombreBool">Trabajando en tarea {{nombreTarea}}</h4>
 <div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
     <div fxFlex>
-        <app-stat [bgClass]="'danger'" [icon]="'work'" count="0" [label]="'Numero de proyectos'"></app-stat>
+        <app-stat [bgClass]="'danger'" [icon]="'work'" count={{numProyect}} [label]="'Numero de proyectos'"></app-stat>
     </div>
     <div fxFlex>
-        <app-stat [bgClass]="'warn'" [icon]="'schedule'" count="0" [label]="'Total tiempo trabajado'"></app-stat>
+        <app-stat [bgClass]="'warn'" [icon]="'schedule'" count={{timeJobUser}} [label]="'Total tiempo trabajado'"></app-stat>
     </div>
     <div fxFlex>
-        <app-stat [bgClass]="'info'" [icon]="'schedule'" count="0" [label]="'Total tiempo suspensiones'"></app-stat>
+        <app-stat [bgClass]="'info'" [icon]="'schedule'" count={{timeSusUser}} [label]="'Total tiempo suspensiones'"></app-stat>
     </div>
 </div>
 
@@ -41,7 +41,7 @@
                 <th>Estado</th>
                 <th>Tiempo total</th>
                 </tr>
-                <tr *ngFor="let suspension of listSus">
+                <tr *ngFor="">
                 <td></td>
                 <td></td>
                 <td></td>

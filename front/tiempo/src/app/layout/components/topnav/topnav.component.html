@@ -8,7 +8,7 @@
     <span class="nav-spacer"></span>
     <div><a>{{name}}</a></div>
     <button type="button" mat-icon-button class="hidden-sm" *ngIf="administrador" (click)="admin()" matTooltip="administrador">
-            <mat-icon>settings</mat-icon>
+            <mat-icon>build</mat-icon>
         </button>
     <button type="button" mat-icon-button class="hidden-sm" *ngIf="administrador" (click)="crear()" matTooltip="Nuevo proyecto">
         <mat-icon>note_add</mat-icon>
@@ -16,7 +16,7 @@
     <button type="button" mat-icon-button class="hidden-sm" *ngIf="tarea" (click)="finTarea()" matTooltip="Finalizar tarea">
             <mat-icon>work_off</mat-icon>
     </button>
-    <button type="button" mat-icon-button class="hidden-sm" *ngIf="iSuspension" (click)="suspension()" matTooltip="Ir a suspension">
+    <button type="button" mat-icon-button class="hidden-sm" *ngIf="iSuspension" (click)="suspension()" matTooltip="Iniciar suspension">
             <mat-icon>play_circle_outline</mat-icon>
     </button>
     <button type="button" mat-icon-button class="hidden-sm" *ngIf="fSuspension" (click)="finSuspension()" matTooltip="Finalizar suspension">
@@ -34,6 +34,9 @@
             <span>{{ 'Profile' | translate }}</span>
         </button>
     </mat-menu>
+    <button type="button" mat-icon-button class="hidden-sm" *ngIf="administrador" (click)="configuacion()" matTooltip="configuracion">
+        <mat-icon>settings</mat-icon>
+    </button>
     <button mat-icon-button (click)="onLoggedout()" matTooltip="Cerrar sesion">
         <mat-icon>exit_to_app</mat-icon>
     </button>
@@ -57,7 +60,10 @@
             <mat-icon class="sidenav-icon">note_add</mat-icon>Nuevo proyecto
         </a>
         <a *ngIf="administrador" mat-list-item [routerLinkActive]="'active'" [routerLink]="['/admin']">
-            <mat-icon class="sidenav-icon">settings</mat-icon>Panel administrador
+            <mat-icon class="sidenav-icon">build</mat-icon>Panel administrador
+        </a>
+        <a *ngIf="administrador" mat-list-item [routerLinkActive]="'active'" [routerLink]="['/adminConfig']">
+            <mat-icon class="sidenav-icon">settings</mat-icon>Configuracion
         </a>
     </mat-nav-list>
 </div>
