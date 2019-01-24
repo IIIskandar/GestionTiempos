@@ -36,28 +36,12 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryCustom{
         return unwind("suspensions");
     }
     
-    private UnwindOperation unwindOperationTiempoUsuarioSus(){
-        return unwind("tiempoSuspensiones");
-    }
-        
-    private GroupOperation groupOperationTiempoUsuarioSus(){
-        return group("cc")
-                .last("cc").as("cedula")
-                .sum("tiempoSuspensiones.acumulado").as("jobTimeUserSuspension");
-    }
-    
-    
     private GroupOperation groupOperationCc(){
         return group("suspensions.tipoSuspension")
                 .last("suspensions.tipoSuspension").as("tipo")
                 .sum("suspensions.tiempoSuspension").as("jobTimeSuspension");
     }
-    
-    private ProjectionOperation projectOperationTimeUsersSuspension(){
-        return project("jobTimeUserSuspension")
-                .and("cedula").previousOperation();
-    }
-    
+ 
     private ProjectionOperation projectOperationTypeSuspensions(){
         return project("jobTimeSuspension")
                 .and("tipo").previousOperation();

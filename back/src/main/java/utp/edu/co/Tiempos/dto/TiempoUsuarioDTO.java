@@ -13,23 +13,33 @@ import java.util.List;
  */
 public class TiempoUsuarioDTO {
     
+    private String madeBy;
     private List<String> descripcionId;
     private Long jobTimeUser;
 
     public TiempoUsuarioDTO() {
     }
 
-    public TiempoUsuarioDTO(List<String> descripcionId, Long jobTimeUser) {
+    public TiempoUsuarioDTO(String madeBy, List<String> descripcionId, Long jobTimeUser) {
+        this.madeBy = madeBy;
         this.descripcionId = descripcionId;
         this.jobTimeUser = jobTimeUser;
     }
 
-    public List<String> getDescripcionesId() {
+    public String getMadeBy() {
+        return madeBy;
+    }
+
+    public void setMadeBy(String madeBy) {
+        this.madeBy = madeBy;
+    }
+
+    public List<String> getDescripcionId() {
         return descripcionId;
     }
 
-    public void setDescripcionesId(List<String> descripcionesId) {
-        this.descripcionId = descripcionesId;
+    public void setDescripcionId(List<String> descripcionId) {
+        this.descripcionId = descripcionId;
     }
 
     public Long getJobTimeUser() {
@@ -39,5 +49,7 @@ public class TiempoUsuarioDTO {
     public void setJobTimeUser(Long jobTimeUser) {
         this.jobTimeUser = jobTimeUser;
     }
+
+  
     
 }

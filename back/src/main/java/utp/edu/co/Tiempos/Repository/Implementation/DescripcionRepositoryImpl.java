@@ -42,6 +42,7 @@ public class DescripcionRepositoryImpl implements DescripcionRepositoryCustom{
     
     private GroupOperation groupOperationCc(){
         return group("madeBy")
+                .last("madeBy").as("madeBy")
                 .addToSet("id").as("descripcionId")
                 .sum("jobTime").as("jobTimeUser");
     }
@@ -58,6 +59,17 @@ public class DescripcionRepositoryImpl implements DescripcionRepositoryCustom{
         
         return mongoTemplate.aggregate(Aggregation.newAggregation(
                 matchOperation,
+                groupOperation,
+                projectionOperation
+                ), Descripcion.class, TiempoUsuarioDTO.class ).getMappedResults();
+    }
+
+    @Override
+    public List<TiempoUsuarioDTO> consultasTiemposAllUsers() {
+        GroupOperation groupOperation = groupOperationCc();
+        ProjectionOperation projectionOperation = projectOperationTimeUsers();
+        
+        return mongoTemplate.aggregate(Aggregation.newAggregation(
                 groupOperation,
                 projectionOperation
                 ), Descripcion.class, TiempoUsuarioDTO.class ).getMappedResults();

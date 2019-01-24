@@ -23,11 +23,14 @@ import utp.edu.co.Tiempos.Repository.TareaRepository;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
+import utp.edu.co.Tiempos.dto.ProyectoTareaUsuarioDTO;
 import utp.edu.co.Tiempos.dto.SuspensionDTO;
 import utp.edu.co.Tiempos.dto.TareaCategoriaDTO;
+import utp.edu.co.Tiempos.dto.TiempoProyectosDTO;
 import utp.edu.co.Tiempos.dto.TiempoSuspensionTipoDTO;
 import utp.edu.co.Tiempos.dto.TiempoTareaUsuarioDTO;
 import utp.edu.co.Tiempos.dto.TiempoUsuarioDTO;
+import utp.edu.co.Tiempos.dto.UsuariosPorProyectoDTO;
 
 /**
  *
@@ -201,6 +204,12 @@ public class DefaultServiceTime implements TimeService{
         List<TiempoUsuarioDTO> tiempos = descripcionRepository.consultarTiempoUsuario(cc);
         return tiempos.get(0);
     }
+    
+    @Override
+    public List<TiempoUsuarioDTO> tiempoAllUsers() {
+        List<TiempoUsuarioDTO> tiempos = descripcionRepository.consultasTiemposAllUsers();
+        return tiempos;
+    }
 
     @Override
     public List<TareaCategoriaDTO> tiempoPorCategoria() {
@@ -224,11 +233,129 @@ public class DefaultServiceTime implements TimeService{
         }
         return contador;
     }
-
+//
+//    @Override
+//    public List<TiempoTareaUsuarioDTO> tiempoTareaUsuario(String idTarea, String cc) {
+//        List<TiempoTareaUsuarioDTO> tiemposUsuarioTarea = tareaRepository.consultarTiempoTareaUsuario(idTarea, cc);
+//        return tiemposUsuarioTarea;
+//    }
+    
+    //muestra cual 
     @Override
-    public List<TiempoTareaUsuarioDTO> tiempoTareaUsuario(String idTarea, String cc) {
-        List<TiempoTareaUsuarioDTO> tiemposUsuarioTarea = tareaRepository.consultarTiempoTareaUsuario(idTarea, cc);
-        return tiemposUsuarioTarea;
+    public TiempoTareaUsuarioDTO tiempoUsuarioPorTarea(String idTarea, String cc){
+        TiempoTareaUsuarioDTO tiempoUsuario = new TiempoTareaUsuarioDTO();
+        long contador = 0;
+        List<String> descripcionesId= new ArrayList<>();
+        Tarea tareaAux = configuracionService.consultarTarea(idTarea);
+        List<Descripcion> registrosTareas = tareaAux.getDescripciones();
+        for (Descripcion registroTarea : registrosTareas) {
+            if(registroTarea.getMadeBy().equals(cc)){
+                contador = registroTarea.getJobTime() + contador;
+                descripcionesId.add(registroTarea.getId());
+            }
+        }
+        tiempoUsuario.setName(tareaAux.getName());
+        tiempoUsuario.setJobTimeUser(contador);
+        tiempoUsuario.setDescripcionesId(descripcionesId);
+        return tiempoUsuario;
+    }
+    
+    @Override
+    public List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuario(String cc){
+        List<ProyectoTareaUsuarioDTO> proyectosPorUsuario = new ArrayList<>();
+        List<Proyecto> proyectos = proyectoRepository.findAll();
+        long contador = 0;
+        long contadorRegistros=0;
+        int i =0;
+        List<Descripcion> registrosTareas = new ArrayList<>();
+        for (Proyecto proyecto : proyectos) {
+            List<Tarea> tareas = proyecto.getTareas();
+            for (Tarea tarea : tareas) {
+            ProyectoTareaUsuarioDTO tareaUsuario = new ProyectoTareaUsuarioDTO();
+            registrosTareas = tarea.getDescripciones();
+            for (Descripcion registroTarea : registrosTareas) {
+                if(registroTarea.getMadeBy().equals(cc)){
+                    contador = contador + registroTarea.getJobTime();
+                    contadorRegistros = contadorRegistros + 1;
+                }
+            }
+            tareaUsuario.setNameProyecto(proyecto.getName());
+            tareaUsuario.setNameTarea(tarea.getName());
+            tareaUsuario.setStatus(tarea.getStatus());
+            tareaUsuario.setTotalRegistros(contadorRegistros);
+            tareaUsuario.setJobTimeUser(contador);
+            if(contadorRegistros>0)
+                proyectosPorUsuario.add(tareaUsuario);
+            contador = 0;
+            contadorRegistros=0;
+        }
+        }
+        
+        return proyectosPorUsuario;
+    }
+    
+    @Override
+    public List<TiempoProyectosDTO> proyectosRealizadosPorUsuario(String cc){
+        List<TiempoProyectosDTO> proyectosPorUsuario = new ArrayList<>();
+        List<Proyecto> proyectos = proyectoRepository.findAll();
+        long contador = 0;
+        List<Descripcion> registrosTareas = new ArrayList<>();
+        for (Proyecto proyecto : proyectos) {
+            TiempoProyectosDTO proyectoUsuario = new TiempoProyectosDTO();
+            List<Tarea> tareas = proyecto.getTareas();
+            for (Tarea tarea : tareas) {
+                
+                registrosTareas = tarea.getDescripciones();
+                for (Descripcion registroTarea : registrosTareas) {
+                    if(registroTarea.getMadeBy().equals(cc)){
+                        contador = contador + registroTarea.getJobTime();
+                    }
+                }  
+            
+            }   
+            proyectoUsuario.setName(proyecto.getName());
+            proyectoUsuario.setJobTimeUser(contador);
+            if(contador>0)
+                proyectosPorUsuario.add(proyectoUsuario);
+            contador = 0;
+        }
+        
+        return proyectosPorUsuario;
+    }
+    
+    @Override
+    public List<UsuariosPorProyectoDTO> usuariosPorProyecto(String idProyecto){
+        List<UsuariosPorProyectoDTO> usuariosProyecto= new ArrayList<>();
+        Proyecto proyectoAux = configuracionService.consultarProyecto(idProyecto);
+        List<Tarea> tareas = proyectoAux.getTareas();
+        List<Descripcion> registrosTareas = new ArrayList<>();
+        List<String> ccs = new ArrayList<>();
+        
+        long contador = 0;
+        for (Tarea tarea : tareas) {
+            registrosTareas = tarea.getDescripciones();
+            for (Descripcion registrosTarea : registrosTareas) {
+                if(!ccs.contains(registrosTarea.getMadeBy()))
+                    ccs.add(registrosTarea.getMadeBy());
+            }
+        }
+        for (int i = 0; i < ccs.size(); i++) {
+            UsuariosPorProyectoDTO usuarioPP = new UsuariosPorProyectoDTO();
+            for (Tarea tarea : tareas) {
+                registrosTareas = tarea.getDescripciones();
+                for (Descripcion registroTarea : registrosTareas) {
+                    if(registroTarea.getMadeBy().equals(ccs.get(i)))
+                        if(registroTarea.getJobTime() != null)
+                            contador = contador + registroTarea.getJobTime();
+                }
+            }
+            usuarioPP.setCc(ccs.get(i));
+            usuarioPP.setJobTimeUser(contador);
+            usuarioPP.setNameProyecto(proyectoAux.getName());
+            usuariosProyecto.add(usuarioPP);
+            contador=0;
+        }
+        return usuariosProyecto;
     }
 
 }

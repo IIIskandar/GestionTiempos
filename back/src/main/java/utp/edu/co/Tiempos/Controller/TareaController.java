@@ -22,6 +22,7 @@ import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
 import utp.edu.co.Tiempos.dto.TareaCategoriaDTO;
 import utp.edu.co.Tiempos.dto.TiempoTareaUsuarioDTO;
+import utp.edu.co.Tiempos.dto.TiempoUsuarioDTO;
 
 /**
  *
@@ -87,7 +88,10 @@ public class TareaController {
     
     @GetMapping("/tiempoUsuario/{id}/{cc}")
     public ResponseEntity<?> tiempoTareaUsuario(@PathVariable("id") String id ,@PathVariable("cc") String cc){
-        List<TiempoTareaUsuarioDTO> tiempo = timeService.tiempoTareaUsuario(id, cc);
-        return ResponseEntity.ok(tiempo);
+        TiempoTareaUsuarioDTO tiempo = timeService.tiempoUsuarioPorTarea(id, cc);
+        if(tiempo.getDescripcionesId().isEmpty())
+            return ResponseEntity.noContent().build();
+        else
+            return ResponseEntity.ok(tiempo);
     }
 }

@@ -15,5 +15,5 @@ import utp.edu.co.Tiempos.dto.TiempoTareaUsuarioDTO;
  */
 public interface TareaRepositoryCustom {
     List<TareaCategoriaDTO> consultarTiempoCategoria();
-    List<TiempoTareaUsuarioDTO> consultarTiempoTareaUsuario(String idTarea, String cc);
+//    List<TiempoTareaUsuarioDTO> consultarTiempoTareaUsuario(String idTarea, String cc);
 }

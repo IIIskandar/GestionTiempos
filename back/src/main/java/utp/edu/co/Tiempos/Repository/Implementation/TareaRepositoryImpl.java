@@ -36,36 +36,26 @@ public class TareaRepositoryImpl implements TareaRepositoryCustom {
         this.mongoTemplate = mongoTemplate;
     }
     
-     private UnwindOperation unwindOperationTiempoUsuarioSus(){
-        return unwind("descripciones");
-    }
-     
-    private UnwindOperation unwindOperationUser(){
-        return unwind("descripciones.madeBy");
-    }
-    
-    private MatchOperation matchOperationTarea(String idTarea){
-        Criteria ccCriteria = where("id").is(idTarea);
-        return match(ccCriteria);
-    }
-    
-    private MatchOperation matchOperationUser(String cc){
-        Criteria ccCriteria =  where(cc).in("descripciones.madeBy");
-        return match(ccCriteria);
-    }
-   
-    
-    private GroupOperation groupOperationUserTarea(){
-        return group("name")
-                .last("name").as("name")
-                .addToSet("descripciones.id").as("descripcionId")
-                .sum("descripciones.jobTime").as("jobTimeUser");
-    }
-    
-    private ProjectionOperation projectOperationUserTarea(){
-        return project("descripcionId", "jobTimeUser")
-                .and("name").previousOperation();
-    }
+//     private UnwindOperation unwindOperationTiempoUsuarioSus(){
+//        return unwind("$descripciones");
+//    }
+//    
+//    private MatchOperation matchOperationTarea(String idTarea, String cc){
+//        Criteria ccCriteria = where("id").is(idTarea).andOperator(where("descripciones.madeBy").is(cc));
+//        return match(ccCriteria);
+//    }
+//      
+//    private GroupOperation groupOperationUserTarea(){
+//        return group("name")
+//                .last("name").as("name")
+//                .addToSet("descripciones.id").as("descripcionesId")
+//                .sum("descripciones.jobTime").as("jobTimeUser");
+//    }
+//    
+//    private ProjectionOperation projectOperationUserTarea(){
+//        return project("descripcionesId", "jobTimeUser")
+//                .and("name").previousOperation();
+//    }
     
     private GroupOperation groupOperationCc(){
         return group("category")
@@ -90,23 +80,20 @@ public class TareaRepositoryImpl implements TareaRepositoryCustom {
             ), Tarea.class, TareaCategoriaDTO.class ).getMappedResults();
     }
 
-    @Override
-    public List<TiempoTareaUsuarioDTO> consultarTiempoTareaUsuario(String idTarea, String cc) {
-        MatchOperation matchOperationT = matchOperationTarea(idTarea);
-        MatchOperation matchOperationUser = matchOperationUser(cc);
-        UnwindOperation unwindoperationDes = unwindOperationTiempoUsuarioSus();
-        UnwindOperation unwindoperationUs = unwindOperationUser();
-        GroupOperation groupOperation = groupOperationUserTarea();
-        ProjectionOperation projectOperation = projectOperationUserTarea();
-        
-        return mongoTemplate.aggregate(Aggregation.newAggregation(
-            matchOperationT,
-            unwindoperationDes,
-            matchOperationUser,
-            groupOperation,
-            projectOperation
-            ), Tarea.class, TiempoTareaUsuarioDTO.class ).getMappedResults();
-    }
+//    @Override
+//    public List<TiempoTareaUsuarioDTO> consultarTiempoTareaUsuario(String idTarea, String cc) {
+//        MatchOperation matchOperationT = matchOperationTarea(idTarea, cc);
+//        UnwindOperation unwindoperationDes = unwindOperationTiempoUsuarioSus();
+//        GroupOperation groupOperation = groupOperationUserTarea();
+//        ProjectionOperation projectOperation = projectOperationUserTarea();
+//        
+//        return mongoTemplate.aggregate(Aggregation.newAggregation(
+//            unwindoperationDes,
+//            matchOperationT,
+//            groupOperation,
+//            projectOperation
+//            ), Tarea.class, TiempoTareaUsuarioDTO.class ).getMappedResults();
+//    }
 
 }
     

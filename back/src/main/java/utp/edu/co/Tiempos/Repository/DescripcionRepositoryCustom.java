@@ -15,4 +15,5 @@ import utp.edu.co.Tiempos.dto.TiempoUsuarioDTO;
  */
 public interface DescripcionRepositoryCustom {
     List<TiempoUsuarioDTO> consultarTiempoUsuario(String cc);
+    List<TiempoUsuarioDTO> consultasTiemposAllUsers();
 }

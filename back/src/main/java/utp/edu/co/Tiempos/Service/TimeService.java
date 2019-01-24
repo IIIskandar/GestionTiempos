@@ -10,11 +10,14 @@ import utp.edu.co.Tiempos.Documents.Descripcion;
 import utp.edu.co.Tiempos.Documents.Suspension;
 import utp.edu.co.Tiempos.Documents.Tarea;
 import utp.edu.co.Tiempos.Documents.Usuario;
+import utp.edu.co.Tiempos.dto.ProyectoTareaUsuarioDTO;
 import utp.edu.co.Tiempos.dto.SuspensionDTO;
 import utp.edu.co.Tiempos.dto.TareaCategoriaDTO;
+import utp.edu.co.Tiempos.dto.TiempoProyectosDTO;
 import utp.edu.co.Tiempos.dto.TiempoSuspensionTipoDTO;
 import utp.edu.co.Tiempos.dto.TiempoTareaUsuarioDTO;
 import utp.edu.co.Tiempos.dto.TiempoUsuarioDTO;
+import utp.edu.co.Tiempos.dto.UsuariosPorProyectoDTO;
 
 /**
  *
@@ -34,11 +37,21 @@ public interface TimeService {
     
     TiempoUsuarioDTO tiempoUsuarios(String cc);
     
+    List<TiempoUsuarioDTO> tiempoAllUsers();
+    
     List<TareaCategoriaDTO> tiempoPorCategoria();
     
     List<TiempoSuspensionTipoDTO> tiempoPorTipoSus();
     
-    List<TiempoTareaUsuarioDTO> tiempoTareaUsuario(String idTarea, String cc);
+//    List<TiempoTareaUsuarioDTO> tiempoTareaUsuario(String idTarea, String cc);
     
     Long TiempoSuspensionUsuarioTotal(String cc);
+    
+    TiempoTareaUsuarioDTO tiempoUsuarioPorTarea(String idTarea, String cc);
+        
+    List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuario(String cc);
+    
+    List<TiempoProyectosDTO> proyectosRealizadosPorUsuario(String cc);
+    
+    List<UsuariosPorProyectoDTO> usuariosPorProyecto(String idProyecto);
 }

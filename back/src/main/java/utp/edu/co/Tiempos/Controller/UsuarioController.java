@@ -24,7 +24,9 @@ import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
+import utp.edu.co.Tiempos.dto.ProyectoTareaUsuarioDTO;
 import utp.edu.co.Tiempos.dto.SuspensionDTO;
+import utp.edu.co.Tiempos.dto.TiempoProyectosDTO;
 import utp.edu.co.Tiempos.dto.TiempoUsuarioDTO;
 import utp.edu.co.Tiempos.dto.TipoSuspensionesDTO;
 
@@ -76,9 +78,10 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
     
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") String id){
-        Usuario usuario = configuracionService.eliminarUsuario(id);
+    @DeleteMapping("/{cc}")
+    public ResponseEntity<?> delete(@PathVariable("cc") String cc){
+        Usuario usuarioAux = configuracionService.consultarUsuariobyCC(cc);
+        Usuario usuario = configuracionService.eliminarUsuario(usuarioAux.getId());
         if(usuario == null){
             return ResponseEntity.notFound().build();
         }
@@ -112,10 +115,32 @@ public class UsuarioController {
         return ResponseEntity.ok(tiempoUsuario);
     }
     
+    @GetMapping("/tiempoAll")
+    public ResponseEntity<?> tiempoAllUsers(){
+        List<TiempoUsuarioDTO> tiempoUsuario = timeService.tiempoAllUsers();
+        return ResponseEntity.ok(tiempoUsuario);
+    }
+    
     @GetMapping("/tiempoSuspensiones/{cc}")
     public ResponseEntity<?> tiempoSuspensionUsuario(@PathVariable("cc") String cc){
         Long tiempoSuspensionUsuario = timeService.TiempoSuspensionUsuarioTotal(cc);
         return ResponseEntity.ok(tiempoSuspensionUsuario);
+    }
+    
+    @GetMapping("tiempoTarea/{cc}")
+    public ResponseEntity<?> tareasPorUsuario(@PathVariable("cc") String cc){
+        List<ProyectoTareaUsuarioDTO> tareasUsuario= timeService.tareasRealizadosPorUsuario(cc);
+        if(tareasUsuario.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(tareasUsuario);
+    }
+    
+    @GetMapping("tiempoProyecto/{cc}")
+    public ResponseEntity<?> proyectosPorUsuario(@PathVariable("cc") String cc){
+        List<TiempoProyectosDTO> tareasUsuario= timeService.proyectosRealizadosPorUsuario(cc);
+        if(tareasUsuario.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(tareasUsuario);
     }
     
 }

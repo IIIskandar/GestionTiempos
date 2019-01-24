@@ -21,6 +21,7 @@ import utp.edu.co.Tiempos.Documents.Tarea;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
+import utp.edu.co.Tiempos.dto.UsuariosPorProyectoDTO;
 
 /**
  *
@@ -115,6 +116,14 @@ public class ProyectoController {
         
         long aux = timeService.contabilizarProyecto(id);
         return ResponseEntity.ok(aux);
+    }
+    
+    @GetMapping("usuariosProyecto/{id}")
+    public ResponseEntity<?> proyectosPorUsuario(@PathVariable("id") String idProyecto){
+        List<UsuariosPorProyectoDTO> tareasUsuario= timeService.usuariosPorProyecto(idProyecto);
+        if(tareasUsuario.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(tareasUsuario);
     }
     
     
