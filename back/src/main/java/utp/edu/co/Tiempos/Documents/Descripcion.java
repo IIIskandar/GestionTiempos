@@ -6,8 +6,6 @@
 package utp.edu.co.Tiempos.Documents;
 
 import java.util.Date;
-import javax.validation.constraints.NotNull;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,7 +18,6 @@ public class Descripcion {
     @Id
     private String id;
     private String jobDetails;
-    @CreatedDate
     private Date fechaInicio;
     private Date fechaFin;
     private Long jobTime;

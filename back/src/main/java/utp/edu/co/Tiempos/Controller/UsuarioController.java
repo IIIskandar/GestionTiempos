@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Suspension;
@@ -138,8 +139,8 @@ public class UsuarioController {
     
     //me trae las tareas realizadas por un usuario y su tiempo trabajado
     @GetMapping("tiempoTarea/{cc}")
-    public ResponseEntity<?> tareasPorUsuario(@PathVariable("cc") String cc){
-        List<ProyectoTareaUsuarioDTO> tareasUsuario= timeService.tareasRealizadosPorUsuario(cc);
+    public ResponseEntity<?> tareasPorUsuario(@PathVariable("cc") String cc,@RequestParam("fechaInicio") String fechaInicio,@RequestParam("fechaFin") String fechaFin){
+        List<ProyectoTareaUsuarioDTO> tareasUsuario= timeService.tareasRealizadosPorUsuario(cc,fechaInicio,fechaFin);
         if(tareasUsuario.isEmpty())
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok(tareasUsuario);
@@ -147,8 +148,8 @@ public class UsuarioController {
     
     //trae los proyectos realizados por un usuario y su tiempo trabajado
     @GetMapping("tiempoProyecto/{cc}")
-    public ResponseEntity<?> proyectosPorUsuario(@PathVariable("cc") String cc){
-        List<TiempoProyectosDTO> tareasUsuario= timeService.proyectosRealizadosPorUsuario(cc);
+    public ResponseEntity<?> proyectosPorUsuario(@PathVariable("cc") String cc, @RequestParam("fechaInicio") String fechaInicio, @RequestParam("fechaFin") String fechaFin){
+        List<TiempoProyectosDTO> tareasUsuario= timeService.proyectosRealizadosPorUsuario(cc,fechaInicio,fechaFin);
         if(tareasUsuario.isEmpty())
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok(tareasUsuario);

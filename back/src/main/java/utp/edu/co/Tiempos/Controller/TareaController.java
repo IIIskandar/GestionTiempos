@@ -5,6 +5,7 @@
  */
 package utp.edu.co.Tiempos.Controller;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import utp.edu.co.Tiempos.Documents.Descripcion;
 import utp.edu.co.Tiempos.Documents.Tarea;
@@ -91,8 +93,8 @@ public class TareaController {
     
     //trae el tiempo que ha trabajado un usuario en una tarea espefica
     @GetMapping("/tiempoUsuario/{id}/{cc}")
-    public ResponseEntity<?> tiempoTareaUsuario(@PathVariable("id") String id ,@PathVariable("cc") String cc){
-        TiempoTareaUsuarioDTO tiempo = timeService.tiempoUsuarioPorTarea(id, cc);
+    public ResponseEntity<?> tiempoTareaUsuario(@PathVariable("id") String id ,@PathVariable("cc") String cc, @RequestParam("fechaInicio") String fechaInicio,  @RequestParam("fechaFin") String fechaFin){
+        TiempoTareaUsuarioDTO tiempo = timeService.tiempoUsuarioPorTarea(id, cc,fechaInicio,fechaFin);
         if(tiempo.getDescripcionesId().isEmpty())
             return ResponseEntity.noContent().build();
         else

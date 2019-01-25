@@ -5,9 +5,13 @@
  */
 package utp.edu.co.Tiempos.Service.Implementation;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import utp.edu.co.Tiempos.Documents.Descripcion;
@@ -25,6 +29,7 @@ import utp.edu.co.Tiempos.Service.TimeService;
 import utp.edu.co.Tiempos.dto.ProyectoTareaUsuarioDTO;
 import utp.edu.co.Tiempos.dto.SuspensionDTO;
 import utp.edu.co.Tiempos.dto.TareaCategoriaDTO;
+import utp.edu.co.Tiempos.dto.TareasPorProyectoDTO;
 import utp.edu.co.Tiempos.dto.TiempoProyectosDTO;
 import utp.edu.co.Tiempos.dto.TiempoSuspensionTipoDTO;
 import utp.edu.co.Tiempos.dto.TiempoTareaUsuarioDTO;
@@ -241,11 +246,28 @@ public class DefaultServiceTime implements TimeService{
         List<TareaCategoriaDTO> tiemposCategoria = tareaRepository.consultarTiempoCategoria();
         return tiemposCategoria;
     }
+     
 
     //consulta el tiempo por tipo de suspension
     @Override
-    public List<TiempoSuspensionTipoDTO> tiempoPorTipoSus() {
-        List<TiempoSuspensionTipoDTO> tiemposSuspension = usuarioRepository.tiempoPorTipoSuspension();
+    public List<TiempoSuspensionTipoDTO> tiempoPorTipoSus(String fechaInicio, String fechaFin) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        List<TiempoSuspensionTipoDTO> tiemposSuspension = usuarioRepository.tiempoPorTipoSuspension(dateObj1, dateObj2);
         return tiemposSuspension;
     }
 
@@ -263,14 +285,29 @@ public class DefaultServiceTime implements TimeService{
 
     //consulta el tiempo que ha trabajado un usuario por tarea especifica
     @Override
-    public TiempoTareaUsuarioDTO tiempoUsuarioPorTarea(String idTarea, String cc){
+    public TiempoTareaUsuarioDTO tiempoUsuarioPorTarea(String idTarea, String cc, String fechaInicio, String fechaFin){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
         TiempoTareaUsuarioDTO tiempoUsuario = new TiempoTareaUsuarioDTO();
         long contador = 0;
         List<String> descripcionesId= new ArrayList<>();
         Tarea tareaAux = configuracionService.consultarTarea(idTarea);
         List<Descripcion> registrosTareas = tareaAux.getDescripciones();
         for (Descripcion registroTarea : registrosTareas) {
-            if(registroTarea.getMadeBy().equals(cc)){
+            if((registroTarea.getMadeBy().equals(cc))&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
                 contador = registroTarea.getJobTime() + contador;
                 descripcionesId.add(registroTarea.getId());
             }
@@ -284,7 +321,22 @@ public class DefaultServiceTime implements TimeService{
     
     //consulta las tareas realizadas por un usuario
     @Override
-    public List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuario(String cc){
+    public List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuario(String cc, String fechaInicio, String fechaFin){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
         List<ProyectoTareaUsuarioDTO> proyectosPorUsuario = new ArrayList<>();
         List<Proyecto> proyectos = proyectoRepository.findAll();
         long contador = 0;
@@ -297,7 +349,7 @@ public class DefaultServiceTime implements TimeService{
             ProyectoTareaUsuarioDTO tareaUsuario = new ProyectoTareaUsuarioDTO();
             registrosTareas = tarea.getDescripciones();
             for (Descripcion registroTarea : registrosTareas) {
-                if(registroTarea.getMadeBy().equals(cc)){
+                if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
                     contador = contador + registroTarea.getJobTime();
                     contadorRegistros = contadorRegistros + 1;
                 }
@@ -319,7 +371,22 @@ public class DefaultServiceTime implements TimeService{
     
     //consulta los proyectos realizados por un usuario
     @Override
-    public List<TiempoProyectosDTO> proyectosRealizadosPorUsuario(String cc){
+    public List<TiempoProyectosDTO> proyectosRealizadosPorUsuario(String cc,String fechaInicio, String fechaFin){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
         List<TiempoProyectosDTO> proyectosPorUsuario = new ArrayList<>();
         List<Proyecto> proyectos = proyectoRepository.findAll();
         long contador = 0;
@@ -331,7 +398,7 @@ public class DefaultServiceTime implements TimeService{
                 
                 registrosTareas = tarea.getDescripciones();
                 for (Descripcion registroTarea : registrosTareas) {
-                    if(registroTarea.getMadeBy().equals(cc)){
+                    if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
                         contador = contador + registroTarea.getJobTime();
                     }
                 }  
@@ -347,9 +414,24 @@ public class DefaultServiceTime implements TimeService{
         return proyectosPorUsuario;
     }
     
-    //consulta los usuarios que han trabajado en un proyecto en especifico
+    //consulta los usuarios que han trabajado en un proyecto en especifico, en un rango de fecha
     @Override
-    public List<UsuariosPorProyectoDTO> usuariosPorProyecto(String idProyecto){
+    public List<UsuariosPorProyectoDTO> usuariosPorProyecto(String idProyecto, String fechaInicio, String fechaFin){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
         List<UsuariosPorProyectoDTO> usuariosProyecto= new ArrayList<>();
         Proyecto proyectoAux = configuracionService.consultarProyecto(idProyecto);
         List<Tarea> tareas = proyectoAux.getTareas();
@@ -369,7 +451,7 @@ public class DefaultServiceTime implements TimeService{
             for (Tarea tarea : tareas) {
                 registrosTareas = tarea.getDescripciones();
                 for (Descripcion registroTarea : registrosTareas) {
-                    if(registroTarea.getMadeBy().equals(ccs.get(i)))
+                    if((registroTarea.getMadeBy().equals(ccs.get(i)))&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
                         if(registroTarea.getJobTime() != null)
                             contador = contador + registroTarea.getJobTime();
                 }
@@ -381,6 +463,53 @@ public class DefaultServiceTime implements TimeService{
             contador=0;
         }
         return usuariosProyecto;
+    }
+    
+    @Override
+    public List<TareasPorProyectoDTO> tareasPorProyecto(String idProyecto, String fechaInicio, String fechaFin){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        List<TareasPorProyectoDTO> tareasProyecto= new ArrayList<>();
+        Proyecto proyectoAux = configuracionService.consultarProyecto(idProyecto);
+        List<Tarea> tareas = proyectoAux.getTareas();
+        List<Descripcion> registrosTareas = new ArrayList<>();
+
+        long contador = 0;
+            
+        for (Tarea tarea : tareas) {
+            TareasPorProyectoDTO tareaPP = new TareasPorProyectoDTO();
+            registrosTareas = tarea.getDescripciones();
+            for (Descripcion registroTarea : registrosTareas) {
+                if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
+                    if(registroTarea.getJobTime() != null)
+                        contador = contador + registroTarea.getJobTime();
+            }
+        tareaPP.setName(tarea.getName());
+        tareaPP.setJobTime(contador);
+        tareaPP.setCategory(tarea.getCategory());
+        tareaPP.setStatus(tarea.getStatus());
+        tareaPP.setExpectedTime(tarea.getExpectedTime());
+        if(contador > 0)
+            tareasProyecto.add(tareaPP);
+        contador=0;
+
+        }
+            
+        
+        return tareasProyecto;
     }
 
 }

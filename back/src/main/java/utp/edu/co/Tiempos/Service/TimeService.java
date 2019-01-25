@@ -6,6 +6,7 @@
 package utp.edu.co.Tiempos.Service;
 
 import java.util.List;
+import java.util.Date;
 import utp.edu.co.Tiempos.Documents.Descripcion;
 import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Suspension;
@@ -14,6 +15,7 @@ import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.dto.ProyectoTareaUsuarioDTO;
 import utp.edu.co.Tiempos.dto.SuspensionDTO;
 import utp.edu.co.Tiempos.dto.TareaCategoriaDTO;
+import utp.edu.co.Tiempos.dto.TareasPorProyectoDTO;
 import utp.edu.co.Tiempos.dto.TiempoProyectosDTO;
 import utp.edu.co.Tiempos.dto.TiempoSuspensionTipoDTO;
 import utp.edu.co.Tiempos.dto.TiempoTareaUsuarioDTO;
@@ -44,17 +46,19 @@ public interface TimeService {
     
     List<TareaCategoriaDTO> tiempoPorCategoria();
     
-    List<TiempoSuspensionTipoDTO> tiempoPorTipoSus();
+    List<TiempoSuspensionTipoDTO> tiempoPorTipoSus(String fechaInicio, String fechaFin);
     
 //    List<TiempoTareaUsuarioDTO> tiempoTareaUsuario(String idTarea, String cc);
     
     Long TiempoSuspensionUsuarioTotal(String cc);
     
-    TiempoTareaUsuarioDTO tiempoUsuarioPorTarea(String idTarea, String cc);
+    TiempoTareaUsuarioDTO tiempoUsuarioPorTarea(String idTarea, String cc, String fechaInicio, String fechaFin);
         
-    List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuario(String cc);
+    List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuario(String cc, String fechaInicio, String fechaFin);
     
-    List<TiempoProyectosDTO> proyectosRealizadosPorUsuario(String cc);
+    List<TiempoProyectosDTO> proyectosRealizadosPorUsuario(String cc, String fechaInicio, String fechaFin);
     
-    List<UsuariosPorProyectoDTO> usuariosPorProyecto(String idProyecto);
+    List<UsuariosPorProyectoDTO> usuariosPorProyecto(String idProyecto, String fechaInicio, String fechaFin);
+    
+    List<TareasPorProyectoDTO> tareasPorProyecto(String idProyecto, String fechaInicio, String fechaFin);
 }
