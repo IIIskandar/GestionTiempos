@@ -41,6 +41,7 @@ public class TareaController {
         this.timeService = timeService;
     }
     
+    //trae una tarea
     @GetMapping("/{id}")
     public ResponseEntity<?> getTarea(@PathVariable("id") String id) {
         Tarea tarea = configuracionService.consultarTarea(id);
@@ -63,7 +64,7 @@ public class TareaController {
         return ResponseEntity.ok(tarea);
     }
     
-    //iniciar un registro
+    //inicia un registro en una tarea
     @PostMapping("{id}/registro/inicio/{status}")
     public ResponseEntity<?> iniciarRegistro(@PathVariable("id") String id, @PathVariable("status") String status, @RequestBody Descripcion descripcion){
         descripcion = timeService.iniciarRegistro(id, status,descripcion);
@@ -80,12 +81,15 @@ public class TareaController {
         return ResponseEntity.ok(descripcionHelper);
     }
     
+    //trae una lista con las categorias de las tareas y el tiempo que se ha trabajado en cada categoria
     @GetMapping("/tiempoCategorias")
     public ResponseEntity<?> tiempoPorCategoria(){
         List<TareaCategoriaDTO> tiempoCategoria = timeService.tiempoPorCategoria();
         return ResponseEntity.ok(tiempoCategoria);
     }
     
+    
+    //trae el tiempo que ha trabajado un usuario en una tarea espefica
     @GetMapping("/tiempoUsuario/{id}/{cc}")
     public ResponseEntity<?> tiempoTareaUsuario(@PathVariable("id") String id ,@PathVariable("cc") String cc){
         TiempoTareaUsuarioDTO tiempo = timeService.tiempoUsuarioPorTarea(id, cc);

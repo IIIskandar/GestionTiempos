@@ -18,7 +18,6 @@ import utp.edu.co.Tiempos.Documents.TiempoSuspensiones;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Repository.DescripcionRepository;
 import utp.edu.co.Tiempos.Repository.ProyectoRepository;
-import utp.edu.co.Tiempos.Repository.SuspensionRepository;
 import utp.edu.co.Tiempos.Repository.TareaRepository;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
@@ -44,19 +43,19 @@ public class DefaultServiceTime implements TimeService{
         private ProyectoRepository proyectoRepository;
         private DescripcionRepository descripcionRepository;
         private ModelMapper modMapper;
-        private SuspensionRepository suspensionRepository;
 
 
-    public DefaultServiceTime(ConfiguracionService configuracionService, UsuarioRepository usuarioRepository, TareaRepository tareaRepository, ProyectoRepository proyectoRepository, DescripcionRepository descripcionRepository, ModelMapper modMapper, SuspensionRepository suspensionRepository) {
+    public DefaultServiceTime(ConfiguracionService configuracionService, UsuarioRepository usuarioRepository, TareaRepository tareaRepository, ProyectoRepository proyectoRepository, DescripcionRepository descripcionRepository, ModelMapper modMapper) {
         this.configuracionService = configuracionService;
         this.usuarioRepository = usuarioRepository;
         this.tareaRepository = tareaRepository;
         this.proyectoRepository = proyectoRepository;
         this.descripcionRepository = descripcionRepository;
         this.modMapper = modMapper;
-        this.suspensionRepository = suspensionRepository;
     }
         
+    
+    //inicia una suspension por usuario
     @Override
     public Usuario iniciarSuspension(String id, SuspensionDTO suspensiondto){
         boolean nombreB=false;
@@ -99,6 +98,8 @@ public class DefaultServiceTime implements TimeService{
         return null;
     }
     
+    
+    //finaliza una suspension por usuario
     @Override
     public Usuario finalizarSuspension(String id){
         Usuario usuarioFinSus = configuracionService.consultarUsuariobyCC(id);
@@ -139,6 +140,7 @@ public class DefaultServiceTime implements TimeService{
         return usuarioFinSus;
     }
 
+    //inicia un registro con el id de la tarea
     @Override
     public Descripcion iniciarRegistro(String id, String status, Descripcion descripcion) {
         Tarea tareaHelper = configuracionService.consultarTarea(id);
@@ -157,6 +159,7 @@ public class DefaultServiceTime implements TimeService{
         return representativo;
     }
 
+    //finaliza un resgistro con el id de la tarea
     @Override
     public Descripcion finalizarRegistro(String id, Descripcion descripcion, String status) {
         long auxCont=0;
@@ -186,6 +189,7 @@ public class DefaultServiceTime implements TimeService{
         return descripcionHelper;
     }
     
+    //contabiliza el tiempo trabajado de un proyecto 
     @Override
     public Long contabilizarProyecto(String id) {
         long contador=0;
@@ -199,6 +203,7 @@ public class DefaultServiceTime implements TimeService{
         return contador;
     }
     
+    //contabiliza el tiempo trabajado de todos los proyectos y devuelve una lista de Proyecto
     @Override
     public List<Proyecto> contabilizarProyectos() {
         long contador=0;
@@ -216,30 +221,35 @@ public class DefaultServiceTime implements TimeService{
         return proyectosAux;
     }
     
+    //consulta el tiempo de un usuario con el id de los registros trabajados
     @Override
     public TiempoUsuarioDTO tiempoUsuarios(String cc) {
         List<TiempoUsuarioDTO> tiempos = descripcionRepository.consultarTiempoUsuario(cc);
         return tiempos.get(0);
     }
     
+    //consulta el tiempo de todos los usuarios
     @Override
     public List<TiempoUsuarioDTO> tiempoAllUsers() {
         List<TiempoUsuarioDTO> tiempos = descripcionRepository.consultasTiemposAllUsers();
         return tiempos;
     }
 
+    //consulta el tiempo de las tareas por categoria
     @Override
     public List<TareaCategoriaDTO> tiempoPorCategoria() {
         List<TareaCategoriaDTO> tiemposCategoria = tareaRepository.consultarTiempoCategoria();
         return tiemposCategoria;
     }
 
+    //consulta el tiempo por tipo de suspension
     @Override
     public List<TiempoSuspensionTipoDTO> tiempoPorTipoSus() {
         List<TiempoSuspensionTipoDTO> tiemposSuspension = usuarioRepository.tiempoPorTipoSuspension();
         return tiemposSuspension;
     }
 
+    //consulta el tiempo total de suspension de un usuario
     @Override
     public Long TiempoSuspensionUsuarioTotal(String cc) {
         long contador = 0;
@@ -250,14 +260,8 @@ public class DefaultServiceTime implements TimeService{
         }
         return contador;
     }
-//
-//    @Override
-//    public List<TiempoTareaUsuarioDTO> tiempoTareaUsuario(String idTarea, String cc) {
-//        List<TiempoTareaUsuarioDTO> tiemposUsuarioTarea = tareaRepository.consultarTiempoTareaUsuario(idTarea, cc);
-//        return tiemposUsuarioTarea;
-//    }
-    
-    //muestra cual 
+
+    //consulta el tiempo que ha trabajado un usuario por tarea especifica
     @Override
     public TiempoTareaUsuarioDTO tiempoUsuarioPorTarea(String idTarea, String cc){
         TiempoTareaUsuarioDTO tiempoUsuario = new TiempoTareaUsuarioDTO();
@@ -277,6 +281,8 @@ public class DefaultServiceTime implements TimeService{
         return tiempoUsuario;
     }
     
+    
+    //consulta las tareas realizadas por un usuario
     @Override
     public List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuario(String cc){
         List<ProyectoTareaUsuarioDTO> proyectosPorUsuario = new ArrayList<>();
@@ -311,6 +317,7 @@ public class DefaultServiceTime implements TimeService{
         return proyectosPorUsuario;
     }
     
+    //consulta los proyectos realizados por un usuario
     @Override
     public List<TiempoProyectosDTO> proyectosRealizadosPorUsuario(String cc){
         List<TiempoProyectosDTO> proyectosPorUsuario = new ArrayList<>();
@@ -340,6 +347,7 @@ public class DefaultServiceTime implements TimeService{
         return proyectosPorUsuario;
     }
     
+    //consulta los usuarios que han trabajado en un proyecto en especifico
     @Override
     public List<UsuariosPorProyectoDTO> usuariosPorProyecto(String idProyecto){
         List<UsuariosPorProyectoDTO> usuariosProyecto= new ArrayList<>();

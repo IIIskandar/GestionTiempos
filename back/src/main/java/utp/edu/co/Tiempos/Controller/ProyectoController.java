@@ -111,6 +111,7 @@ public class ProyectoController {
         return ResponseEntity.ok(tarea);
     }
     
+    //contabiliza el tiempo trabajado de un proyecto
     @GetMapping("/{id}")
     public ResponseEntity<?> consultarTiempoProyecto(@PathVariable("id") String id){
         
@@ -118,6 +119,7 @@ public class ProyectoController {
         return ResponseEntity.ok(aux);
     }
     
+    //contabiliza el tiempo trabajado de todos los proyectos 
     @GetMapping("/tiemposProyectos")
     public ResponseEntity<?> consultarTiempoProyectos(){
         
@@ -125,6 +127,7 @@ public class ProyectoController {
         return ResponseEntity.ok(aux);
     }
     
+    //carga los usuarios que han trabajado en un proyecto en especifico y el tiempo que estos han trabajado
     @GetMapping("usuariosProyecto/{id}")
     public ResponseEntity<?> proyectosPorUsuario(@PathVariable("id") String idProyecto){
         List<UsuariosPorProyectoDTO> tareasUsuario= timeService.usuariosPorProyecto(idProyecto);

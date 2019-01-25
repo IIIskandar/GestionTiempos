@@ -51,6 +51,8 @@ public class DescripcionRepositoryImpl implements DescripcionRepositoryCustom{
         return project("descripcionId", "jobTimeUser")
                 .and("madeBy").previousOperation();
     }
+    
+    //filtra un usuario y saca su tiempo trabajado y los id de los registros en los que trabajó
     @Override
     public List<TiempoUsuarioDTO> consultarTiempoUsuario(String cc) {
         MatchOperation matchOperation = matchOperationCc(cc);
@@ -64,6 +66,7 @@ public class DescripcionRepositoryImpl implements DescripcionRepositoryCustom{
                 ), Descripcion.class, TiempoUsuarioDTO.class ).getMappedResults();
     }
 
+    //consulta y agrupa los tiempos de los usuarios por cedula
     @Override
     public List<TiempoUsuarioDTO> consultasTiemposAllUsers() {
         GroupOperation groupOperation = groupOperationCc();
