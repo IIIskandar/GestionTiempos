@@ -139,8 +139,17 @@ public class UsuarioController {
     
     //me trae las tareas realizadas por un usuario y su tiempo trabajado
     @GetMapping("tiempoTarea/{cc}")
-    public ResponseEntity<?> tareasPorUsuario(@PathVariable("cc") String cc,@RequestParam("fechaInicio") String fechaInicio,@RequestParam("fechaFin") String fechaFin){
-        List<ProyectoTareaUsuarioDTO> tareasUsuario= timeService.tareasRealizadosPorUsuario(cc,fechaInicio,fechaFin);
+    public ResponseEntity<?> tareasPorUsuario(@PathVariable("cc") String cc){
+        List<ProyectoTareaUsuarioDTO> tareasUsuario= timeService.tareasRealizadosPorUsuario(cc);
+        if(tareasUsuario.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(tareasUsuario);
+    }
+    
+    //me trae las tareas realizadas por un usuario y su tiempo trabajado
+    @GetMapping("tiempoTareaFecha/{cc}")
+    public ResponseEntity<?> tareasPorUsuarioFecha(@PathVariable("cc") String cc,@RequestParam("fechaInicio") String fechaInicio,@RequestParam("fechaFin") String fechaFin){
+        List<ProyectoTareaUsuarioDTO> tareasUsuario= timeService.tareasRealizadosPorUsuarioFecha(cc,fechaInicio,fechaFin);
         if(tareasUsuario.isEmpty())
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok(tareasUsuario);

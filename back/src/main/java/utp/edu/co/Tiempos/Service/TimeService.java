@@ -56,7 +56,9 @@ public interface TimeService {
     
     TiempoTareaUsuarioDTO tiempoUsuarioPorTarea(String idTarea, String cc, String fechaInicio, String fechaFin);
         
-    List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuario(String cc, String fechaInicio, String fechaFin);
+    List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuarioFecha(String cc, String fechaInicio, String fechaFin);
+    
+    List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuario(String cc);
     
     List<TiempoProyectosDTO> proyectosRealizadosPorUsuario(String cc, String fechaInicio, String fechaFin);
     

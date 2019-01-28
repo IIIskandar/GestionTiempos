@@ -5,6 +5,7 @@
  */
 package utp.edu.co.Tiempos.Repository;
 
+import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import utp.edu.co.Tiempos.Documents.Descripcion;
@@ -15,5 +16,5 @@ import utp.edu.co.Tiempos.Documents.Descripcion;
  */
 @Repository
 public interface DescripcionRepository extends MongoRepository<Descripcion, String>, DescripcionRepositoryCustom{
-    
+    List<Descripcion> findByMadeBy(String cc);
 }

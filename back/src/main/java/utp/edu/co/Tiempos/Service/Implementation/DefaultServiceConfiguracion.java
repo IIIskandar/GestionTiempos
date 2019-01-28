@@ -88,12 +88,14 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
 
     //elimina un usuario
     @Override
-    public Usuario eliminarUsuario(String id) {
-        Usuario usuarioToDel = consultarUsuario(id);
-        if(usuarioToDel != null){
-            usuarioRepository.deleteById(id);
-            return usuarioToDel;
-        }
+    public Usuario eliminarUsuario(String cc) {
+        Usuario usuarioToDel = consultarUsuariobyCC(cc);
+        List<Descripcion> descripciones = descripcionRepository.findByMadeBy(cc);
+        if(descripciones.isEmpty()&&usuarioToDel.getSuspensions().isEmpty())
+            if(usuarioToDel != null){
+                usuarioRepository.deleteById(usuarioToDel.getId());
+                return usuarioToDel;
+            }
         return null;
     }
 

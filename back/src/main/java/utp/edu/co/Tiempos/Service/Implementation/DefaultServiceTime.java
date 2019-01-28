@@ -419,7 +419,7 @@ public class DefaultServiceTime implements TimeService{
     
     //consulta las tareas realizadas por un usuario
     @Override
-    public List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuario(String cc, String fechaInicio, String fechaFin){
+    public List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuarioFecha(String cc, String fechaInicio, String fechaFin){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if((fechaInicio == null) || (fechaFin == null))
             return null;
@@ -448,6 +448,42 @@ public class DefaultServiceTime implements TimeService{
             registrosTareas = tarea.getDescripciones();
             for (Descripcion registroTarea : registrosTareas) {
                 if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                    contador = contador + registroTarea.getJobTime();
+                    contadorRegistros = contadorRegistros + 1;
+                }
+            }
+            tareaUsuario.setNameProyecto(proyecto.getName());
+            tareaUsuario.setNameTarea(tarea.getName());
+            tareaUsuario.setStatus(tarea.getStatus());
+            tareaUsuario.setTotalRegistros(contadorRegistros);
+            tareaUsuario.setJobTimeUser(contador);
+            if(contadorRegistros>0)
+                proyectosPorUsuario.add(tareaUsuario);
+            contador = 0;
+            contadorRegistros=0;
+        }
+        }
+        
+        return proyectosPorUsuario;
+    }
+    
+    //consulta las tareas realizadas por un usuario
+    @Override
+    public List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuario(String cc){
+        
+        List<ProyectoTareaUsuarioDTO> proyectosPorUsuario = new ArrayList<>();
+        List<Proyecto> proyectos = proyectoRepository.findAll();
+        long contador = 0;
+        long contadorRegistros=0;
+        int i =0;
+        List<Descripcion> registrosTareas = new ArrayList<>();
+        for (Proyecto proyecto : proyectos) {
+            List<Tarea> tareas = proyecto.getTareas();
+            for (Tarea tarea : tareas) {
+            ProyectoTareaUsuarioDTO tareaUsuario = new ProyectoTareaUsuarioDTO();
+            registrosTareas = tarea.getDescripciones();
+            for (Descripcion registroTarea : registrosTareas) {
+                if(registroTarea.getMadeBy().equals(cc)){
                     contador = contador + registroTarea.getJobTime();
                     contadorRegistros = contadorRegistros + 1;
                 }
