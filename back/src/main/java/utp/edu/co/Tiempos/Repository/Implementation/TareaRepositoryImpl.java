@@ -5,6 +5,7 @@
  */
 package utp.edu.co.Tiempos.Repository.Implementation;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -57,6 +58,16 @@ public class TareaRepositoryImpl implements TareaRepositoryCustom {
 //                .and("name").previousOperation();
 //    }
     
+//  consulta para sacar el tiempo de una fecha a     
+//    private UnwindOperation unwindOperationTiempoUsuarioSus(){
+//        return unwind("$descripciones");
+//    }
+//    
+//    private MatchOperation matchOperationTarea(Date fechaInicio, Date fechaFin){
+//        Criteria ccCriteria = where("descripciones.fechaInicio").gte(fechaInicio).andOperator(where("descripciones.fechaFin").lte(fechaFin));
+//        return match(ccCriteria);
+//    }
+//    
     private GroupOperation groupOperationCc(){
         return group("category")
                 .last("category").as("category")
@@ -71,6 +82,7 @@ public class TareaRepositoryImpl implements TareaRepositoryCustom {
 
     @Override
     public List<TareaCategoriaDTO> consultarTiempoCategoria() {
+        
         GroupOperation groupOperation = groupOperationCc();
         ProjectionOperation projectionOperation = projectOperationTimeCategory();
         

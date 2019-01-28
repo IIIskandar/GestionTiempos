@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Suspension;
@@ -46,6 +47,7 @@ public class UsuarioController {
         this.timeService = timeService;
     }
     
+    //trae todos los usuarios
     @GetMapping
     public ResponseEntity<?> getAll(){
         List<Usuario> listaUsuarios = configuracionService.listaUsuarios();
@@ -55,6 +57,7 @@ public class UsuarioController {
         return ResponseEntity.ok(listaUsuarios);
     }
     
+    //trae un usuario por su cedula
     @GetMapping("/{cc}")
     public ResponseEntity<?> getUsuario(@PathVariable("cc") String cc) {
         Usuario usuario = configuracionService.consultarUsuariobyCC(cc);
@@ -66,6 +69,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
     
+    //inserta un usuario
     @PostMapping
     public ResponseEntity<?> insert(@RequestBody Usuario usuario){
         
@@ -78,6 +82,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
     
+    //borra un usuario por su cedula
     @DeleteMapping("/{cc}")
     public ResponseEntity<?> delete(@PathVariable("cc") String cc){
         Usuario usuarioAux = configuracionService.consultarUsuariobyCC(cc);
@@ -89,7 +94,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
     
-    
+    //inicia una suspension 
     @PostMapping("/suspension/iniciar/{cc}")
     public ResponseEntity<?> iniciarSuspension(@PathVariable("cc") String cc,@RequestBody SuspensionDTO suspension){
         timeService.iniciarSuspension(cc, suspension);
@@ -97,47 +102,54 @@ public class UsuarioController {
         
     }
     
+    //finaliza la suspension
     @PostMapping("/suspension/fin/{cc}")
     public ResponseEntity<?> finalizarSuspension(@PathVariable("cc") String cc){
         Usuario usuarioHelper = timeService.finalizarSuspension(cc);
         return ResponseEntity.ok(usuarioHelper);
     }
     
+    //trae todos los proyectos en los que ha trabajado el usuario
     @GetMapping("/{cc}/proyectos")
     public ResponseEntity<?> listarProyectosUsuario(@PathVariable("cc") String cc){
         List<Proyecto> proyectosUser = configuracionService.consultarProyectosUsuario(cc);
         return ResponseEntity.ok(proyectosUser);
     }
     
+    //me trae todo el tiempo trabajado de un usuario
     @GetMapping("/tiempo/{cc}")
     public ResponseEntity<?> tiempoUsuario(@PathVariable("cc") String cc){
         TiempoUsuarioDTO tiempoUsuario = timeService.tiempoUsuarios(cc);
         return ResponseEntity.ok(tiempoUsuario);
     }
     
+    //me trae todo el tiempo trabajado de todos los usuarios
     @GetMapping("/tiempoAll")
     public ResponseEntity<?> tiempoAllUsers(){
         List<TiempoUsuarioDTO> tiempoUsuario = timeService.tiempoAllUsers();
         return ResponseEntity.ok(tiempoUsuario);
     }
     
+    //me trae el tiempo de las suspensiones de un usuario
     @GetMapping("/tiempoSuspensiones/{cc}")
     public ResponseEntity<?> tiempoSuspensionUsuario(@PathVariable("cc") String cc){
         Long tiempoSuspensionUsuario = timeService.TiempoSuspensionUsuarioTotal(cc);
         return ResponseEntity.ok(tiempoSuspensionUsuario);
     }
     
+    //me trae las tareas realizadas por un usuario y su tiempo trabajado
     @GetMapping("tiempoTarea/{cc}")
-    public ResponseEntity<?> tareasPorUsuario(@PathVariable("cc") String cc){
-        List<ProyectoTareaUsuarioDTO> tareasUsuario= timeService.tareasRealizadosPorUsuario(cc);
+    public ResponseEntity<?> tareasPorUsuario(@PathVariable("cc") String cc,@RequestParam("fechaInicio") String fechaInicio,@RequestParam("fechaFin") String fechaFin){
+        List<ProyectoTareaUsuarioDTO> tareasUsuario= timeService.tareasRealizadosPorUsuario(cc,fechaInicio,fechaFin);
         if(tareasUsuario.isEmpty())
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok(tareasUsuario);
     }
     
+    //trae los proyectos realizados por un usuario y su tiempo trabajado
     @GetMapping("tiempoProyecto/{cc}")
-    public ResponseEntity<?> proyectosPorUsuario(@PathVariable("cc") String cc){
-        List<TiempoProyectosDTO> tareasUsuario= timeService.proyectosRealizadosPorUsuario(cc);
+    public ResponseEntity<?> proyectosPorUsuario(@PathVariable("cc") String cc, @RequestParam("fechaInicio") String fechaInicio, @RequestParam("fechaFin") String fechaFin){
+        List<TiempoProyectosDTO> tareasUsuario= timeService.proyectosRealizadosPorUsuario(cc,fechaInicio,fechaFin);
         if(tareasUsuario.isEmpty())
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok(tareasUsuario);

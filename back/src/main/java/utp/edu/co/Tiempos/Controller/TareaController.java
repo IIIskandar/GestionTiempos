@@ -5,6 +5,7 @@
  */
 package utp.edu.co.Tiempos.Controller;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import utp.edu.co.Tiempos.Documents.Descripcion;
 import utp.edu.co.Tiempos.Documents.Tarea;
@@ -41,6 +43,7 @@ public class TareaController {
         this.timeService = timeService;
     }
     
+    //trae una tarea
     @GetMapping("/{id}")
     public ResponseEntity<?> getTarea(@PathVariable("id") String id) {
         Tarea tarea = configuracionService.consultarTarea(id);
@@ -63,7 +66,7 @@ public class TareaController {
         return ResponseEntity.ok(tarea);
     }
     
-    //iniciar un registro
+    //inicia un registro en una tarea
     @PostMapping("{id}/registro/inicio/{status}")
     public ResponseEntity<?> iniciarRegistro(@PathVariable("id") String id, @PathVariable("status") String status, @RequestBody Descripcion descripcion){
         descripcion = timeService.iniciarRegistro(id, status,descripcion);
@@ -80,15 +83,20 @@ public class TareaController {
         return ResponseEntity.ok(descripcionHelper);
     }
     
+    //trae una lista con las categorias de las tareas y el tiempo que se ha trabajado en cada categoria
     @GetMapping("/tiempoCategorias")
-    public ResponseEntity<?> tiempoPorCategoria(){
-        List<TareaCategoriaDTO> tiempoCategoria = timeService.tiempoPorCategoria();
+    public ResponseEntity<?> tiempoPorCategoria(@RequestParam("fechaInicio") String fechaInicio, @RequestParam("fechaFin") String fechaFin){
+        List<TareaCategoriaDTO> tiempoCategoria = timeService.tiempoPorCategoria(fechaInicio,fechaFin);
+        if(tiempoCategoria.isEmpty())
+            return ResponseEntity.noContent().build();
         return ResponseEntity.ok(tiempoCategoria);
     }
     
+    
+    //trae el tiempo que ha trabajado un usuario en una tarea espefica
     @GetMapping("/tiempoUsuario/{id}/{cc}")
-    public ResponseEntity<?> tiempoTareaUsuario(@PathVariable("id") String id ,@PathVariable("cc") String cc){
-        TiempoTareaUsuarioDTO tiempo = timeService.tiempoUsuarioPorTarea(id, cc);
+    public ResponseEntity<?> tiempoTareaUsuario(@PathVariable("id") String id ,@PathVariable("cc") String cc, @RequestParam("fechaInicio") String fechaInicio,  @RequestParam("fechaFin") String fechaFin){
+        TiempoTareaUsuarioDTO tiempo = timeService.tiempoUsuarioPorTarea(id, cc,fechaInicio,fechaFin);
         if(tiempo.getDescripcionesId().isEmpty())
             return ResponseEntity.noContent().build();
         else

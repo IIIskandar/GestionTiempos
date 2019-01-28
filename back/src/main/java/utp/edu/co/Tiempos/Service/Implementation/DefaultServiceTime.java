@@ -5,9 +5,13 @@
  */
 package utp.edu.co.Tiempos.Service.Implementation;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import utp.edu.co.Tiempos.Documents.Descripcion;
@@ -18,14 +22,15 @@ import utp.edu.co.Tiempos.Documents.TiempoSuspensiones;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Repository.DescripcionRepository;
 import utp.edu.co.Tiempos.Repository.ProyectoRepository;
-import utp.edu.co.Tiempos.Repository.SuspensionRepository;
 import utp.edu.co.Tiempos.Repository.TareaRepository;
 import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
 import utp.edu.co.Tiempos.dto.ProyectoTareaUsuarioDTO;
+import utp.edu.co.Tiempos.dto.RegistrosRangoDTO;
 import utp.edu.co.Tiempos.dto.SuspensionDTO;
 import utp.edu.co.Tiempos.dto.TareaCategoriaDTO;
+import utp.edu.co.Tiempos.dto.TareasPorProyectoDTO;
 import utp.edu.co.Tiempos.dto.TiempoProyectosDTO;
 import utp.edu.co.Tiempos.dto.TiempoSuspensionTipoDTO;
 import utp.edu.co.Tiempos.dto.TiempoTareaUsuarioDTO;
@@ -44,19 +49,19 @@ public class DefaultServiceTime implements TimeService{
         private ProyectoRepository proyectoRepository;
         private DescripcionRepository descripcionRepository;
         private ModelMapper modMapper;
-        private SuspensionRepository suspensionRepository;
 
 
-    public DefaultServiceTime(ConfiguracionService configuracionService, UsuarioRepository usuarioRepository, TareaRepository tareaRepository, ProyectoRepository proyectoRepository, DescripcionRepository descripcionRepository, ModelMapper modMapper, SuspensionRepository suspensionRepository) {
+    public DefaultServiceTime(ConfiguracionService configuracionService, UsuarioRepository usuarioRepository, TareaRepository tareaRepository, ProyectoRepository proyectoRepository, DescripcionRepository descripcionRepository, ModelMapper modMapper) {
         this.configuracionService = configuracionService;
         this.usuarioRepository = usuarioRepository;
         this.tareaRepository = tareaRepository;
         this.proyectoRepository = proyectoRepository;
         this.descripcionRepository = descripcionRepository;
         this.modMapper = modMapper;
-        this.suspensionRepository = suspensionRepository;
     }
         
+    
+    //inicia una suspension por usuario
     @Override
     public Usuario iniciarSuspension(String id, SuspensionDTO suspensiondto){
         boolean nombreB=false;
@@ -99,6 +104,8 @@ public class DefaultServiceTime implements TimeService{
         return null;
     }
     
+    
+    //finaliza una suspension por usuario
     @Override
     public Usuario finalizarSuspension(String id){
         Usuario usuarioFinSus = configuracionService.consultarUsuariobyCC(id);
@@ -139,6 +146,7 @@ public class DefaultServiceTime implements TimeService{
         return usuarioFinSus;
     }
 
+    //inicia un registro con el id de la tarea
     @Override
     public Descripcion iniciarRegistro(String id, String status, Descripcion descripcion) {
         Tarea tareaHelper = configuracionService.consultarTarea(id);
@@ -157,6 +165,7 @@ public class DefaultServiceTime implements TimeService{
         return representativo;
     }
 
+    //finaliza un resgistro con el id de la tarea
     @Override
     public Descripcion finalizarRegistro(String id, Descripcion descripcion, String status) {
         long auxCont=0;
@@ -186,6 +195,7 @@ public class DefaultServiceTime implements TimeService{
         return descripcionHelper;
     }
     
+    //contabiliza el tiempo trabajado de un proyecto 
     @Override
     public Long contabilizarProyecto(String id) {
         long contador=0;
@@ -199,6 +209,7 @@ public class DefaultServiceTime implements TimeService{
         return contador;
     }
     
+    //contabiliza el tiempo trabajado de todos los proyectos y devuelve una lista de Proyecto
     @Override
     public List<Proyecto> contabilizarProyectos() {
         long contador=0;
@@ -217,29 +228,147 @@ public class DefaultServiceTime implements TimeService{
     }
     
     @Override
+    public List<TiempoProyectosDTO> tiempoProyectosFecha(String fechaInicio, String fechaFin){ 
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        List<TiempoProyectosDTO> proyectosPorUsuario = new ArrayList<>();
+        List<Proyecto> proyectos = proyectoRepository.findAll();
+        long contador = 0;
+        List<Descripcion> registrosTareas = new ArrayList<>();
+        for (Proyecto proyecto : proyectos) {
+            TiempoProyectosDTO proyectoUsuario = new TiempoProyectosDTO();
+            List<Tarea> tareas = proyecto.getTareas();
+            for (Tarea tarea : tareas) {
+                
+                registrosTareas = tarea.getDescripciones();
+                for (Descripcion registroTarea : registrosTareas) {
+                    if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                        contador = contador + registroTarea.getJobTime();
+                    }
+                }  
+            
+            }   
+            proyectoUsuario.setName(proyecto.getName());
+            proyectoUsuario.setJobTimeUser(contador);
+            proyectosPorUsuario.add(proyectoUsuario);
+            contador = 0;
+        }
+        
+        return proyectosPorUsuario;
+    }
+    //consulta el tiempo de un usuario con el id de los registros trabajados
+    @Override
     public TiempoUsuarioDTO tiempoUsuarios(String cc) {
         List<TiempoUsuarioDTO> tiempos = descripcionRepository.consultarTiempoUsuario(cc);
         return tiempos.get(0);
     }
     
+    //consulta el tiempo de todos los usuarios
     @Override
     public List<TiempoUsuarioDTO> tiempoAllUsers() {
         List<TiempoUsuarioDTO> tiempos = descripcionRepository.consultasTiemposAllUsers();
         return tiempos;
     }
 
+    //consulta el tiempo de las tareas por categoria
     @Override
-    public List<TareaCategoriaDTO> tiempoPorCategoria() {
-        List<TareaCategoriaDTO> tiemposCategoria = tareaRepository.consultarTiempoCategoria();
+    public List<TareaCategoriaDTO> tiempoPorCategoria(String fechaInicio, String fechaFin) {
+         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        List<RegistrosRangoDTO> registrosEnRango = new ArrayList<>();
+        List<String> categories = new ArrayList<>();
+        List<TareaCategoriaDTO> tiemposCategoria = new ArrayList<>();
+        long contador = 0;
+        List<Tarea> tareasAux = tareaRepository.findAll();
+        for (Tarea tareaAux : tareasAux) {
+            RegistrosRangoDTO registroEnRango = new RegistrosRangoDTO();
+            List<Descripcion> registrosTareas = tareaAux.getDescripciones();
+            for (Descripcion registroTarea : registrosTareas) {
+                if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null)) 
+                    if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                        if(!(registroTarea.getJobTime()==null))
+                            contador = registroTarea.getJobTime() + contador;
+                }
+            }
+        registroEnRango.setTarea(tareaAux.getName());
+        registroEnRango.setCategory(tareaAux.getCategory());
+        registroEnRango.setJobTime(contador);
+        registrosEnRango.add(registroEnRango);
+        contador = 0;
+        }
+        
+        for (int i = 0; i < registrosEnRango.size(); i++) {
+            if(!categories.contains(registrosEnRango.get(i).getCategory()))
+                categories.add(registrosEnRango.get(i).getCategory());
+        }
+        
+        for (int i = 0; i < categories.size(); i++) {
+            TareaCategoriaDTO tiempoCategoria = new TareaCategoriaDTO();
+            for (int j = 0; j < registrosEnRango.size(); j++) {
+                if(categories.get(i).equals(registrosEnRango.get(j).getCategory()))
+                    contador = registrosEnRango.get(j).getJobTime() + contador;
+            }
+            if(contador!=0){
+                tiempoCategoria.setCategory(categories.get(i));
+                tiempoCategoria.setJobTimeCategory(contador);
+                tiemposCategoria.add(tiempoCategoria);}
+            contador = 0;
+        }
+        
         return tiemposCategoria;
     }
+     
 
+    //consulta el tiempo por tipo de suspension
     @Override
-    public List<TiempoSuspensionTipoDTO> tiempoPorTipoSus() {
-        List<TiempoSuspensionTipoDTO> tiemposSuspension = usuarioRepository.tiempoPorTipoSuspension();
+    public List<TiempoSuspensionTipoDTO> tiempoPorTipoSus(String fechaInicio, String fechaFin) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        List<TiempoSuspensionTipoDTO> tiemposSuspension = usuarioRepository.tiempoPorTipoSuspension(dateObj1, dateObj2);
         return tiemposSuspension;
     }
 
+    //consulta el tiempo total de suspension de un usuario
     @Override
     public Long TiempoSuspensionUsuarioTotal(String cc) {
         long contador = 0;
@@ -250,26 +379,36 @@ public class DefaultServiceTime implements TimeService{
         }
         return contador;
     }
-//
-//    @Override
-//    public List<TiempoTareaUsuarioDTO> tiempoTareaUsuario(String idTarea, String cc) {
-//        List<TiempoTareaUsuarioDTO> tiemposUsuarioTarea = tareaRepository.consultarTiempoTareaUsuario(idTarea, cc);
-//        return tiemposUsuarioTarea;
-//    }
-    
-    //muestra cual 
+
+    //consulta el tiempo que ha trabajado un usuario por tarea especifica
     @Override
-    public TiempoTareaUsuarioDTO tiempoUsuarioPorTarea(String idTarea, String cc){
+    public TiempoTareaUsuarioDTO tiempoUsuarioPorTarea(String idTarea, String cc, String fechaInicio, String fechaFin){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
         TiempoTareaUsuarioDTO tiempoUsuario = new TiempoTareaUsuarioDTO();
         long contador = 0;
         List<String> descripcionesId= new ArrayList<>();
         Tarea tareaAux = configuracionService.consultarTarea(idTarea);
         List<Descripcion> registrosTareas = tareaAux.getDescripciones();
         for (Descripcion registroTarea : registrosTareas) {
-            if(registroTarea.getMadeBy().equals(cc)){
-                contador = registroTarea.getJobTime() + contador;
-                descripcionesId.add(registroTarea.getId());
-            }
+            if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null))
+                if((registroTarea.getMadeBy().equals(cc))&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                    contador = registroTarea.getJobTime() + contador;
+                    descripcionesId.add(registroTarea.getId());
+                }
         }
         tiempoUsuario.setName(tareaAux.getName());
         tiempoUsuario.setJobTimeUser(contador);
@@ -277,8 +416,25 @@ public class DefaultServiceTime implements TimeService{
         return tiempoUsuario;
     }
     
+    
+    //consulta las tareas realizadas por un usuario
     @Override
-    public List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuario(String cc){
+    public List<ProyectoTareaUsuarioDTO> tareasRealizadosPorUsuario(String cc, String fechaInicio, String fechaFin){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
         List<ProyectoTareaUsuarioDTO> proyectosPorUsuario = new ArrayList<>();
         List<Proyecto> proyectos = proyectoRepository.findAll();
         long contador = 0;
@@ -291,7 +447,7 @@ public class DefaultServiceTime implements TimeService{
             ProyectoTareaUsuarioDTO tareaUsuario = new ProyectoTareaUsuarioDTO();
             registrosTareas = tarea.getDescripciones();
             for (Descripcion registroTarea : registrosTareas) {
-                if(registroTarea.getMadeBy().equals(cc)){
+                if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
                     contador = contador + registroTarea.getJobTime();
                     contadorRegistros = contadorRegistros + 1;
                 }
@@ -311,8 +467,24 @@ public class DefaultServiceTime implements TimeService{
         return proyectosPorUsuario;
     }
     
+    //consulta los proyectos realizados por un usuario
     @Override
-    public List<TiempoProyectosDTO> proyectosRealizadosPorUsuario(String cc){
+    public List<TiempoProyectosDTO> proyectosRealizadosPorUsuario(String cc,String fechaInicio, String fechaFin){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
         List<TiempoProyectosDTO> proyectosPorUsuario = new ArrayList<>();
         List<Proyecto> proyectos = proyectoRepository.findAll();
         long contador = 0;
@@ -324,7 +496,7 @@ public class DefaultServiceTime implements TimeService{
                 
                 registrosTareas = tarea.getDescripciones();
                 for (Descripcion registroTarea : registrosTareas) {
-                    if(registroTarea.getMadeBy().equals(cc)){
+                    if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
                         contador = contador + registroTarea.getJobTime();
                     }
                 }  
@@ -340,8 +512,24 @@ public class DefaultServiceTime implements TimeService{
         return proyectosPorUsuario;
     }
     
+    //consulta los usuarios que han trabajado en un proyecto en especifico, en un rango de fecha
     @Override
-    public List<UsuariosPorProyectoDTO> usuariosPorProyecto(String idProyecto){
+    public List<UsuariosPorProyectoDTO> usuariosPorProyecto(String idProyecto, String fechaInicio, String fechaFin){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
         List<UsuariosPorProyectoDTO> usuariosProyecto= new ArrayList<>();
         Proyecto proyectoAux = configuracionService.consultarProyecto(idProyecto);
         List<Tarea> tareas = proyectoAux.getTareas();
@@ -361,7 +549,7 @@ public class DefaultServiceTime implements TimeService{
             for (Tarea tarea : tareas) {
                 registrosTareas = tarea.getDescripciones();
                 for (Descripcion registroTarea : registrosTareas) {
-                    if(registroTarea.getMadeBy().equals(ccs.get(i)))
+                    if((registroTarea.getMadeBy().equals(ccs.get(i)))&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
                         if(registroTarea.getJobTime() != null)
                             contador = contador + registroTarea.getJobTime();
                 }
@@ -373,6 +561,53 @@ public class DefaultServiceTime implements TimeService{
             contador=0;
         }
         return usuariosProyecto;
+    }
+    
+    @Override
+    public List<TareasPorProyectoDTO> tareasPorProyecto(String idProyecto, String fechaInicio, String fechaFin){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        List<TareasPorProyectoDTO> tareasProyecto= new ArrayList<>();
+        Proyecto proyectoAux = configuracionService.consultarProyecto(idProyecto);
+        List<Tarea> tareas = proyectoAux.getTareas();
+        List<Descripcion> registrosTareas = new ArrayList<>();
+
+        long contador = 0;
+            
+        for (Tarea tarea : tareas) {
+            TareasPorProyectoDTO tareaPP = new TareasPorProyectoDTO();
+            registrosTareas = tarea.getDescripciones();
+            for (Descripcion registroTarea : registrosTareas) {
+                if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
+                    if(registroTarea.getJobTime() != null)
+                        contador = contador + registroTarea.getJobTime();
+            }
+        tareaPP.setName(tarea.getName());
+        tareaPP.setJobTime(contador);
+        tareaPP.setCategory(tarea.getCategory());
+        tareaPP.setStatus(tarea.getStatus());
+        tareaPP.setExpectedTime(tarea.getExpectedTime());
+        if(contador > 0)
+            tareasProyecto.add(tareaPP);
+        contador=0;
+
+        }
+            
+        
+        return tareasProyecto;
     }
 
 }

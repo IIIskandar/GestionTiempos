@@ -5,6 +5,7 @@
  */
 package utp.edu.co.Tiempos.Controller;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,12 +38,15 @@ public class SuspensionController {
         this.timeService = timeService;
     }
     
+    
+    //crea una suspension
     @PostMapping("/crear")
     public ResponseEntity<?> crearSuspension(@RequestBody TipoSuspensionesDTO tipo){
         configuracionService.crearTipoSuspension(tipo);
         return ResponseEntity.ok(tipo);
     }
     
+    //lista las suspensiones que creo el admin
     @GetMapping("/listar")
     public ResponseEntity<?> listarSuspeniones(){
         List<TipoSuspensiones> lista = configuracionService.listaTipoSuspensiones();
@@ -52,6 +56,8 @@ public class SuspensionController {
         return ResponseEntity.ok(lista);
     }
     
+    
+    //borra una suspension
     @DeleteMapping("/eliminar/{nombre}")
     public ResponseEntity<?> delete(@PathVariable("nombre") String nombre){
         TipoSuspensionesDTO auxiliar = configuracionService.eliminarTipoSuspension(nombre);
@@ -62,9 +68,14 @@ public class SuspensionController {
         return ResponseEntity.ok(auxiliar);
     }
     
+    //carga una lista con el tiempo de las suspensiones usadas
     @GetMapping("/tiempo")
-    public ResponseEntity<?> tiempoPorSuspension(){
-        List<TiempoSuspensionTipoDTO> tiempoSuspension = timeService.tiempoPorTipoSus();
+    public ResponseEntity<?> tiempoPorSuspension(String fechaInicio, String fechaFin){
+        List<TiempoSuspensionTipoDTO> tiempoSuspension = timeService.tiempoPorTipoSus(fechaInicio, fechaFin);
+        if(tiempoSuspension == null)
+            return ResponseEntity.badRequest().build();
+        if(tiempoSuspension.isEmpty())
+            return ResponseEntity.noContent().build();
         return ResponseEntity.ok(tiempoSuspension);
     }
 }

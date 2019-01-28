@@ -14,15 +14,13 @@ import java.util.List;
 public class TareaCategoriaDTO {
     
     private String category;
-    private List<String> tareasId;
     private Long jobTimeCategory;
 
     public TareaCategoriaDTO() {
     }
 
-    public TareaCategoriaDTO(String category, List<String> tareasId, Long jobTimeCategory) {
+    public TareaCategoriaDTO(String category, Long jobTimeCategory) {
         this.category = category;
-        this.tareasId = tareasId;
         this.jobTimeCategory = jobTimeCategory;
     }
 
@@ -32,14 +30,6 @@ public class TareaCategoriaDTO {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public List<String> getTareasId() {
-        return tareasId;
-    }
-
-    public void setTareasId(List<String> TareasId) {
-        this.tareasId = TareasId;
     }
 
     public Long getJobTimeCategory() {

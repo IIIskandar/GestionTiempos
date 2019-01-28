@@ -5,6 +5,7 @@
  */
 package utp.edu.co.Tiempos.Repository;
 
+import java.util.Date;
 import java.util.List;
 import utp.edu.co.Tiempos.dto.TiempoSuspensionTipoDTO;
 
@@ -13,6 +14,6 @@ import utp.edu.co.Tiempos.dto.TiempoSuspensionTipoDTO;
  * @author C-Lug
  */
 public interface UsuarioRepositoryCustom {
-        List<TiempoSuspensionTipoDTO> tiempoPorTipoSuspension();
+        List<TiempoSuspensionTipoDTO> tiempoPorTipoSuspension(Date fechaInicio, Date fechaFin);
 
 }

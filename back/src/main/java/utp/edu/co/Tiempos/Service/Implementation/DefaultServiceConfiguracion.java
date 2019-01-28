@@ -108,6 +108,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return null;      
     }
 
+    //consulta un proyecto por su ID
     @Override
     public Proyecto consultarProyecto(String id) {
         Optional<Proyecto> proyectOptional = proyectoRepository.findById(id);
@@ -117,6 +118,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return null;
     }
 
+    //guarda un proyecto, con sus tareas, y asigna los usuarios
     @Override
     public Proyecto guardarProyecto(Proyecto proyecto) {
         long conT=0;
@@ -142,6 +144,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return representativo;
     }
 
+    //elimina un proyecto por ID
     @Override
     public Proyecto eliminarProyecto(String id) {
         Proyecto proyectoToDel = consultarProyecto(id);
@@ -163,16 +166,12 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         usuariosId = proyectoHelper.getUsersId();
         usuariosId.add(usuarioHelper);
         proyectoHelper.setUsersId(usuariosId);
-        //List<Proyecto> proyectosId = new ArrayList<>();
-//        proyectosId = usuarioHelper.getProjectsId();
-//        proyectosId.add(proyectoHelper);
-//        usuarioHelper.setProjectsId(proyectosId);
-//        usuarioRepository.save(usuarioHelper);
         proyectoRepository.save(proyectoHelper);
         
         return proyectoHelper;
     }
 
+    //consulta un usuario por cedula
     @Override
     public Usuario consultarUsuariobyCC(String cc) {
         Optional<Usuario> usuariOptional = usuarioRepository.findByCc(cc);
@@ -182,6 +181,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return null;
     }
 
+    //lista las tareas de un proyecto
     @Override
     public List<Tarea> listaTareas(String id) {
         List<Tarea> respuesta = new ArrayList<>();
@@ -193,6 +193,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return null; 
     }
     
+    //consulta una tarea por id
     @Override
     public Tarea consultarTarea(String id) {   
     Optional<Tarea> tareaOptional = tareaRepository.findById(id);
@@ -202,6 +203,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return null;
     }
 
+    //elimina una tarea por id
     @Override
     public Tarea eliminarTarea(String id) {
        Tarea tareaToDel = consultarTarea(id);
@@ -212,6 +214,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return null;
     }
 
+    //guarda una tarea, se requiere el id del proyecto 
     @Override
     public Tarea guardarTarea(String id, Tarea tarea) {
         Tarea representativo = tareaRepository.insert(tarea);
@@ -224,6 +227,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return representativo;
     }    
 
+    //lista los registros de una tarea
     @Override
     public List<Descripcion> listaRegistros(String id) {
        List<Descripcion> respuesta = new ArrayList<>();
@@ -235,6 +239,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return null; 
     }
 
+    //consulta registros de una tarea
     @Override
     public Descripcion consultarRegistro(String id) {
         Optional<Descripcion> descripcionOptional = descripcionRepository.findById(id);
@@ -244,6 +249,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return null;
     }
 
+    //elimina un registro
     @Override
     public Descripcion eliminarRegistro(String id) {
         Descripcion descripcionToDel = consultarRegistro(id);
@@ -254,6 +260,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return null;
     }
     
+    //consulta los proyectos a los que pertenece un usuario
     @Override
     public List<Proyecto> consultarProyectosUsuario(String cc){
         List<Proyecto> proyectos = listaProyectos();
@@ -267,6 +274,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return proyectosUsuario;
     }
     
+    //crea un tipo de suspension
     @Override
     public TipoSuspensionesDTO crearTipoSuspension(TipoSuspensionesDTO tiposuspensiondto){
         TipoSuspensiones aux = modMapper.map(tiposuspensiondto,TipoSuspensiones.class);
@@ -274,6 +282,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return modMapper.map(representativo, TipoSuspensionesDTO.class);
     }
     
+    //lista los tipos de suspension creados por el usuario
     @Override
     public List<TipoSuspensiones> listaTipoSuspensiones() {
         List<TipoSuspensiones> respuesta = new ArrayList<>();
@@ -284,6 +293,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return null;  
     }
     
+    //consulta una suspension por nombre
     @Override
     public TipoSuspensionesDTO consultarSuspension(String nombre) {   
     Optional<TipoSuspensiones> tipOptional = tipoSuspensionesRepository.findByName(nombre);
@@ -293,6 +303,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         return null;
     }
     
+    //elimina un tipo de suspension por el nombre FALTA COSNSULTAR QUE NO HAYA SIDO UTILIZADA
     @Override
     public TipoSuspensionesDTO eliminarTipoSuspension(String nombre) {
         

@@ -5,6 +5,7 @@
  */
 package utp.edu.co.Tiempos.Repository;
 
+import java.util.Date;
 import java.util.List;
 import utp.edu.co.Tiempos.dto.TareaCategoriaDTO;
 import utp.edu.co.Tiempos.dto.TiempoTareaUsuarioDTO;

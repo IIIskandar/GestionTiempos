@@ -15,12 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Tarea;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
+import utp.edu.co.Tiempos.dto.TareasPorProyectoDTO;
+import utp.edu.co.Tiempos.dto.TiempoProyectosDTO;
 import utp.edu.co.Tiempos.dto.UsuariosPorProyectoDTO;
 
 /**
@@ -111,6 +114,7 @@ public class ProyectoController {
         return ResponseEntity.ok(tarea);
     }
     
+    //contabiliza el tiempo trabajado de un proyecto
     @GetMapping("/{id}")
     public ResponseEntity<?> consultarTiempoProyecto(@PathVariable("id") String id){
         
@@ -118,19 +122,45 @@ public class ProyectoController {
         return ResponseEntity.ok(aux);
     }
     
-    @GetMapping("/tiemposProyectos")
-    public ResponseEntity<?> consultarTiempoProyectos(){
+    //contabiliza el tiempo trabajado de todos los proyectos 
+    @GetMapping("/tiempoProyectos")
+    public ResponseEntity<?> consultarTiempoProyectosTotal(){
         
         List<Proyecto> aux = timeService.contabilizarProyectos();
         return ResponseEntity.ok(aux);
     }
     
-    @GetMapping("usuariosProyecto/{id}")
-    public ResponseEntity<?> proyectosPorUsuario(@PathVariable("id") String idProyecto){
-        List<UsuariosPorProyectoDTO> tareasUsuario= timeService.usuariosPorProyecto(idProyecto);
-        if(tareasUsuario.isEmpty())
+    @GetMapping("/tiempoProyectosFecha")
+    public ResponseEntity<?> consultarTiempoProyectos(String fechaInicio, String fechaFin){
+        
+        List<TiempoProyectosDTO> aux = timeService.tiempoProyectosFecha(fechaInicio, fechaFin);
+        if(aux==null)
+            return ResponseEntity.badRequest().build();
+        if(aux.isEmpty())
             return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(tareasUsuario);
+        return ResponseEntity.ok(aux);
+    }
+    
+    //carga los usuarios que han trabajado en un proyecto en especifico y el tiempo que estos han trabajado
+    @GetMapping("usuariosProyecto/{id}")
+    public ResponseEntity<?> usuariosPorProyecto(@PathVariable("id") String idProyecto, @RequestParam("fechaInicio") String fechaInicio, @RequestParam("fechaFin") String fechaFin){
+        List<UsuariosPorProyectoDTO> usuariosProyecto= timeService.usuariosPorProyecto(idProyecto,fechaInicio,fechaFin);
+        if(usuariosProyecto == null)
+            return ResponseEntity.badRequest().build();
+        if(usuariosProyecto.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(usuariosProyecto);
+    }
+    
+    //carga los usuarios que han trabajado en un proyecto en especifico y el tiempo que estos han trabajado
+    @GetMapping("tareasProyecto/{id}")
+    public ResponseEntity<?> tareasPorProyecto(@PathVariable("id") String idProyecto, @RequestParam("fechaInicio") String fechaInicio, @RequestParam("fechaFin") String fechaFin){
+        List<TareasPorProyectoDTO> tareasProyecto= timeService.tareasPorProyecto(idProyecto, fechaInicio, fechaFin);
+        if(tareasProyecto.isEmpty())
+            return ResponseEntity.noContent().build();
+        if(tareasProyecto == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(tareasProyecto);
     }
     
     
