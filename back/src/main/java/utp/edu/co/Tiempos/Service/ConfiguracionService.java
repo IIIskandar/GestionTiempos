@@ -30,7 +30,7 @@ public interface ConfiguracionService {
     
     Usuario actualizarUsuario(Usuario usuario);
     
-    Usuario eliminarUsuario(String id);
+    String eliminarUsuario(String id);
     
     List<Proyecto> listaProyectos();
     

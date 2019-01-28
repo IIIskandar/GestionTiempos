@@ -60,10 +60,10 @@ public class TareaController {
     public ResponseEntity<?> deleteTarea(@PathVariable("id") String id){
         Tarea tarea = configuracionService.eliminarTarea(id);
         if(tarea == null){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok("la tarea no puede ser borrada porque tiene registros");
         }
         
-        return ResponseEntity.ok(tarea);
+        return ResponseEntity.ok("tarea borrada correctamente");
     }
     
     //inicia un registro en una tarea

@@ -85,12 +85,12 @@ public class UsuarioController {
     //borra un usuario por su cedula
     @DeleteMapping("/{cc}")
     public ResponseEntity<?> delete(@PathVariable("cc") String cc){
-        Usuario usuarioAux = configuracionService.consultarUsuariobyCC(cc);
-        Usuario usuario = configuracionService.eliminarUsuario(usuarioAux.getId());
+        String usuario = configuracionService.eliminarUsuario(cc);
         if(usuario == null){
             return ResponseEntity.notFound().build();
         }
-        
+        if(usuario.contains("borrar"))
+            return ResponseEntity.ok(usuario);
         return ResponseEntity.ok(usuario);
     }
     
@@ -137,7 +137,7 @@ public class UsuarioController {
         return ResponseEntity.ok(tiempoSuspensionUsuario);
     }
     
-    //me trae las tareas realizadas por un usuario y su tiempo trabajado
+    //me trae las tareas realizadas por un usuario totales
     @GetMapping("tiempoTarea/{cc}")
     public ResponseEntity<?> tareasPorUsuario(@PathVariable("cc") String cc){
         List<ProyectoTareaUsuarioDTO> tareasUsuario= timeService.tareasRealizadosPorUsuario(cc);

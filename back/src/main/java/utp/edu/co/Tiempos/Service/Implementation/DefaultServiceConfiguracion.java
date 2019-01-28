@@ -88,14 +88,17 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
 
     //elimina un usuario
     @Override
-    public Usuario eliminarUsuario(String cc) {
+    public String eliminarUsuario(String cc) {
         Usuario usuarioToDel = consultarUsuariobyCC(cc);
         List<Descripcion> descripciones = descripcionRepository.findByMadeBy(cc);
-        if(descripciones.isEmpty()&&usuarioToDel.getSuspensions().isEmpty())
+        if(descripciones.isEmpty()&&usuarioToDel.getSuspensions().isEmpty()){
             if(usuarioToDel != null){
                 usuarioRepository.deleteById(usuarioToDel.getId());
-                return usuarioToDel;
+                return "Usuario Borrado Correctamente";
             }
+        }else{
+            return "No se pudo borrar el usuario, porque tiene suspensiones o registros realizados";
+        }
         return null;
     }
 
@@ -208,10 +211,12 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
     //elimina una tarea por id
     @Override
     public Tarea eliminarTarea(String id) {
-       Tarea tareaToDel = consultarTarea(id);
-        if(tareaToDel != null){
-            tareaRepository.deleteById(id);
-            return tareaToDel;
+        Tarea tareaToDel = consultarTarea(id);
+        if(tareaToDel.getDescripciones().isEmpty()){
+            if(tareaToDel != null){
+                tareaRepository.deleteById(id);
+                return tareaToDel;
+            }
         }
         return null;
     }
