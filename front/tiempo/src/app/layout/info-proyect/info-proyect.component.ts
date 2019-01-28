@@ -23,6 +23,7 @@ export class InfoProyectComponent implements OnInit {
   aux2: any;
   auxN: any;
   name: any;
+  auxtime: any;
   listUser: Array<{cc: string, nombre: string, jT: string}> = [];
   listTareas: Array<{nT: string, c: string, s: string, tT: string, tE: string}> = [];
 
@@ -69,9 +70,11 @@ export class InfoProyectComponent implements OnInit {
             res => {
                 this.aux1 = res;
                 for (let i = 0; i < this.aux1.length; i++) {
-                  this.listTareas[i] = {nT: this.aux1[i].name, c: this.aux1[i].category,
-                    s: this.aux1[i].status, tT: this.aux1[i].jobTime, tE: this.aux1[i].expectedTime };
-                  this.listTareas[i].tT = this.getTime(this.aux1[i].jobTime );
+                    this.listTareas[i] = {nT: this.aux1[i].name, c: this.aux1[i].category,
+                        s: this.aux1[i].status, tT: this.aux1[i].jobTime, tE: this.aux1[i].expectedTime };
+                    this.auxtime = parseInt(this.listTareas[i].tE, 10) * 60;
+                    this.listTareas[i].tE = this.getTime(this.auxtime);
+                    this.listTareas[i].tT = this.getTime(this.aux1[i].jobTime );
                 }
             }
         );
@@ -80,8 +83,20 @@ export class InfoProyectComponent implements OnInit {
   getTime(value: number): string {
     const  temp = value * 60;
     const hours = Math.floor((temp / 3600));
-    const minutes: number = Math.floor(temp / 60);
-    return hours + ':' + minutes;
-  }
+    const minutes = (temp % 3600) / 60;
+    if (minutes < 10) {
+        if (hours < 10) {
+            return '0' + hours + ':0' + minutes;
+        } else {
+            return hours + ':0' + minutes;
+        }
+    } else {
+        if (hours < 10) {
+            return '0' + hours + ':' + minutes;
+        } else {
+            return hours + ':' + minutes;
+            }
+        }
+    }
 
 }

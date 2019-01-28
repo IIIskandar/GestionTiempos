@@ -52,7 +52,7 @@ export class InfoUserComponent implements OnInit {
   }
 
   getProyectos() {
-    this.admin.detalleProyect(localStorage.getItem('cc'))
+    this.admin.detalleProyect(this.idUser)
         .subscribe(
           res => {
             this.aux1 = res;
@@ -68,8 +68,20 @@ export class InfoUserComponent implements OnInit {
   getTime(value: number): string {
     const  temp = value * 60;
     const hours = Math.floor((temp / 3600));
-    const minutes: number = Math.floor(temp / 60);
-    return hours + ':' + minutes;
-  }
+    const minutes = (temp % 3600) / 60;
+    if (minutes < 10) {
+        if (hours < 10) {
+            return '0' + hours + ':0' + minutes;
+        } else {
+            return hours + ':0' + minutes;
+        }
+    } else {
+        if (hours < 10) {
+            return '0' + hours + ':' + minutes;
+        } else {
+            return hours + ':' + minutes;
+            }
+        }
+    }
 
 }

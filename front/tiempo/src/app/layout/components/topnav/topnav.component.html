@@ -25,15 +25,6 @@
     <button type="button" mat-icon-button class="hidden-sm" (click)="dashboard()" matTooltip="Dashboard">
         <mat-icon>dashboard</mat-icon>
     </button>
-    <button class="hidden-sm" mat-icon-button [matMenuTriggerFor]="profile">
-        <mat-icon>account_circle</mat-icon>
-    </button>
-    <mat-menu #profile="matMenu">
-        <button mat-menu-item>
-            <mat-icon>person</mat-icon>
-            <span>{{ 'Profile' | translate }}</span>
-        </button>
-    </mat-menu>
     <button type="button" mat-icon-button class="hidden-sm" *ngIf="administrador" (click)="configuacion()" matTooltip="configuracion">
         <mat-icon>settings</mat-icon>
     </button>

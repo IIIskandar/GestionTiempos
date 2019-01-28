@@ -67,13 +67,18 @@
                 </table>
             </div>
 
-    <div fxFlex>
+    <div fxFlex style="display: block">
             <mat-card class="example-card">
                     <mat-card-header>
                             <mat-card-title>Control de tiempo</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <canvas baseChart width="400" height="400" [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"></canvas>
+                        <canvas baseChart
+                        width="400" height="400" 
+                        [data]="pieChartData" 
+                        [labels]="pieChartLabels" 
+                        [chartType]="pieChartType"
+                        (chartClick)="chart($event)"></canvas>
                     </mat-card-content>
             </mat-card>
     </div>

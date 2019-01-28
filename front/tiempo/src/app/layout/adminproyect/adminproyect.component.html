@@ -1,12 +1,13 @@
 <div>
     <h4>Seleccione intervalo de tiempo</h4> 
-    <form>
-            <input matInput [matDatepicker]="picker1" placeholder="Fecha inicial">
+    <form [formGroup]="myForm" noValidate>
+            <input matInput [min]="minDate" [max]="maxDate" formControlName="fechaInicio" [matDatepicker]="picker1" placeholder="Fecha inicial">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
-            <input matInput [matDatepicker]="picker2" placeholder="Fecha final">
+            <input matInput [min]="minDate2" [max]="maxDate" formControlName="fechaFin" [matDatepicker]="picker2" placeholder="Fecha final">
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>
+            <button [disabled]="myForm.invalid" (click)="selectTime()" mat-icon-button><mat-icon>check_circle</mat-icon></button>
     </form>
 </div>
 
@@ -18,14 +19,12 @@
             <tr>
             <th>Nombre</th>
             <th>Tiempo trabajado</th>
-            <th></th>
+            <th>Tiempo esperado</th>
             </tr>
             <tr *ngFor="let proyect of listProyect">
-                <td id="nombre">{{proyect.nombre}}</td>
+                <td id="nombre"><a [routerLink]="[ '/infoProyect', proyect.id, proyect.nombre ]">{{proyect.nombre}}</a></td>
                 <td id="jobTime">{{proyect.jobTime}}</td>
-                <td><button mat-raised-button color="primary" (click)="enviar(proyect.id, proyect.nombre)">
-                      <a>Ir a proyecto</a>
-                </button></td>
+                <td id="exTime">{{proyect.exTime}}</td>
               </tr>
         </table>
         </mat-card>
@@ -36,14 +35,10 @@
             <tr>
             <th>Nombre</th>
             <th>Rol</th>
-            <th></th>
             </tr>
             <tr *ngFor="let user of listUser">
-            <td id="nombre">{{user.nombre}}</td>
+            <td id="nombre"><a [routerLink]="[ '/infoUser', user.cc, user.nombre ]">{{user.nombre}}</a></td>
             <td id="rol">{{user.rol}}</td>
-            <td><button mat-raised-button color="primary" (click)="enviarUser(user.cc, user.nombre)">
-                <a>Ir a usuario</a>
-          </button></td>
             </tr>
         </table>
         </mat-card>

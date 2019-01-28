@@ -99,6 +99,10 @@ export class AdminService {
   }
 
   listProyectTime() {
-    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/tiemposProyectos`);
+    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/tiempoProyectos`);
+  }
+
+  listProyectTimeF(fechaInicio, fechaFin) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/tiempoProyectosFecha/` + fechaInicio + '/' + fechaFin);
   }
 }

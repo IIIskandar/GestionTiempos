@@ -21,7 +21,8 @@ import { CrearRoutingModule } from './crear-routing.module';
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    MatIconModule
+    MatIconModule,
+    MatAutocompleteModule
   ]
 })
 export class CrearModule { }

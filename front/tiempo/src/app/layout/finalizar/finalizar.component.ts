@@ -46,6 +46,7 @@ export class FinalizarComponent implements OnInit {
           localStorage.setItem('status' , 'disponible');
           localStorage.removeItem('nombreTarea');
           this.router.navigate(['/dashboard/proyectos']);
+          window.location.reload();
         }
       );
   }

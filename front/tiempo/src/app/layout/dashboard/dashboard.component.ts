@@ -45,6 +45,7 @@ export class DashboardComponent implements OnInit {
     aux: any;
     aux1: any;
     aux2: any;
+    auxChart: any;
     c: any;
     s: any;
     contador: any;
@@ -85,15 +86,29 @@ export class DashboardComponent implements OnInit {
             this.timeJob();
             this.timeSus();
             this.getTareas();
-            setTimeout(() => {this.timeJobUserF = this.getTime(this.timeJobUser); } , 500);
-            setTimeout(() => {this.timeSusUserF = this.getTime(this.timeSusUser); } , 500);
-            setTimeout(() => {this.pieChartData = [this.timeJobUser, this.timeSusUser]; } , 500);
+            setTimeout(() => {this.timeJobUserF = this.getTime(this.timeJobUser); } , 200);
+            setTimeout(() => {this.timeSusUserF = this.getTime(this.timeSusUser); } , 200);
+            setTimeout(() => {this.pieChartData = [this.timeJobUser, this.timeSusUser]; } , 200);
             setTimeout(() => {this.pieChartType = 'pie'; } , 500);
         } else {
             localStorage.removeItem('isLoggedin');
             this.router.navigate(['/login']);
         }
     }
+
+    chart(e: any): void {
+        this.auxChart = e;
+        if (this.auxChart.active.length !== 0) {
+            if (this.auxChart.active[0]._index === 0) {
+                this.router.navigate(['/dashboard/tareas']);
+                setTimeout(() => {this.ngOnInit(); } , 200);
+            } else {
+                this.router.navigate(['/dashboard/suspensiones']);
+                setTimeout(() => {this.ngOnInit(); } , 200);
+            }
+        }
+    }
+
 
     getTareas() {
         this.admin.listTareasUser(this.cc)
@@ -174,8 +189,20 @@ export class DashboardComponent implements OnInit {
     getTime(value: number): string {
         const  temp = value * 60;
         const hours = Math.floor((temp / 3600));
-        const minutes: number = Math.floor(temp / 60);
-        return hours + ':' + minutes;
+        const minutes = (temp % 3600) / 60;
+        if (minutes < 10) {
+            if (hours < 10) {
+                return '0' + hours + ':0' + minutes;
+            } else {
+                return hours + ':0' + minutes;
+            }
+        } else {
+            if (hours < 10) {
+                return '0' + hours + ':' + minutes;
+            } else {
+                return hours + ':' + minutes;
+                }
+            }
     }
 
     timeSus() {

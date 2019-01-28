@@ -23,6 +23,7 @@ export class TareaComponent implements OnInit {
     cc: any;
     n: any;
     status: any;
+    auxTime: any;
     nombreProyect: any;
 
   ngOnInit() {
@@ -40,7 +41,10 @@ export class TareaComponent implements OnInit {
               this.auxEx = this.aux1[i].expectedTime;
               this.auxJob = this.aux1[i].jobTime;
               this.n = this.aux1[i].name;
-              this.listT[i] = {n: this.n, c: this.auxC , s: this.aux1[i].status, id: this.aux1[i].id, exTime: this.auxEx, jT: this.auxJob};
+              this.listT[i] = {n: this.n, c: this.auxC , s: this.aux1[i].status, id: this.aux1[i].id,
+                exTime: this.auxEx, jT: this.getTime(this.auxJob)};
+              this.auxTime = parseInt(this.listT[i].exTime, 10) * 60;
+              this.listT[i].exTime = this.getTime(this.auxTime);
             }
         }
       );
@@ -61,6 +65,7 @@ export class TareaComponent implements OnInit {
             localStorage.setItem('idTarea', tarea.id);
             localStorage.setItem('idProyect', this.idProyect);
             this.router.navigate(['/dashboard/proyectos']);
+            window.location.reload();
           }
         );
       } else {
@@ -75,5 +80,24 @@ export class TareaComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  getTime(value: number): string {
+    const  temp = value * 60;
+    const hours = Math.floor((temp / 3600));
+    const minutes = (temp % 3600) / 60;
+    if (minutes < 10) {
+        if (hours < 10) {
+            return '0' + hours + ':0' + minutes;
+        } else {
+            return hours + ':0' + minutes;
+        }
+    } else {
+        if (hours < 10) {
+            return '0' + hours + ':' + minutes;
+        } else {
+            return hours + ':' + minutes;
+            }
+        }
   }
 }

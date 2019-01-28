@@ -23,11 +23,16 @@
                         </div>
                         <div fxFlex>
                             <br>
-                            <input type="text1" formControlName="category" placeholder="CATEGORIA">
+                            <input type="text1" placeholder="CATEGORIA" matInput formControlName="category" [matAutocomplete]="autoTest">
+                            <mat-autocomplete #autoTest="matAutocomplete">
+                            <mat-option *ngFor="let option of filteredOptions1 | async" [value]="option">
+                            {{option}}
+                            </mat-option>
+                            </mat-autocomplete>
                         </div>
                         <div fxFlex>
                             <br>
-                            <input type="text1" type="number" formControlName="expectedTime" placeholder="TIEMPO ESPERADO">
+                            <input type="text1" type="number" oninput="this.value=this.value.replace(/[^0-9]/g,'');" formControlName="expectedTime" placeholder="HORAS TIEMPO ESPERADO">
                         </div>
                     </div>
                 </div>
@@ -40,7 +45,10 @@
                     <br>
                     <div *ngFor="let usuario of usuariosForms.controls; let i=index" [formGroupName]="i">
                         <br>
-                        <input type="text"  formControlName="cc" placeholder="CEDULA">
+                        
+                        <mat-select type="input" placeholder="NOMBRE" formControlName="cc">
+                            <mat-option *ngFor="let user of listUsers" value={{user.cc}}>{{user.nombre}}</mat-option>
+                        </mat-select>
                     </div>
                 </div>
             </div>
