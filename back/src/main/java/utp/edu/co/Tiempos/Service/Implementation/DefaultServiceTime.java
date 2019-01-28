@@ -263,8 +263,7 @@ public class DefaultServiceTime implements TimeService{
             }   
             proyectoUsuario.setName(proyecto.getName());
             proyectoUsuario.setJobTimeUser(contador);
-            if(contador>0)
-                proyectosPorUsuario.add(proyectoUsuario);
+            proyectosPorUsuario.add(proyectoUsuario);
             contador = 0;
         }
         
