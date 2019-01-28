@@ -85,8 +85,10 @@ public class TareaController {
     
     //trae una lista con las categorias de las tareas y el tiempo que se ha trabajado en cada categoria
     @GetMapping("/tiempoCategorias")
-    public ResponseEntity<?> tiempoPorCategoria(){
-        List<TareaCategoriaDTO> tiempoCategoria = timeService.tiempoPorCategoria();
+    public ResponseEntity<?> tiempoPorCategoria(@RequestParam("fechaInicio") String fechaInicio, @RequestParam("fechaFin") String fechaFin){
+        List<TareaCategoriaDTO> tiempoCategoria = timeService.tiempoPorCategoria(fechaInicio,fechaFin);
+        if(tiempoCategoria.isEmpty())
+            return ResponseEntity.noContent().build();
         return ResponseEntity.ok(tiempoCategoria);
     }
     

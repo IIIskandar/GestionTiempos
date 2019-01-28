@@ -23,6 +23,7 @@ import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
 import utp.edu.co.Tiempos.dto.TareasPorProyectoDTO;
+import utp.edu.co.Tiempos.dto.TiempoProyectosDTO;
 import utp.edu.co.Tiempos.dto.UsuariosPorProyectoDTO;
 
 /**
@@ -122,10 +123,21 @@ public class ProyectoController {
     }
     
     //contabiliza el tiempo trabajado de todos los proyectos 
-    @GetMapping("/tiemposProyectos")
-    public ResponseEntity<?> consultarTiempoProyectos(){
+    @GetMapping("/tiempoProyectos")
+    public ResponseEntity<?> consultarTiempoProyectosTotal(){
         
         List<Proyecto> aux = timeService.contabilizarProyectos();
+        return ResponseEntity.ok(aux);
+    }
+    
+    @GetMapping("/tiempoProyectosFecha")
+    public ResponseEntity<?> consultarTiempoProyectos(String fechaInicio, String fechaFin){
+        
+        List<TiempoProyectosDTO> aux = timeService.tiempoProyectosFecha(fechaInicio, fechaFin);
+        if(aux==null)
+            return ResponseEntity.badRequest().build();
+        if(aux.isEmpty())
+            return ResponseEntity.noContent().build();
         return ResponseEntity.ok(aux);
     }
     

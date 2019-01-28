@@ -40,11 +40,13 @@ public interface TimeService {
     
     List<Proyecto> contabilizarProyectos();
     
+    List<TiempoProyectosDTO> tiempoProyectosFecha(String fechaInicio, String fechaFin);
+    
     TiempoUsuarioDTO tiempoUsuarios(String cc);
     
     List<TiempoUsuarioDTO> tiempoAllUsers();
     
-    List<TareaCategoriaDTO> tiempoPorCategoria();
+    List<TareaCategoriaDTO> tiempoPorCategoria(String fechaInicio, String fechaFin);
     
     List<TiempoSuspensionTipoDTO> tiempoPorTipoSus(String fechaInicio, String fechaFin);
     

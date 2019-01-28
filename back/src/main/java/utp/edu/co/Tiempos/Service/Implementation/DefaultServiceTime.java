@@ -27,6 +27,7 @@ import utp.edu.co.Tiempos.Repository.UsuarioRepository;
 import utp.edu.co.Tiempos.Service.ConfiguracionService;
 import utp.edu.co.Tiempos.Service.TimeService;
 import utp.edu.co.Tiempos.dto.ProyectoTareaUsuarioDTO;
+import utp.edu.co.Tiempos.dto.RegistrosRangoDTO;
 import utp.edu.co.Tiempos.dto.SuspensionDTO;
 import utp.edu.co.Tiempos.dto.TareaCategoriaDTO;
 import utp.edu.co.Tiempos.dto.TareasPorProyectoDTO;
@@ -226,6 +227,49 @@ public class DefaultServiceTime implements TimeService{
         return proyectosAux;
     }
     
+    @Override
+    public List<TiempoProyectosDTO> tiempoProyectosFecha(String fechaInicio, String fechaFin){ 
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        List<TiempoProyectosDTO> proyectosPorUsuario = new ArrayList<>();
+        List<Proyecto> proyectos = proyectoRepository.findAll();
+        long contador = 0;
+        List<Descripcion> registrosTareas = new ArrayList<>();
+        for (Proyecto proyecto : proyectos) {
+            TiempoProyectosDTO proyectoUsuario = new TiempoProyectosDTO();
+            List<Tarea> tareas = proyecto.getTareas();
+            for (Tarea tarea : tareas) {
+                
+                registrosTareas = tarea.getDescripciones();
+                for (Descripcion registroTarea : registrosTareas) {
+                    if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                        contador = contador + registroTarea.getJobTime();
+                    }
+                }  
+            
+            }   
+            proyectoUsuario.setName(proyecto.getName());
+            proyectoUsuario.setJobTimeUser(contador);
+            if(contador>0)
+                proyectosPorUsuario.add(proyectoUsuario);
+            contador = 0;
+        }
+        
+        return proyectosPorUsuario;
+    }
     //consulta el tiempo de un usuario con el id de los registros trabajados
     @Override
     public TiempoUsuarioDTO tiempoUsuarios(String cc) {
@@ -242,8 +286,62 @@ public class DefaultServiceTime implements TimeService{
 
     //consulta el tiempo de las tareas por categoria
     @Override
-    public List<TareaCategoriaDTO> tiempoPorCategoria() {
-        List<TareaCategoriaDTO> tiemposCategoria = tareaRepository.consultarTiempoCategoria();
+    public List<TareaCategoriaDTO> tiempoPorCategoria(String fechaInicio, String fechaFin) {
+         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        List<RegistrosRangoDTO> registrosEnRango = new ArrayList<>();
+        List<String> categories = new ArrayList<>();
+        List<TareaCategoriaDTO> tiemposCategoria = new ArrayList<>();
+        long contador = 0;
+        List<Tarea> tareasAux = tareaRepository.findAll();
+        for (Tarea tareaAux : tareasAux) {
+            RegistrosRangoDTO registroEnRango = new RegistrosRangoDTO();
+            List<Descripcion> registrosTareas = tareaAux.getDescripciones();
+            for (Descripcion registroTarea : registrosTareas) {
+                if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null)) 
+                    if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                        if(!(registroTarea.getJobTime()==null))
+                            contador = registroTarea.getJobTime() + contador;
+                }
+            }
+        registroEnRango.setTarea(tareaAux.getName());
+        registroEnRango.setCategory(tareaAux.getCategory());
+        registroEnRango.setJobTime(contador);
+        registrosEnRango.add(registroEnRango);
+        contador = 0;
+        }
+        
+        for (int i = 0; i < registrosEnRango.size(); i++) {
+            if(!categories.contains(registrosEnRango.get(i).getCategory()))
+                categories.add(registrosEnRango.get(i).getCategory());
+        }
+        
+        for (int i = 0; i < categories.size(); i++) {
+            TareaCategoriaDTO tiempoCategoria = new TareaCategoriaDTO();
+            for (int j = 0; j < registrosEnRango.size(); j++) {
+                if(categories.get(i).equals(registrosEnRango.get(j).getCategory()))
+                    contador = registrosEnRango.get(j).getJobTime() + contador;
+            }
+            if(contador!=0){
+                tiempoCategoria.setCategory(categories.get(i));
+                tiempoCategoria.setJobTimeCategory(contador);
+                tiemposCategoria.add(tiempoCategoria);}
+            contador = 0;
+        }
+        
         return tiemposCategoria;
     }
      
@@ -307,10 +405,11 @@ public class DefaultServiceTime implements TimeService{
         Tarea tareaAux = configuracionService.consultarTarea(idTarea);
         List<Descripcion> registrosTareas = tareaAux.getDescripciones();
         for (Descripcion registroTarea : registrosTareas) {
-            if((registroTarea.getMadeBy().equals(cc))&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
-                contador = registroTarea.getJobTime() + contador;
-                descripcionesId.add(registroTarea.getId());
-            }
+            if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null))
+                if((registroTarea.getMadeBy().equals(cc))&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                    contador = registroTarea.getJobTime() + contador;
+                    descripcionesId.add(registroTarea.getId());
+                }
         }
         tiempoUsuario.setName(tareaAux.getName());
         tiempoUsuario.setJobTimeUser(contador);
