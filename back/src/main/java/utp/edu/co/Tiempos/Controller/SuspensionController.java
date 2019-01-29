@@ -60,10 +60,12 @@ public class SuspensionController {
     //borra una suspension
     @DeleteMapping("/eliminar/{nombre}")
     public ResponseEntity<?> delete(@PathVariable("nombre") String nombre){
-        TipoSuspensionesDTO auxiliar = configuracionService.eliminarTipoSuspension(nombre);
-        if(auxiliar == null){
+        String auxiliar = configuracionService.eliminarTipoSuspension(nombre);
+        if(auxiliar == null)
             return ResponseEntity.notFound().build();
-        }
+        
+        if(auxiliar.contains("suspension"))
+            return ResponseEntity.ok("La suspension ya ha sido usada y no se puede eliminar");
         
         return ResponseEntity.ok(auxiliar);
     }

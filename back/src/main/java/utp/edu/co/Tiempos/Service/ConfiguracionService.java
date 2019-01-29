@@ -64,5 +64,5 @@ public interface ConfiguracionService {
     
     TipoSuspensionesDTO consultarSuspension(String nombre);
     
-    TipoSuspensionesDTO eliminarTipoSuspension(String nombre);
+    String eliminarTipoSuspension(String nombre);
 }

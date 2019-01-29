@@ -16,6 +16,7 @@ import utp.edu.co.Tiempos.Documents.Proyecto;
 import utp.edu.co.Tiempos.Documents.Usuario;
 import utp.edu.co.Tiempos.Repository.ProyectoRepository;
 import utp.edu.co.Tiempos.Documents.Tarea;
+import utp.edu.co.Tiempos.Documents.TiempoSuspensiones;
 import utp.edu.co.Tiempos.Documents.TipoSuspensiones;
 import utp.edu.co.Tiempos.Repository.DescripcionRepository;
 import utp.edu.co.Tiempos.Repository.TareaRepository;
@@ -312,14 +313,22 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
     
     //elimina un tipo de suspension por el nombre FALTA COSNSULTAR QUE NO HAYA SIDO UTILIZADA
     @Override
-    public TipoSuspensionesDTO eliminarTipoSuspension(String nombre) {
+    public String eliminarTipoSuspension(String nombre) {
         
         TipoSuspensionesDTO tipoSuspensiones = consultarSuspension(nombre);
         TipoSuspensiones tipoSus = modMapper.map(tipoSuspensiones, TipoSuspensiones.class);
+        List<Usuario> usuarios = listaUsuarios();
+        for (Usuario usuario : usuarios) {
+            List<TiempoSuspensiones> suspensiones = usuario.getTiempoSuspensiones();
+            for (int i = 0; i < suspensiones.size(); i++) {
+                if(nombre.equals(suspensiones.get(i).getNombre()))
+                    return "Tipo suspension usada";
+            }
+        }
         String id = tipoSus.getId();
         if(tipoSuspensiones != null){
             tareaRepository.deleteById(id);
-            return tipoSuspensiones;
+            return "Eliminada correctamente";
         }
         return null;
     }
