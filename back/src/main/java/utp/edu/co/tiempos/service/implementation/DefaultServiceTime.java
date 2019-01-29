@@ -252,14 +252,15 @@ public class DefaultServiceTime implements TimeService{
             TiempoProyectosDTO proyectoUsuario = new TiempoProyectosDTO();
             List<Tarea> tareas = proyecto.getTareas();
             for (Tarea tarea : tareas) {
-                
-                registrosTareas = tarea.getDescripciones();
-                for (Descripcion registroTarea : registrosTareas) {
-                    if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
-                        contador = contador + registroTarea.getJobTime();
-                    }
-                }  
-            
+                if(!(tarea==null)){
+                    registrosTareas = tarea.getDescripciones();
+                    for (Descripcion registroTarea : registrosTareas) {
+                        if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                            if(!(registroTarea.getJobTime() == null))
+                                contador = contador + registroTarea.getJobTime();
+                        }
+                    }  
+                }
             }   
             proyectoUsuario.setName(proyecto.getName());
             proyectoUsuario.setJobTimeUser(contador);
@@ -307,20 +308,22 @@ public class DefaultServiceTime implements TimeService{
         long contador = 0;
         List<Tarea> tareasAux = tareaRepository.findAll();
         for (Tarea tareaAux : tareasAux) {
-            RegistrosRangoDTO registroEnRango = new RegistrosRangoDTO();
-            List<Descripcion> registrosTareas = tareaAux.getDescripciones();
-            for (Descripcion registroTarea : registrosTareas) {
-                if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null)) 
-                    if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
-                        if(!(registroTarea.getJobTime()==null))
-                            contador = registroTarea.getJobTime() + contador;
+            if(!(tareaAux==null)){
+                RegistrosRangoDTO registroEnRango = new RegistrosRangoDTO();
+                List<Descripcion> registrosTareas = tareaAux.getDescripciones();
+                for (Descripcion registroTarea : registrosTareas) {
+                    if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null)) 
+                        if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                            if(!(registroTarea.getJobTime()==null))
+                                contador = registroTarea.getJobTime() + contador;
+                    }
                 }
+                registroEnRango.setTarea(tareaAux.getName());
+                registroEnRango.setCategory(tareaAux.getCategory());
+                registroEnRango.setJobTime(contador);
+                registrosEnRango.add(registroEnRango);
+                contador = 0;
             }
-        registroEnRango.setTarea(tareaAux.getName());
-        registroEnRango.setCategory(tareaAux.getCategory());
-        registroEnRango.setJobTime(contador);
-        registrosEnRango.add(registroEnRango);
-        contador = 0;
         }
         
         for (int i = 0; i < registrosEnRango.size(); i++) {
@@ -332,7 +335,8 @@ public class DefaultServiceTime implements TimeService{
             TareaCategoriaDTO tiempoCategoria = new TareaCategoriaDTO();
             for (int j = 0; j < registrosEnRango.size(); j++) {
                 if(categories.get(i).equals(registrosEnRango.get(j).getCategory()))
-                    contador = registrosEnRango.get(j).getJobTime() + contador;
+                    if(!(registrosEnRango.get(i).getJobTime()==null))
+                        contador = registrosEnRango.get(j).getJobTime() + contador;
             }
             if(contador!=0){
                 tiempoCategoria.setCategory(categories.get(i));
@@ -406,8 +410,9 @@ public class DefaultServiceTime implements TimeService{
         for (Descripcion registroTarea : registrosTareas) {
             if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null))
                 if((registroTarea.getMadeBy().equals(cc))&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
-                    contador = registroTarea.getJobTime() + contador;
-                    descripcionesId.add(registroTarea.getId());
+                    if(!(registroTarea.getJobTime()==null)){
+                        contador = registroTarea.getJobTime() + contador;
+                        descripcionesId.add(registroTarea.getId());}
                 }
         }
         tiempoUsuario.setName(tareaAux.getName());
@@ -444,24 +449,27 @@ public class DefaultServiceTime implements TimeService{
         for (Proyecto proyecto : proyectos) {
             List<Tarea> tareas = proyecto.getTareas();
             for (Tarea tarea : tareas) {
-            ProyectoTareaUsuarioDTO tareaUsuario = new ProyectoTareaUsuarioDTO();
-            registrosTareas = tarea.getDescripciones();
-            for (Descripcion registroTarea : registrosTareas) {
-                if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
-                    contador = contador + registroTarea.getJobTime();
-                    contadorRegistros = contadorRegistros + 1;
+                if(!(tarea==null)){
+                ProyectoTareaUsuarioDTO tareaUsuario = new ProyectoTareaUsuarioDTO();
+                registrosTareas = tarea.getDescripciones();
+                for (Descripcion registroTarea : registrosTareas) {
+                    if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                        if(!(registroTarea.getJobTime()== null)){
+                            contador = contador + registroTarea.getJobTime();
+                            contadorRegistros = contadorRegistros + 1;}
+                    }
+                }
+                tareaUsuario.setNameProyecto(proyecto.getName());
+                tareaUsuario.setNameTarea(tarea.getName());
+                tareaUsuario.setStatus(tarea.getStatus());
+                tareaUsuario.setTotalRegistros(contadorRegistros);
+                tareaUsuario.setJobTimeUser(contador);
+                if(contadorRegistros>0)
+                    proyectosPorUsuario.add(tareaUsuario);
+                contador = 0;
+                contadorRegistros=0;
                 }
             }
-            tareaUsuario.setNameProyecto(proyecto.getName());
-            tareaUsuario.setNameTarea(tarea.getName());
-            tareaUsuario.setStatus(tarea.getStatus());
-            tareaUsuario.setTotalRegistros(contadorRegistros);
-            tareaUsuario.setJobTimeUser(contador);
-            if(contadorRegistros>0)
-                proyectosPorUsuario.add(tareaUsuario);
-            contador = 0;
-            contadorRegistros=0;
-        }
         }
         
         return proyectosPorUsuario;
@@ -480,24 +488,27 @@ public class DefaultServiceTime implements TimeService{
         for (Proyecto proyecto : proyectos) {
             List<Tarea> tareas = proyecto.getTareas();
             for (Tarea tarea : tareas) {
-            ProyectoTareaUsuarioDTO tareaUsuario = new ProyectoTareaUsuarioDTO();
-            registrosTareas = tarea.getDescripciones();
-            for (Descripcion registroTarea : registrosTareas) {
-                if(registroTarea.getMadeBy().equals(cc)){
-                    contador = contador + registroTarea.getJobTime();
-                    contadorRegistros = contadorRegistros + 1;
+                if(!(tarea==null)){
+                ProyectoTareaUsuarioDTO tareaUsuario = new ProyectoTareaUsuarioDTO();
+                registrosTareas = tarea.getDescripciones();
+                for (Descripcion registroTarea : registrosTareas) {
+                    if(registroTarea.getMadeBy().equals(cc)){
+                        if(!(registroTarea.getJobTime()==null)){
+                            contador = contador + registroTarea.getJobTime();
+                            contadorRegistros = contadorRegistros + 1;}
+                    }
+                }
+                tareaUsuario.setNameProyecto(proyecto.getName());
+                tareaUsuario.setNameTarea(tarea.getName());
+                tareaUsuario.setStatus(tarea.getStatus());
+                tareaUsuario.setTotalRegistros(contadorRegistros);
+                tareaUsuario.setJobTimeUser(contador);
+                if(contadorRegistros>0)
+                    proyectosPorUsuario.add(tareaUsuario);
+                contador = 0;
+                contadorRegistros=0;
                 }
             }
-            tareaUsuario.setNameProyecto(proyecto.getName());
-            tareaUsuario.setNameTarea(tarea.getName());
-            tareaUsuario.setStatus(tarea.getStatus());
-            tareaUsuario.setTotalRegistros(contadorRegistros);
-            tareaUsuario.setJobTimeUser(contador);
-            if(contadorRegistros>0)
-                proyectosPorUsuario.add(tareaUsuario);
-            contador = 0;
-            contadorRegistros=0;
-        }
         }
         
         return proyectosPorUsuario;
@@ -529,14 +540,14 @@ public class DefaultServiceTime implements TimeService{
             TiempoProyectosDTO proyectoUsuario = new TiempoProyectosDTO();
             List<Tarea> tareas = proyecto.getTareas();
             for (Tarea tarea : tareas) {
-                
-                registrosTareas = tarea.getDescripciones();
-                for (Descripcion registroTarea : registrosTareas) {
-                    if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
-                        contador = contador + registroTarea.getJobTime();
+                if(!(tarea==null)){
+                    registrosTareas = tarea.getDescripciones();
+                    for (Descripcion registroTarea : registrosTareas) {
+                        if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
+                            if(!(registroTarea.getJobTime()==null))
+                                contador = contador + registroTarea.getJobTime();
                     }
-                }  
-            
+                }
             }   
             proyectoUsuario.setName(proyecto.getName());
             proyectoUsuario.setJobTimeUser(contador);
@@ -574,20 +585,24 @@ public class DefaultServiceTime implements TimeService{
         
         long contador = 0;
         for (Tarea tarea : tareas) {
-            registrosTareas = tarea.getDescripciones();
-            for (Descripcion registrosTarea : registrosTareas) {
-                if(!ccs.contains(registrosTarea.getMadeBy()))
-                    ccs.add(registrosTarea.getMadeBy());
+            if(!(tarea==null)){
+                registrosTareas = tarea.getDescripciones();
+                for (Descripcion registrosTarea : registrosTareas) {
+                    if(!ccs.contains(registrosTarea.getMadeBy()))
+                        ccs.add(registrosTarea.getMadeBy());
+                }
             }
         }
         for (int i = 0; i < ccs.size(); i++) {
             UsuariosPorProyectoDTO usuarioPP = new UsuariosPorProyectoDTO();
             for (Tarea tarea : tareas) {
-                registrosTareas = tarea.getDescripciones();
-                for (Descripcion registroTarea : registrosTareas) {
-                    if((registroTarea.getMadeBy().equals(ccs.get(i)))&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
-                        if(registroTarea.getJobTime() != null)
-                            contador = contador + registroTarea.getJobTime();
+                if(!(tarea==null)){
+                    registrosTareas = tarea.getDescripciones();
+                    for (Descripcion registroTarea : registrosTareas) {
+                        if((registroTarea.getMadeBy().equals(ccs.get(i)))&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
+                            if(registroTarea.getJobTime() != null)
+                                contador = contador + registroTarea.getJobTime();
+                    }
                 }
             }
             usuarioPP.setCc(ccs.get(i));
@@ -624,22 +639,23 @@ public class DefaultServiceTime implements TimeService{
         long contador = 0;
             
         for (Tarea tarea : tareas) {
-            TareasPorProyectoDTO tareaPP = new TareasPorProyectoDTO();
-            registrosTareas = tarea.getDescripciones();
-            for (Descripcion registroTarea : registrosTareas) {
-                if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
-                    if(registroTarea.getJobTime() != null)
-                        contador = contador + registroTarea.getJobTime();
+            if(!(tarea==null)){
+                TareasPorProyectoDTO tareaPP = new TareasPorProyectoDTO();
+                registrosTareas = tarea.getDescripciones();
+                for (Descripcion registroTarea : registrosTareas) {
+                    if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
+                        if(registroTarea.getJobTime() != null)
+                            contador = contador + registroTarea.getJobTime();
+                }
+                tareaPP.setName(tarea.getName());
+                tareaPP.setJobTime(contador);
+                tareaPP.setCategory(tarea.getCategory());
+                tareaPP.setStatus(tarea.getStatus());
+                tareaPP.setExpectedTime(tarea.getExpectedTime());
+                if(contador > 0)
+                    tareasProyecto.add(tareaPP);
+                contador=0;
             }
-        tareaPP.setName(tarea.getName());
-        tareaPP.setJobTime(contador);
-        tareaPP.setCategory(tarea.getCategory());
-        tareaPP.setStatus(tarea.getStatus());
-        tareaPP.setExpectedTime(tarea.getExpectedTime());
-        if(contador > 0)
-            tareasProyecto.add(tareaPP);
-        contador=0;
-
         }
             
         

@@ -19,10 +19,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "Proyectos")
 public class Proyecto {
+
     @Id
     private String id;
     @NotNull
-    @Indexed(unique=true)
+    @Indexed(unique = true)
     private String name;
     private String creator;
     private Long jobTime;
@@ -30,12 +31,13 @@ public class Proyecto {
     private List<Tarea> tareas;
     @DBRef
     private List<Usuario> UsersId;
-    
-    protected Proyecto(){
-        this.tareas = new ArrayList<>();
-        this.UsersId = new ArrayList<>();}
 
-    public Proyecto(String name, String creator,Long jobTime, List<Tarea> tareas, List<Usuario> UsersId) {
+    protected Proyecto() {
+        this.tareas = new ArrayList<>();
+        this.UsersId = new ArrayList<>();
+    }
+
+    public Proyecto(String name, String creator, Long jobTime, List<Tarea> tareas, List<Usuario> UsersId) {
         this.name = name;
         this.creator = creator;
         this.jobTime = jobTime;
@@ -46,7 +48,6 @@ public class Proyecto {
     public String getId() {
         return id;
     }
-    
 
     public String getName() {
         return name;
@@ -87,5 +88,5 @@ public class Proyecto {
     public void setUsersId(List<Usuario> UsersId) {
         this.UsersId = UsersId;
     }
-    
+
 }

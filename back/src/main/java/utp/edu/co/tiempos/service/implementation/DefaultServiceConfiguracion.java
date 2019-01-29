@@ -6,7 +6,6 @@
 package utp.edu.co.tiempos.service.implementation;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
@@ -18,6 +17,7 @@ import utp.edu.co.tiempos.repository.ProyectoRepository;
 import utp.edu.co.tiempos.documents.Tarea;
 import utp.edu.co.tiempos.documents.TiempoSuspensiones;
 import utp.edu.co.tiempos.documents.TipoSuspensiones;
+import utp.edu.co.tiempos.dto.CategoriasDTO;
 import utp.edu.co.tiempos.repository.DescripcionRepository;
 import utp.edu.co.tiempos.repository.TareaRepository;
 import utp.edu.co.tiempos.repository.TipoSuspensionesRepository;
@@ -211,11 +211,21 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
 
     //elimina una tarea por id
     @Override
-    public Tarea eliminarTarea(String id) {
-        Tarea tareaToDel = consultarTarea(id);
+    public Tarea eliminarTarea(String idProyecto, String idTarea) {
+        Proyecto proyectoAux = consultarProyecto(idProyecto);
+        Tarea tareaToDel = consultarTarea(idTarea);
+        List<Tarea> tareasAux = proyectoAux.getTareas();
+        for (Tarea tarea : tareasAux) {
+            if(tarea.getId().equals(idTarea)&&tarea.getDescripciones().isEmpty()){
+                tareasAux.remove(tarea);
+                break;
+            }
+        }
+        proyectoAux.setTareas(tareasAux);
+        proyectoRepository.save(proyectoAux);
         if(tareaToDel.getDescripciones().isEmpty()){
             if(tareaToDel != null){
-                tareaRepository.deleteById(id);
+                tareaRepository.deleteById(idTarea);
                 return tareaToDel;
             }
         }
@@ -327,9 +337,25 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         }
         String id = tipoSus.getId();
         if(tipoSuspensiones != null){
-            tareaRepository.deleteById(id);
+            tipoSuspensionesRepository.deleteById(id);
             return "Eliminada correctamente";
         }
         return null;
+    }
+    
+    @Override
+    public List<CategoriasDTO> listaCategorias(){
+        List<Tarea> tareasAux = tareaRepository.findAll();
+        List<CategoriasDTO> categorias = new ArrayList<>();
+        List<String> categoriasAux = new ArrayList<>();
+        for (Tarea tarea : tareasAux) {
+            CategoriasDTO categoria = new CategoriasDTO();
+            if(!categoriasAux.contains(tarea.getCategory())){
+                categoriasAux.add(tarea.getCategory());
+                categoria.setName(tarea.getCategory());  
+                categorias.add(categoria);
+            }
+        }
+        return categorias;
     }
 }

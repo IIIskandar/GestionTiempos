@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import utp.edu.co.tiempos.documents.Descripcion;
 import utp.edu.co.tiempos.documents.Tarea;
+import utp.edu.co.tiempos.dto.CategoriasDTO;
 import utp.edu.co.tiempos.service.ConfiguracionService;
 import utp.edu.co.tiempos.service.TimeService;
 import utp.edu.co.tiempos.dto.TareaCategoriaDTO;
@@ -53,17 +54,6 @@ public class TareaController {
         }
 
         return ResponseEntity.ok(tarea);
-    }
-    
-    //borra una tarea, con su id
-    @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteTarea(@PathVariable("id") String id){
-        Tarea tarea = configuracionService.eliminarTarea(id);
-        if(tarea == null){
-            return ResponseEntity.ok("la tarea no puede ser borrada porque tiene registros");
-        }
-        
-        return ResponseEntity.ok("tarea borrada correctamente");
     }
     
     //inicia un registro en una tarea
@@ -101,5 +91,11 @@ public class TareaController {
             return ResponseEntity.noContent().build();
         else
             return ResponseEntity.ok(tiempo);
+    }
+    
+    @GetMapping("/categorias")
+    public ResponseEntity<?> categorias(){
+        List<CategoriasDTO> categorias = configuracionService.listaCategorias();
+        return ResponseEntity.ok(categorias);
     }
 }

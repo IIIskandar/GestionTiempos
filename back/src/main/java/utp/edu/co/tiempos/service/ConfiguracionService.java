@@ -12,6 +12,7 @@ import utp.edu.co.tiempos.documents.Usuario;
 import utp.edu.co.tiempos.documents.Suspension;
 import utp.edu.co.tiempos.documents.Tarea;
 import utp.edu.co.tiempos.documents.TipoSuspensiones;
+import utp.edu.co.tiempos.dto.CategoriasDTO;
 import utp.edu.co.tiempos.dto.SuspensionDTO;
 import utp.edu.co.tiempos.dto.TipoSuspensionesDTO;
 
@@ -48,7 +49,9 @@ public interface ConfiguracionService {
     
     Tarea guardarTarea(String id, Tarea tarea);
     
-    Tarea eliminarTarea(String id);
+    Tarea eliminarTarea(String idProyecto, String idTarea);
+    
+    List<CategoriasDTO> listaCategorias();
     
     List<Descripcion> listaRegistros(String id);
     
