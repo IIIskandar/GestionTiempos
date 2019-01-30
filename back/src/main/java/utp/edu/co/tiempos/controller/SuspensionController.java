@@ -65,9 +65,9 @@ public class SuspensionController {
             return ResponseEntity.notFound().build();
         
         if(auxiliar.contains("suspension"))
-            return ResponseEntity.ok("La suspension ya ha sido usada y no se puede eliminar");
+            return ResponseEntity.ok(0);
         
-        return ResponseEntity.ok(auxiliar);
+        return ResponseEntity.ok(1);
     }
     
     //carga una lista con el tiempo de las suspensiones usadas
