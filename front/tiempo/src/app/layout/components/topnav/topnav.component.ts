@@ -46,7 +46,7 @@ export class TopnavComponent implements OnInit {
         } else {
             this.iSuspension = false;
         }
-        if ( localStorage.getItem('status') === 'En tarea') {
+        if ( localStorage.getItem('status') === 'EnTarea') {
             this.tarea = true;
         } else {
             this.tarea = false;

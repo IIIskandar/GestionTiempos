@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray, FormBuilder} from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { AdminService } from '../../services/admin.service';
-import {map, startWith} from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-crear',
@@ -11,22 +11,22 @@ import {map, startWith} from 'rxjs/operators';
 })
 export class CrearComponent implements OnInit {
 
-  @Input() category: any;
+
 
   constructor(private formBuilder: FormBuilder,
     private admin: AdminService,
     private router: Router,
     ) { }
 
-  myForm: FormGroup;
   listUsers: Array<{nombre: string, cc: string}> = [];
+  myForm: FormGroup;
   a: any;
   b: any;
   proyect: any;
   j: 0;
   aux: any;
   aux1: any;
-  aux2: any;
+  auxCC: any;
 
   ngOnInit() {
     if (localStorage.getItem('isLoggedin') === 'true') {
@@ -37,7 +37,6 @@ export class CrearComponent implements OnInit {
         usersId: this.formBuilder.array([])
       });
       this.getUsers();
-      this.aux1 = {tareas: [{category: ''}]};
   } else {
       localStorage.removeItem('isLoggedin');
       this.router.navigate(['/login']);
@@ -49,26 +48,24 @@ export class CrearComponent implements OnInit {
     this.addUser();
   }
 
-
-  getUsers() {
-    this.admin.getUsers()
-      .subscribe(
-        res => {
-          this.aux2 = res;
-          for (let i = 0; i < this.aux2.length; i++) {
-            this.listUsers[i] = {nombre: this.aux2[i].name, cc: this.aux2[i].cc};
-          }
-        }
-      );
-  }
-
-
   get tareasForms() {
     return this.myForm.get('tareas') as FormArray;
   }
 
   get usuariosForms() {
     return this.myForm.get('usersId') as FormArray;
+  }
+
+  getUsers() {
+    this.admin.getUsers()
+      .subscribe(
+        res => {
+          this.aux1 = res;
+          for (let i = 0; i < this.aux1.length; i++) {
+            this.listUsers[i] = {nombre: this.aux1[i].name, cc: this.aux1[i].cc};
+          }
+        }
+      );
   }
 
   addTarea() {
@@ -103,12 +100,38 @@ export class CrearComponent implements OnInit {
 
   enviar() {
     console.log(this.myForm.value);
-    /*this.admin.crearProyecto(this.myForm.value)
+
+    for (let i = 0; i < this.myForm.value.usersId.length; i++) {
+      this.auxCC = false;
+      for (let j = 0; j < this.listUsers.length; j++) {
+        if (this.myForm.value.usersId[i].cc === this.listUsers[j].nombre) {
+          // this.myForm.value.usersId[i].cc = this.listUsers[j].cc;
+          this.auxCC = true;
+          j++;
+        }
+      }
+      if (this.auxCC === false) {
+        alert('El usuario ' + this.myForm.value.usersId[i].cc + ' no existe');
+        break;
+      }
+    }
+    if (this.auxCC === true) {
+      for (let i = 0; i < this.myForm.value.usersId.length; i++) {
+        for (let j = 0; j < this.listUsers.length; j++) {
+          if (this.myForm.value.usersId[i].cc === this.listUsers[j].nombre) {
+            this.myForm.value.usersId[i].cc = this.listUsers[j].cc;
+            j++;
+          }
+        }
+      }
+      this.admin.crearProyecto(this.myForm.value)
       .subscribe(
         success => {
           alert('Proyecto creado correctamente');
           this.router.navigate(['/admin']);
         }
-      );*/
+      );
+    }
   }
+
 }

@@ -60,7 +60,7 @@ export class TareaComponent implements OnInit {
         .subscribe(
           succes => {
             alert('Tarea inicada correctamente');
-            localStorage.setItem('status', 'En tarea');
+            localStorage.setItem('status', 'EnTarea');
             localStorage.setItem('nombreTarea', tarea.name);
             localStorage.setItem('idTarea', tarea.id);
             localStorage.setItem('idProyect', this.idProyect);

@@ -28,9 +28,14 @@ export class SuspensionComponent implements OnInit {
   aux4: any;
 
   ngOnInit() {
-    if (localStorage.getItem('isLoggedin') === 'true' && localStorage.getItem('status') !== 'suspension') {
-      this.cc = localStorage.getItem('cc');
-      this.getSus();
+    if (localStorage.getItem('isLoggedin') === 'true' && localStorage.getItem('status') !== 'suspension' ) {
+      if (localStorage.getItem('status') !== 'EnTarea') {
+        this.cc = localStorage.getItem('cc');
+        console.log(localStorage.getItem('status'));
+        this.getSus();
+      } else {
+        this.router.navigate(['/dashboard/proyectos']);
+      }
   } else {
       localStorage.removeItem('isLoggedin');
       this.router.navigate(['/login']);
