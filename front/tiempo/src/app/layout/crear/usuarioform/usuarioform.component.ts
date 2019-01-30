@@ -5,30 +5,28 @@ import { AdminService } from '../../../services/admin.service';
 import {map, startWith} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-categorias',
-  templateUrl: './categorias.component.html',
-  styleUrls: ['./categorias.component.scss']
+  selector: 'app-usuarioform',
+  templateUrl: './usuarioform.component.html',
+  styleUrls: ['./usuarioform.component.scss']
 })
-export class CategoriasComponent implements OnInit {
+export class UsuarioformComponent implements OnInit {
 
-
+  listUsers: Array<{nombre: string, cc: string}> = [];
   options: string[] = [''];
-  filteredOptions1: Observable<string[]>;
-  listCategory: Array<{nombre: string}> = [];
+  filteredOptions: Observable<string[]>;
   aux: any;
   aux1: any;
+  selectedCityIds: string[];
 
   constructor(private formBuilder: FormBuilder,
-    private admin: AdminService) {
-  }
+    private admin: AdminService,
+    ) { }
 
-
-  @Input() tareas: FormGroup;
-
+  @Input() usersId: FormGroup;
 
   ngOnInit() {
-    this.getListCategoria();
-    setTimeout(() => {this.filteredOptions1 = this.tareas.valueChanges
+    this.getUsers();
+    setTimeout(() => {this.filteredOptions = this.usersId.valueChanges
       .pipe(
         startWith(''),
         map(value => this._filter(value))
@@ -40,19 +38,19 @@ export class CategoriasComponent implements OnInit {
     if (this.aux1.length === 0) {
       return this.options;
     } else {
-      const filterValue = this.aux1.category.toLowerCase();
+      const filterValue = this.aux1.cc.toLowerCase();
       return this.options.filter(option => option.toLowerCase().includes(filterValue));
     }
   }
 
-  getListCategoria() {
-    this.admin.getListCategoria()
+  getUsers() {
+    this.admin.getUsers()
       .subscribe(
         res => {
-          this.aux = res;
-          for (let i = 0; i < this.aux.length; i++) {
-            this.listCategory[i] = {nombre: this.aux[i].name};
-            this.options.push(this.listCategory[i].nombre);
+          this.aux1 = res;
+          for (let i = 0; i < this.aux1.length; i++) {
+            this.listUsers[i] = {nombre: this.aux1[i].name, cc: this.aux1[i].cc};
+            this.options.push(this.aux1[i].name);
           }
         }
       );

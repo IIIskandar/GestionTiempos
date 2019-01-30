@@ -149,7 +149,7 @@ export class DashboardComponent implements OnInit {
                     if ( this.listSus.length >= 5) {
                         this.contador = this.listSus.length;
                         for (let i = 0; i < (this.contador - 5); i++) {
-                            this.listSus.splice(1, 1);
+                            this.listSus.splice(0, 1);
                         }
                     }
                     return(this.listSus);

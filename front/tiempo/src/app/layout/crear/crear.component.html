@@ -40,10 +40,7 @@
                     <br>
                     <div *ngFor="let usuario of usuariosForms.controls; let i=index" [formGroupName]="i">
                         <br>
-                        
-                        <mat-select type="input" placeholder="NOMBRE" formControlName="cc">
-                            <mat-option *ngFor="let user of listUsers" value={{user.cc}}>{{user.nombre}}</mat-option>
-                        </mat-select>
+                        <app-usuarioform [usersId]="usuario"></app-usuarioform>
                     </div>
                 </div>
             </div>

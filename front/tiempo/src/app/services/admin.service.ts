@@ -33,7 +33,7 @@ export class AdminService {
 
   iniciarTarea(id, cc) {
     const head = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(`http://localhost:8081/tiempos/v1/tareas/` + id + `/registro/inicio/En%20Tarea` , {
+    return this.http.post(`http://localhost:8081/tiempos/v1/tareas/` + id + `/registro/inicio/EnTarea` , {
       'madeBy': cc
     }, {headers: head});
   }

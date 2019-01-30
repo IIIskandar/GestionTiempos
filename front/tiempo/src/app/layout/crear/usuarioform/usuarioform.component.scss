@@ -1,3 +1,19 @@
+
+@import "~@ng-select/ng-select/themes/default.theme.css";
+body {
+  padding: 20px;
+}
+
+.ng-select.custom {
+    border:0px;
+    min-height: 0px;
+    border-radius: 0;
+}
+.ng-select.custom .ng-control  {            
+    min-height: 0px;
+    border-radius: 0;
+}
+
 .mat-card {
     text-align: center;
     img {
@@ -63,13 +79,3 @@ input[type=text], select, textarea {
     border-radius: 4px;
     resize: vertical;
   }
-
-  .ng-select.custom {
-    border:0px;
-    min-height: 0px;
-    border-radius: 0;
-}
-.ng-select.custom .ng-control  {            
-    min-height: 0px;
-    border-radius: 0;
-}
