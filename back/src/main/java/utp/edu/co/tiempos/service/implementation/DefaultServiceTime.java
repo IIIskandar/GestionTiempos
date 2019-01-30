@@ -87,7 +87,7 @@ public class DefaultServiceTime implements TimeService{
             }
             //si el nombre ya esta guardo el usuario sin hacer ningun cambio en la lista de tiempo
             if (nombreB){
-                usuarioToSus.setStatus("Suspension");
+                usuarioToSus.setStatus("suspension");
                 usuarioRepository.save(usuarioToSus);}
             //sino esta, tomo el nombre y lo agrego a la lista de tiempos y luego lo guardo en el
             else{
@@ -255,9 +255,10 @@ public class DefaultServiceTime implements TimeService{
                 if(!(tarea==null)){
                     registrosTareas = tarea.getDescripciones();
                     for (Descripcion registroTarea : registrosTareas) {
-                        if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
-                            if(!(registroTarea.getJobTime() == null))
-                                contador = contador + registroTarea.getJobTime();
+                        if(!(registroTarea.getFechaFin() == null))
+                            if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                                if(!(registroTarea.getJobTime() == null))
+                                    contador = contador + registroTarea.getJobTime();
                         }
                     }  
                 }
@@ -453,10 +454,12 @@ public class DefaultServiceTime implements TimeService{
                 ProyectoTareaUsuarioDTO tareaUsuario = new ProyectoTareaUsuarioDTO();
                 registrosTareas = tarea.getDescripciones();
                 for (Descripcion registroTarea : registrosTareas) {
-                    if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
-                        if(!(registroTarea.getJobTime()== null)){
-                            contador = contador + registroTarea.getJobTime();
-                            contadorRegistros = contadorRegistros + 1;}
+                    if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null)){
+                        if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                            if(!(registroTarea.getJobTime()== null)){
+                                contador = contador + registroTarea.getJobTime();
+                                contadorRegistros = contadorRegistros + 1;}
+                        }
                     }
                 }
                 tareaUsuario.setNameProyecto(proyecto.getName());
@@ -543,9 +546,11 @@ public class DefaultServiceTime implements TimeService{
                 if(!(tarea==null)){
                     registrosTareas = tarea.getDescripciones();
                     for (Descripcion registroTarea : registrosTareas) {
-                        if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
-                            if(!(registroTarea.getJobTime()==null))
-                                contador = contador + registroTarea.getJobTime();
+                        if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null)){
+                            if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
+                                if(!(registroTarea.getJobTime()==null))
+                                    contador = contador + registroTarea.getJobTime();
+                        }
                     }
                 }
             }   
@@ -599,9 +604,11 @@ public class DefaultServiceTime implements TimeService{
                 if(!(tarea==null)){
                     registrosTareas = tarea.getDescripciones();
                     for (Descripcion registroTarea : registrosTareas) {
-                        if((registroTarea.getMadeBy().equals(ccs.get(i)))&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
-                            if(registroTarea.getJobTime() != null)
-                                contador = contador + registroTarea.getJobTime();
+                        if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null)){
+                            if((registroTarea.getMadeBy().equals(ccs.get(i)))&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
+                                if(registroTarea.getJobTime() != null)
+                                    contador = contador + registroTarea.getJobTime();
+                        }
                     }
                 }
             }
@@ -643,9 +650,11 @@ public class DefaultServiceTime implements TimeService{
                 TareasPorProyectoDTO tareaPP = new TareasPorProyectoDTO();
                 registrosTareas = tarea.getDescripciones();
                 for (Descripcion registroTarea : registrosTareas) {
-                    if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
-                        if(registroTarea.getJobTime() != null)
-                            contador = contador + registroTarea.getJobTime();
+                    if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null)){
+                        if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
+                            if(registroTarea.getJobTime() != null)
+                                contador = contador + registroTarea.getJobTime();
+                    }
                 }
                 tareaPP.setName(tarea.getName());
                 tareaPP.setJobTime(contador);

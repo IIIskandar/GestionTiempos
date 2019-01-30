@@ -27,7 +27,7 @@
         </tr>
         <tr *ngFor="let suspension of listSus">
         <td id="nombre">{{suspension.nombre}}</td>
-        <td><button mat-raised-button color="warn">
+        <td><button mat-raised-button (click)="eliminarSus(suspension)" color="warn">
             <a>Eliminar suspension</a>
         </button></td>
         </tr>
@@ -42,12 +42,13 @@
     <h2>Lista de usuarios</h2>
     <table>
         <tr>
-        <th>Nombre</th>
-        <th>Rol</th>
+            <th>Nombre</th>
+            <th>Rol</th>
         </tr>
         <tr *ngFor="let user of listUser">
-        <td id="nombre">{{user.nombre}}</td>
-        <td id="rol">{{user.rol}}</td>
+            <td id="nombre">{{user.nombre}}</td>
+            <td id="rol">{{user.rol}}</td>
+            <td><button mat-raised-button color="warn" (click)="eliminarUser(user)">Eliminar usuario</button></td>
         </tr>
     </table>
     <br>
