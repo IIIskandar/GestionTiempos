@@ -90,8 +90,8 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
         if(usuario.contains("borrar"))
-            return ResponseEntity.ok(usuario);
-        return ResponseEntity.ok(usuario);
+            return ResponseEntity.ok(0);
+        return ResponseEntity.ok(1);
     }
     
     //inicia una suspension 
