@@ -92,4 +92,22 @@ export class AdminCrearComponent implements OnInit {
         );
   }
 
+  eliminarSus(suspension){
+    this.admin.eliminarSus(suspension.nombre)
+      .subscribe(
+        res => {
+          console.log(res);
+        }
+      );
+  }
+
+  eliminarUser(user){
+    this.admin.eliminarUser(user.cc)
+      .subscribe(
+        res =>{
+        console.log(res);
+        }
+      );
+  }
+
 }

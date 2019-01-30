@@ -120,4 +120,16 @@ export class AdminService {
     return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/tiempoProyectosFecha?fechaInicio=` + fechaInicio +
     '&fechaFin=' + fechaFin);
   }
+
+  eliminarSus(nombre){
+    return this.http.delete(`http://localhost:8081/tiempos/v1/suspension/eliminar/` + nombre);
+  }
+
+  eliminarUser(cc){
+    return this.http.delete(`http://localhost:8081/tiempos/v1/usuarios/` + cc);
+  }
+
+  eliminarTarea(idProyecto, idTarea){
+    return this.http.delete(`http://localhost:8081/tiempos/v1/proyectos/eliminarTarea/` + idProyecto + `/` + idTarea);
+  }
 }

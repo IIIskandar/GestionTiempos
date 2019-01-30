@@ -324,9 +324,8 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
     //elimina un tipo de suspension por el nombre FALTA COSNSULTAR QUE NO HAYA SIDO UTILIZADA
     @Override
     public String eliminarTipoSuspension(String nombre) {
-        
-        TipoSuspensionesDTO tipoSuspensiones = consultarSuspension(nombre);
-        TipoSuspensiones tipoSus = modMapper.map(tipoSuspensiones, TipoSuspensiones.class);
+         
+        Optional<TipoSuspensiones> tipOptional = tipoSuspensionesRepository.findByName(nombre);
         List<Usuario> usuarios = listaUsuarios();
         for (Usuario usuario : usuarios) {
             List<TiempoSuspensiones> suspensiones = usuario.getTiempoSuspensiones();
@@ -335,8 +334,8 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
                     return "Tipo suspension usada";
             }
         }
-        String id = tipoSus.getId();
-        if(tipoSuspensiones != null){
+        String id = tipOptional.get().getId();
+        if(tipOptional.isPresent()){
             tipoSuspensionesRepository.deleteById(id);
             return "Eliminada correctamente";
         }
