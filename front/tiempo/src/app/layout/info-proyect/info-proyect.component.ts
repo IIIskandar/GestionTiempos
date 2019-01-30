@@ -3,11 +3,12 @@ import { FormGroup, FormControl, Validators, FormArray, FormBuilder  } from '@an
 import { Router, ActivatedRoute } from '@angular/router';
 import { AdminService } from '../../services/admin.service';
 import { LoginService } from '../../services/login.service';
-
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-info-proyect',
   templateUrl: './info-proyect.component.html',
-  styleUrls: ['./info-proyect.component.scss']
+  styleUrls: ['./info-proyect.component.scss'],
+  providers: [DatePipe]
 })
 export class InfoProyectComponent implements OnInit {
 
@@ -15,7 +16,8 @@ export class InfoProyectComponent implements OnInit {
     private admin: AdminService,
     private login: LoginService,
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private datePipe: DatePipe) { }
 
   idProyect: any;
   nombreProyect: any;
@@ -24,26 +26,60 @@ export class InfoProyectComponent implements OnInit {
   auxN: any;
   name: any;
   auxtime: any;
+  maxDate1 = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+  maxDate2 = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+  minDate = this.datePipe.transform(new Date(2019, 0, 2), 'yyyy-MM-dd');
+  minDate2 = this.datePipe.transform(new Date(2019, 0, 2), 'yyyy-MM-dd');
+  fechaInicio = this.datePipe.transform(new Date(), 'yyyy-MM-');
+  myForm: FormGroup;
   listUser: Array<{cc: string, nombre: string, jT: string}> = [];
   listTareas: Array<{nT: string, c: string, s: string, tT: string, tE: string}> = [];
 
   ngOnInit() {
     if (localStorage.getItem('isLoggedin') === 'true') {
-      this.idProyect = this.route.snapshot.paramMap.get('id');
-      this.nombreProyect = this.route.snapshot.paramMap.get('nombre');
-      this.getUsers();
-      this.getTareas();
-  } else {
-      localStorage.removeItem('isLoggedin');
-      this.router.navigate(['/login']);
+        this.fechaInicio =  this.fechaInicio + '01';
+        this.idProyect = this.route.snapshot.paramMap.get('id');
+        this.nombreProyect = this.route.snapshot.paramMap.get('nombre');
+        this.getUsers(this.fechaInicio, this.maxDate1);
+        this.getTareas(this.fechaInicio, this.maxDate1);
+        this.myForm = this.formBuilder.group({
+            fechaInicio: ['', [Validators.required]],
+            fechaFin: ''
+          });
+        this.myForm.value.fechaInicio = this.maxDate1;
+        this.onChanges();
+    } else {
+        localStorage.removeItem('isLoggedin');
+        this.router.navigate(['/login']);
   }
     if (localStorage.getItem('rol') !== 'admin') {
       this.router.navigate(['/dashboard/proyectos']);
     }
   }
 
-  getUsers() {
-    this.admin.listUserProyect(this.idProyect)
+  onChanges(): void {
+    this.myForm.valueChanges.subscribe(val => {
+      this.minDate2 = this.myForm.value.fechaInicio;
+      if (this.myForm.value.fechaFin !== '') {
+        this.maxDate1 = this.datePipe.transform(this.myForm.value.fechaFin, 'yyyy-MM-dd');
+      }
+    });
+  }
+
+  selectTime() {
+    if (this.myForm.value.fechaFin === '') {
+      this.myForm.value.fechaFin = this.maxDate2;
+      this.myForm.value.fechaInicio = this.datePipe.transform(this.myForm.value.fechaInicio, 'yyyy-MM-dd');
+    } else {
+      this.myForm.value.fechaInicio = this.datePipe.transform(this.myForm.value.fechaInicio, 'yyyy-MM-dd');
+      this.myForm.value.fechaFin = this.datePipe.transform(this.myForm.value.fechaFin, 'yyyy-MM-dd');
+    }
+    this.getUsers(this.myForm.value.fechaInicio, this.myForm.value.fechaFin);
+    this.getTareas(this.myForm.value.fechaInicio, this.myForm.value.fechaFin);
+  }
+
+  getUsers(fechaInicio, fechaFin) {
+    this.admin.listUserProyect(this.idProyect, fechaInicio, fechaFin)
         .subscribe(
             res => {
                 this.aux2 = res;
@@ -64,17 +100,23 @@ export class InfoProyectComponent implements OnInit {
         );
   }
 
-  getTareas() {
-    this.admin.listTareaProyect(this.idProyect)
+  getTareas(fechaInicio, fechaFin) {
+    this.admin.listTareaProyect(this.idProyect, fechaInicio, fechaFin)
         .subscribe(
             res => {
                 this.aux1 = res;
-                for (let i = 0; i < this.aux1.length; i++) {
-                    this.listTareas[i] = {nT: this.aux1[i].name, c: this.aux1[i].category,
-                        s: this.aux1[i].status, tT: this.aux1[i].jobTime, tE: this.aux1[i].expectedTime };
-                    this.auxtime = parseInt(this.listTareas[i].tE, 10) * 60;
-                    this.listTareas[i].tE = this.getTime(this.auxtime);
-                    this.listTareas[i].tT = this.getTime(this.aux1[i].jobTime );
+                if (this.aux1 === null) {
+                    if (this.listTareas.length > 0) {
+                      this.listTareas.length = 0;
+                    }
+                } else {
+                    for (let i = 0; i < this.aux1.length; i++) {
+                        this.listTareas[i] = {nT: this.aux1[i].name, c: this.aux1[i].category,
+                            s: this.aux1[i].status, tT: this.aux1[i].jobTime, tE: this.aux1[i].expectedTime };
+                        this.auxtime = parseInt(this.listTareas[i].tE, 10) * 60;
+                        this.listTareas[i].tE = this.getTime(this.auxtime);
+                        this.listTareas[i].tT = this.getTime(this.aux1[i].jobTime );
+                    }
                 }
             }
         );

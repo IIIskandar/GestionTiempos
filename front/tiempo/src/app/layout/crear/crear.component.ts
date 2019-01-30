@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormArray, FormBuilder  } from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormArray, FormBuilder} from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { AdminService } from '../../services/admin.service';
-import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import { element } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-crear',
@@ -13,14 +11,14 @@ import { element } from '@angular/core/src/render3';
 })
 export class CrearComponent implements OnInit {
 
+  @Input() category: any;
+
   constructor(private formBuilder: FormBuilder,
     private admin: AdminService,
-    private router: Router) { }
+    private router: Router,
+    ) { }
 
   myForm: FormGroup;
-  options: string[] = [''];
-  filteredOptions1: Observable<string[]>;
-  listCategory: Array<{nombre: string}> = [];
   listUsers: Array<{nombre: string, cc: string}> = [];
   a: any;
   b: any;
@@ -38,14 +36,8 @@ export class CrearComponent implements OnInit {
         tareas: this.formBuilder.array([]),
         usersId: this.formBuilder.array([])
       });
-      this.getTiempoCategoria();
       this.getUsers();
       this.aux1 = {tareas: [{category: ''}]};
-      setTimeout(() => {this.filteredOptions1 = this.tareasForms.valueChanges
-          .pipe(
-            startWith(''),
-            map(value => this._filter(value))
-          ); } , 500);
   } else {
       localStorage.removeItem('isLoggedin');
       this.router.navigate(['/login']);
@@ -55,10 +47,6 @@ export class CrearComponent implements OnInit {
     }
     this.addTarea();
     this.addUser();
-  }
-
-  private _filter(value): string[] {
-    return this.options;
   }
 
 
@@ -74,18 +62,6 @@ export class CrearComponent implements OnInit {
       );
   }
 
-  getTiempoCategoria() {
-    this.admin.getTiempoCategoria()
-      .subscribe(
-        res => {
-          this.aux = res;
-          for (let i = 0; i < this.aux.length; i++) {
-            this.listCategory[i] = {nombre: this.aux[i].category};
-            this.options.push(this.listCategory[i].nombre);
-          }
-        }
-      );
-  }
 
   get tareasForms() {
     return this.myForm.get('tareas') as FormArray;
@@ -98,7 +74,7 @@ export class CrearComponent implements OnInit {
   addTarea() {
     const tarea = this.formBuilder.group({
       name: ['', [Validators.required]],
-      category: ['', [Validators.required]],
+      category: [''],
       status: 'activa',
       expectedTime: ['', [Validators.required]]
     });
@@ -126,12 +102,13 @@ export class CrearComponent implements OnInit {
   }
 
   enviar() {
-    this.admin.crearProyecto(this.myForm.value)
+    console.log(this.myForm.value);
+    /*this.admin.crearProyecto(this.myForm.value)
       .subscribe(
         success => {
           alert('Proyecto creado correctamente');
           this.router.navigate(['/admin']);
         }
-      );
+      );*/
   }
 }

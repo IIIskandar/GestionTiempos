@@ -38,8 +38,8 @@ export class DashboardComponent implements OnInit {
     TT: any;
     numProyect: any;
     auxTime: any;
-    timeJobUser: any;
-    timeSusUser: any;
+    timeJobUser = 0;
+    timeSusUser = 0;
     timeJobUserF: any;
     timeSusUserF: any;
     aux: any;
@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit {
     listTareas: Array<{nP: string, nT: string, s: string, tT: string}> = [];
 
     public pieChartLabels: string[] = ['Tiempo trabajado', 'Tiempo en suspension'];
-    public pieChartData: number[] = [];
+    public pieChartData: number[] = [this.timeJobUser, this.timeSusUser];
     public pieChartType: string;
 
     ngOnInit() {
@@ -89,7 +89,7 @@ export class DashboardComponent implements OnInit {
             setTimeout(() => {this.timeJobUserF = this.getTime(this.timeJobUser); } , 200);
             setTimeout(() => {this.timeSusUserF = this.getTime(this.timeSusUser); } , 200);
             setTimeout(() => {this.pieChartData = [this.timeJobUser, this.timeSusUser]; } , 200);
-            setTimeout(() => {this.pieChartType = 'pie'; } , 500);
+            this.pieChartType = 'pie';
         } else {
             localStorage.removeItem('isLoggedin');
             this.router.navigate(['/login']);
@@ -208,7 +208,7 @@ export class DashboardComponent implements OnInit {
     timeSus() {
         this.admin.timeSusUSer(localStorage.getItem('cc'))
             .subscribe(
-                res => {
+                (res: number) => {
                     this.timeSusUser = res;
                 }
             );

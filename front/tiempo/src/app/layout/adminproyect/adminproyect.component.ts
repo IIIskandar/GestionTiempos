@@ -24,7 +24,8 @@ export class AdminproyectComponent implements OnInit {
   aux4: any;
   aux5: any;
   auxTime: any;
-  maxDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+  maxDate1 = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+  maxDate2 = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   minDate = this.datePipe.transform(new Date(2019, 0, 2), 'yyyy-MM-dd');
   minDate2 = this.datePipe.transform(new Date(2019, 0, 2), 'yyyy-MM-dd');
   fechaInicio = this.datePipe.transform(new Date(), 'yyyy-MM-');
@@ -36,17 +37,17 @@ export class AdminproyectComponent implements OnInit {
 
   ngOnInit() {
     if (localStorage.getItem('isLoggedin') === 'true') {
-      this.getProyectos();
+      this.fechaInicio =  this.fechaInicio + '01';
+      this.getProyectos(this.fechaInicio, this.maxDate1);
       this.getUsers();
-      this.getTiempoCategoria();
-      this.getTiempoSus();
+      this.getTiempoCategoria(this.fechaInicio, this.maxDate1);
+      this.getTiempoSus(this.fechaInicio, this.maxDate1);
       this.myForm = this.formBuilder.group({
         fechaInicio: ['', [Validators.required]],
         fechaFin: ''
       });
       this.auxTime = 0;
-      this.fechaInicio =  this.fechaInicio + '01';
-      this.myForm.value.fechaInicio = this.maxDate;
+      this.myForm.value.fechaInicio = this.maxDate1;
       this.onChanges();
     } else {
       localStorage.removeItem('isLoggedin');
@@ -60,41 +61,58 @@ export class AdminproyectComponent implements OnInit {
   onChanges(): void {
     this.myForm.valueChanges.subscribe(val => {
       this.minDate2 = this.myForm.value.fechaInicio;
+      if (this.myForm.value.fechaFin !== '') {
+        this.maxDate1 = this.datePipe.transform(this.myForm.value.fechaFin, 'yyyy-MM-dd');
+      }
     });
   }
 
-  getProyectos() {
-    this.admin.listProyectTime()
+  getProyectos(fechaInicio, fechaFin) {
+    this.admin.listProyectTimeF(fechaInicio, fechaFin)
         .subscribe(
           res => {
             this.aux1 = res;
               for (let i = 0; i < this.aux1.length; i++) {
-                this.listProyect[i] = {nombre: this.aux1[i].name, id: this.aux1[i].id,
-                jobTime: this.aux1[i].jobTime, exTime: ''};
+                this.listProyect[i] = {nombre: this.aux1[i].name, id: '',
+                jobTime: this.aux1[i].jobTimeUser, exTime: ''};
+                this.aux5 = this.aux1[i].tareas;
+                this.auxTime = 0;
+                if (this.aux1[i].jobTimeUser === null) {
+                  this.listProyect[i].jobTime = '0';
+                }
+                this.listProyect[i].jobTime = this.getTime(this.aux1[i].jobTimeUser );
+              }
+          }
+        );
+        this.admin.listProyectTime()
+        .subscribe(
+          res => {
+            this.aux1 = res;
+              for (let i = 0; i < this.aux1.length; i++) {
                 this.aux5 = this.aux1[i].tareas;
                 for (let j = 0; j < this.aux5.length; j++) {
                   this.auxTime = this.auxTime + this.aux5[j].expectedTime;
                 }
                 this.listProyect[i].exTime = this.getTime(this.auxTime * 60);
                 this.auxTime = 0;
-                if (this.aux1[i].jobTime === null) {
-                  this.listProyect[i].jobTime = '0';
-                }
-                this.listProyect[i].jobTime = this.getTime(this.aux1[i].jobTime );
+                this.listProyect[i].id = this.aux1[i].id;
               }
           }
         );
   }
 
+
   selectTime() {
     if (this.myForm.value.fechaFin === '') {
-      this.myForm.value.fechaFin = this.maxDate;
+      this.myForm.value.fechaFin = this.maxDate2;
       this.myForm.value.fechaInicio = this.datePipe.transform(this.myForm.value.fechaInicio, 'yyyy-MM-dd');
     } else {
       this.myForm.value.fechaInicio = this.datePipe.transform(this.myForm.value.fechaInicio, 'yyyy-MM-dd');
       this.myForm.value.fechaFin = this.datePipe.transform(this.myForm.value.fechaFin, 'yyyy-MM-dd');
     }
-    console.log(this.myForm.value);
+    this.getProyectos(this.myForm.value.fechaInicio, this.myForm.value.fechaFin);
+    this.getTiempoCategoria(this.myForm.value.fechaInicio, this.myForm.value.fechaFin);
+    this.getTiempoSus(this.myForm.value.fechaInicio, this.myForm.value.fechaFin);
   }
 
   getUsers() {
@@ -109,36 +127,45 @@ export class AdminproyectComponent implements OnInit {
       );
   }
 
-  getTiempoCategoria() {
-    this.admin.getTiempoCategoria()
+  getTiempoCategoria(fechaInicio, fechaFin) {
+    this.admin.getTiempoCategoria(fechaInicio, fechaFin)
       .subscribe(
         res => {
           this.aux3 = res;
-          for (let i = 0; i < this.aux3.length; i++) {
-            this.listCategory[i] = {nombre: this.aux3[i].category, tiempo: this.aux3[i].jobTimeCategory};
-            this.listCategory[i].tiempo = this.getTime(this.aux3[i].jobTimeCategory );
-          }
+          if (this.aux3 === null) {
+            if (this.listCategory.length > 0) {
+              this.listCategory.length = 0;
+            }
+          } else {
+              for (let i = 0; i < this.aux3.length; i++) {
+                this.listCategory[i] = {nombre: this.aux3[i].category, tiempo: this.aux3[i].jobTimeCategory};
+                this.listCategory[i].tiempo = this.getTime(this.aux3[i].jobTimeCategory );
+              }
+            }
         }
       );
   }
 
-  getTiempoSus() {
-    this.admin.getTiempoSus()
+  getTiempoSus(fechaInicio, fechaFin) {
+    this.admin.getTiempoSus(fechaInicio, fechaFin)
       .subscribe(
         res => {
           this.aux4 = res;
-          for (let i = 0; i < this.aux4.length; i++) {
-            this.listSus[i] = {nombre: this.aux4[i].tipo, tiempo: this.aux4[i].jobTimeSuspension};
-            this.listSus[i].tiempo = this.getTime(this.aux4[i].jobTimeSuspension );
-          }
+          if (this.aux4 === null) {
+            if (this.listSus.length > 0) {
+              this.listSus.length = 0;
+            }
+          } else {
+              for (let i = 0; i < this.aux4.length; i++) {
+                this.listSus[i] = {nombre: this.aux4[i].tipo, tiempo: this.aux4[i].jobTimeSuspension};
+                this.listSus[i].tiempo = this.getTime(this.aux4[i].jobTimeSuspension );
+              }
+            }
         }
       );
   }
 
 
-  crear() {
-    this.router.navigate(['/crear']);
-  }
 
   getTime(value: number): string {
     const  temp = value * 60;

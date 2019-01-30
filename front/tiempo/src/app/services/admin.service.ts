@@ -56,12 +56,18 @@ export class AdminService {
     return this.http.get(`http://localhost:8081/tiempos/v1/usuarios/` );
   }
 
-  getTiempoCategoria() {
-    return this.http.get(`http://localhost:8081/tiempos/v1/tareas/tiempoCategorias` );
+  getTiempoCategoria(fechaInicio, fechaFin) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/tareas/tiempoCategorias?fechaInicio=` + fechaInicio +
+    '&fechaFin=' + fechaFin);
   }
 
-  getTiempoSus() {
-    return this.http.get(`http://localhost:8081/tiempos/v1/suspension/tiempo` );
+  getListCategoria() {
+    return this.http.get(`http://localhost:8081/tiempos/v1/tareas/categorias`);
+  }
+
+  getTiempoSus(fechaInicio, fechaFin) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/suspension/tiempo?fechaInicio=` + fechaInicio +
+    '&fechaFin=' + fechaFin);
   }
 
   getSus() {
@@ -82,16 +88,24 @@ export class AdminService {
     return this.http.get(`http://localhost:8081/tiempos/v1/usuarios/tiempoTarea/` + cc);
   }
 
-  listUserProyect(id) {
-    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/usuariosProyecto/` + id);
+  listTareasUserF(cc, fechaInicio, fechaFin) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/usuarios/tiempoTareaFecha/` + cc
+    + '?fechaInicio=' + fechaInicio + '&fechaFin=' + fechaFin);
   }
 
-  listTareaProyect(id) {
-    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/` + id + '/tareas');
+  listUserProyect(id, fechaInicio, fechaFin) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/usuariosProyecto/` + id
+    + '?fechaInicio=' + fechaInicio + '&fechaFin=' + fechaFin);
   }
 
-  detalleProyect(cc) {
-    return this.http.get(`http://localhost:8081/tiempos/v1/usuarios/tiempoProyecto/` + cc);
+  listTareaProyect(id, fechaInicio, fechaFin) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/tareasProyecto/` + id
+    + '?fechaInicio=' + fechaInicio + '&fechaFin=' + fechaFin);
+  }
+
+  detalleProyect(cc, fechaInicio, fechaFin) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/usuarios/tiempoProyecto/` + cc
+    + '?fechaInicio=' + fechaInicio + '&fechaFin=' + fechaFin);
   }
 
   tiempoJobProyect(id) {
@@ -103,6 +117,7 @@ export class AdminService {
   }
 
   listProyectTimeF(fechaInicio, fechaFin) {
-    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/tiempoProyectosFecha/` + fechaInicio + '/' + fechaFin);
+    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/tiempoProyectosFecha?fechaInicio=` + fechaInicio +
+    '&fechaFin=' + fechaFin);
   }
 }

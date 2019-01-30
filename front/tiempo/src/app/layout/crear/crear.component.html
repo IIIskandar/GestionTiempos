@@ -23,12 +23,7 @@
                         </div>
                         <div fxFlex>
                             <br>
-                            <input type="text1" placeholder="CATEGORIA" matInput formControlName="category" [matAutocomplete]="autoTest">
-                            <mat-autocomplete #autoTest="matAutocomplete">
-                            <mat-option *ngFor="let option of filteredOptions1 | async" [value]="option">
-                            {{option}}
-                            </mat-option>
-                            </mat-autocomplete>
+                            <app-categorias [tareas]="tarea"></app-categorias>
                         </div>
                         <div fxFlex>
                             <br>

@@ -1,14 +1,15 @@
 <h2>Detalles del proyecto {{nombreProyect}}</h2>
 <div>
-  <h4>Seleccione intervalo de tiempo</h4> 
-  <form>
-          <input matInput [matDatepicker]="picker1" placeholder="Fecha inicial">
-          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-          <mat-datepicker #picker1></mat-datepicker>
-          <input matInput [matDatepicker]="picker2" placeholder="Fecha final">
-          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-datepicker #picker2></mat-datepicker>
-  </form>
+    <h4>Seleccione intervalo de tiempo</h4> 
+    <form [formGroup]="myForm" noValidate>
+        <input matInput [min]="minDate" [max]="maxDate1" formControlName="fechaInicio" [matDatepicker]="picker1" placeholder="Fecha inicial">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+        <input matInput [min]="minDate2" [max]="maxDate2" formControlName="fechaFin" [matDatepicker]="picker2" placeholder="Fecha final">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+        <button [disabled]="myForm.invalid" (click)="selectTime()" mat-icon-button><mat-icon>check_circle</mat-icon></button>
+    </form>
 </div>
 
 <div fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
