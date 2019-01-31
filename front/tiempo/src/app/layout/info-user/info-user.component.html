@@ -2,10 +2,10 @@
 <div>
     <h4>Seleccione intervalo de tiempo</h4> 
     <form [formGroup]="myForm" noValidate>
-        <input matInput [min]="minDate" [max]="maxDate1" formControlName="fechaInicio" [matDatepicker]="picker1" placeholder="Fecha inicial">
+        <input matInput [min]="minDate" [max]="maxDate1" formControlName="fechaInicio" [matDatepicker]="picker1" placeholder={{fechaInicio}}>
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
         <mat-datepicker #picker1></mat-datepicker>
-        <input matInput [min]="minDate2" [max]="maxDate2" formControlName="fechaFin" [matDatepicker]="picker2" placeholder="Fecha final">
+        <input matInput [min]="minDate2" [max]="maxDate2" formControlName="fechaFin" [matDatepicker]="picker2" placeholder={{maxDate2}}>
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
         <button [disabled]="myForm.invalid" (click)="selectTime()" mat-icon-button><mat-icon>check_circle</mat-icon></button>
@@ -13,7 +13,8 @@
 </div>
 
 <div fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
-  <div fxFlex>
+    <div fxFlex>
+        <br>
         <mat-card>
         <h2>Lista de proyectos</h2>
         <table>
@@ -28,8 +29,6 @@
         </table>
         </mat-card>
         <br>
-    </div>
-    <div fxFlex>
         <mat-card>
         <h2>Lista de tareas realizadas</h2>
         <table>
@@ -47,7 +46,27 @@
             </tr>
         </table>
         </mat-card>
-  </div>
+    </div>
+    <div fxFlex>
+        <br>
+        <mat-card>
+        <h2>Lista de suspensiones realizadas</h2>
+        <table>
+            <tr>
+            <th>Tipo de suspension</th>
+            <th>Tiempo</th>
+            <th>Fecha inicio</th>
+            <th>Fecha fin</th>
+            </tr>
+            <tr *ngFor="let suspension of listSus">
+            <td>{{suspension.nombre}}</td>
+            <td>{{suspension.tiempo}}</td>
+            <td>{{suspension.fehcaInicio}}</td>
+            <td>{{suspension.fechaFin}}</td>
+            </tr>
+        </table>
+        </mat-card>
+    </div>
   <br>
 </div>
 <br>

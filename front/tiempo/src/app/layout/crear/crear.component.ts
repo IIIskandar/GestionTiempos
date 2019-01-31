@@ -99,13 +99,10 @@ export class CrearComponent implements OnInit {
   }
 
   enviar() {
-    console.log(this.myForm.value);
-
     for (let i = 0; i < this.myForm.value.usersId.length; i++) {
       this.auxCC = false;
       for (let j = 0; j < this.listUsers.length; j++) {
         if (this.myForm.value.usersId[i].cc === this.listUsers[j].nombre) {
-          // this.myForm.value.usersId[i].cc = this.listUsers[j].cc;
           this.auxCC = true;
           j++;
         }

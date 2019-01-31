@@ -1,3 +1,89 @@
-<p>
-  edit-proyect works!
-</p>
+<div fxLayout="column" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+    <h2>Editar proyecto {{nombreProyect}}</h2>
+    <mat-card>
+    <div fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
+      <div fxFlex>
+          <h4>Lista de usuarios</h4>
+          <table>
+              <tr>
+              <th>CC</th>
+              <th>Nombre</th>
+              <th></th>
+              </tr>
+              <tr *ngFor="let user of listUsers">
+              <td>{{user.cc}}</td>
+              <td>{{user.nombre}}</td>
+              <td><button mat-raised-button color="warn" (click)="eliminarUser(user.cc)">
+                  <a>Eliminar usuario</a>
+              </button></td>
+              </tr>
+          </table>
+          <br>
+      </div>
+      <div fxFlex>
+          <h4>Lista de tareas</h4>
+          <table>
+              <tr>
+              <th>Nombre</th>
+              <th>Categoria</th>
+              <th>Tiempo esperado</th>
+              <th></th>
+              </tr>
+              <tr *ngFor="let tarea of listTareas">
+              <td>{{tarea.nombre}}</td>
+              <td>{{tarea.categoria}}</td>
+              <td >{{tarea.exT}}</td>
+              <td><button mat-raised-button color="warn" (click)="eliminarTarea(tarea.id)">
+                  <a>Eliminar tarea</a>
+              </button></td>
+              </tr>
+          </table>
+      </div>
+    </div>
+    </mat-card>
+        <br><br>
+        <mat-card>
+        <form [formGroup]="myForm" noValidate>
+        <div fxLayout.lt-md="column">
+            <div fxFlex fxLayoutGap="20px">
+                <h4>Agregar tareas</h4>
+                <div formArrayName="tareas" class="ex1">
+                    <button mat-icon-button (click)="deteleTarea()"><mat-icon>remove_circle</mat-icon></button>
+                    <button mat-icon-button (click)="addTarea()"><mat-icon>add_circle</mat-icon></button>
+                    <br>
+                    <div fxLayout="row" fxLayout.lt-md="column" *ngFor="let tarea of tareasForms.controls; let i=index" [formGroupName]="i" class="ex1">
+                        <div fxFlex>
+                            <br>
+                            <input type="text1" formControlName="name" placeholder="NOMBRE">
+                        </div>
+                        <div fxFlex>
+                            <br>
+                            <app-categoriasedit [tareas]="tarea"></app-categoriasedit>
+                        </div>
+                        <div fxFlex>
+                            <br>
+                            <input type="text1" type="number" oninput="this.value=this.value.replace(/[^0-9]/g,'');" formControlName="expectedTime" placeholder="HORAS TIEMPO ESPERADO">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex fxLayoutGap="20px">
+                <h4>Agregar usuarios</h4>
+                <div formArrayName="usersId" class="ex1">
+                    <button mat-icon-button (click)="deteleUser()"><mat-icon>remove_circle</mat-icon></button>
+                    <button mat-icon-button (click)="addUser()"><mat-icon>add_circle</mat-icon></button>
+                    <br>
+                    <div *ngFor="let usuario of usuariosForms.controls; let i=index" [formGroupName]="i">
+                        <br>
+                        <app-usuarioformedit [usersId]="usuario"></app-usuarioformedit>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <button mat-raised-button color="primary" [disabled]="myForm.invalid" (click)="enviar()">Guardar proyecto</button>
+        <br><br>
+      </form>
+  </mat-card>
+  <br><br>
+</div>

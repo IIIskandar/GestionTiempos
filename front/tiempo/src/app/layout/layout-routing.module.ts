@@ -53,7 +53,7 @@ const routes: Routes = [
                 loadChildren: './admin-crear/admin-crear.module#AdminCrearModule'
             },
             {
-                path: 'editProyect',
+                path: 'editProyect/:id',
                 loadChildren: './edit-proyect/edit-proyect.module#EditProyectModule'
             },
             {

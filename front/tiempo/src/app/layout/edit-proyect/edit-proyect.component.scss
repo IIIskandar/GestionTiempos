@@ -1,0 +1,73 @@
+.mat-card {
+    text-align: center;
+    img {
+        border-radius: 5px;
+        margin-top: -25px;
+    }
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+h2 {
+    text-align: center;
+    text-transform: uppercase;
+    }
+
+h4 {
+    text-align: center;
+    text-transform: uppercase;
+    }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+div.ex1 {
+    text-align: center;
+}
+
+
+
+input[type=text], select, textarea {
+    width: 40%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  input[type=text1], select, textarea {
+    width: 65%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  input[type=number], select, textarea {
+    width: 65%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  .ng-select.custom {
+    border:0px;
+    min-height: 0px;
+    border-radius: 0;
+}
+.ng-select.custom .ng-control  {            
+    min-height: 0px;
+    border-radius: 0;
+}

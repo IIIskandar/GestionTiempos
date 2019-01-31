@@ -121,15 +121,43 @@ export class AdminService {
     '&fechaFin=' + fechaFin);
   }
 
-  eliminarSus(nombre){
+  eliminarSus(nombre) {
     return this.http.delete(`http://localhost:8081/tiempos/v1/suspension/eliminar/` + nombre);
   }
 
-  eliminarUser(cc){
+  eliminarUser(cc) {
     return this.http.delete(`http://localhost:8081/tiempos/v1/usuarios/` + cc);
   }
 
-  eliminarTarea(idProyecto, idTarea){
+  eliminarTarea(idProyecto, idTarea) {
     return this.http.delete(`http://localhost:8081/tiempos/v1/proyectos/eliminarTarea/` + idProyecto + `/` + idTarea);
+  }
+
+  getProyect(id) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/proyectos/consultarProyecto/` + id);
+  }
+
+  eliminarUserProyect(id, cc) {
+    return this.http.delete(`http://localhost:8081/tiempos/v1/proyectos/eliminarUsuarioProyecto/` + id + `/` + cc);
+  }
+
+  eliminarTareaProyect(id, idtarea) {
+    return this.http.delete(`http://localhost:8081/tiempos/v1/proyectos/eliminarTarea/` + id + `/` + idtarea);
+  }
+
+  agregarTareas(id, tareas) {
+    const head = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.put(`http://localhost:8081/tiempos/v1/proyectos/editarProyectoTareas/` + id , JSON.stringify(tareas), {headers: head});
+  }
+
+  agregarUsuarios(id, usuarios) {
+    const head = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.put(`http://localhost:8081/tiempos/v1/proyectos/editarProyectoUsuarios/` +
+    id , JSON.stringify(usuarios), {headers: head});
+  }
+
+  getSusF(cc, fechaInicio, fechaFin) {
+    return this.http.get(`http://localhost:8081/tiempos/v1/usuarios/suspensionesDetalles/` + cc
+    + `?fechaInicio=` + fechaInicio + '&fechaFin=' + fechaFin);
   }
 }

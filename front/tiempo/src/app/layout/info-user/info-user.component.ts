@@ -21,6 +21,7 @@ export class InfoUserComponent implements OnInit {
   nombreUser: any;
   aux1: any;
   aux2: any;
+  aux3: any;
   maxDate1 = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   maxDate2 = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   minDate = this.datePipe.transform(new Date(2019, 0, 2), 'yyyy-MM-dd');
@@ -29,6 +30,7 @@ export class InfoUserComponent implements OnInit {
   myForm: FormGroup;
   listTareas: Array<{nP: string, nT: string, s: string, tT: string}> = [];
   listProyect: Array<{nombre: string, tT: string}> = [];
+  listSus: Array<{nombre: string, tiempo: string, fehcaInicio: string, fechaFin: string}> = [];
 
   ngOnInit() {
     if (localStorage.getItem('isLoggedin') === 'true') {
@@ -37,6 +39,7 @@ export class InfoUserComponent implements OnInit {
         this.nombreUser = this.route.snapshot.paramMap.get('nombre');
         this.getProyectos(this.fechaInicio, this.maxDate1);
         this.getTareas(this.fechaInicio, this.maxDate1);
+        this.getSus(this.fechaInicio, this.maxDate1);
         this.myForm = this.formBuilder.group({
             fechaInicio: ['', [Validators.required]],
             fechaFin: ''
@@ -71,43 +74,50 @@ export class InfoUserComponent implements OnInit {
     }
     this.getProyectos(this.myForm.value.fechaInicio, this.myForm.value.fechaFin);
     this.getTareas(this.myForm.value.fechaInicio, this.myForm.value.fechaFin);
+    this.getSus(this.myForm.value.fechaInicio, this.myForm.value.fechaFin);
   }
 
-  getTareas(fehcaInicio, fechaFin) {
-    this.admin.listTareasUserF(this.idUser, fehcaInicio, fechaFin)
-        .subscribe(
+  getSus(fechaInicio, fechaFin) {
+      this.admin.getSusF(this.idUser, fechaInicio, fechaFin)
+        .subscribe (
             res => {
-                this.aux2 = res;
-                if (this.aux2 === null) {
-                    if (this.listTareas.length > 0) {
-                      this.listTareas.length = 0;
-                    }
-                } else {
-                    for (let i = 0; i < this.aux2.length; i++) {
-                        this.listTareas[i] = {nP: this.aux2[i].nameProyecto, nT: this.aux2[i].nameTarea,
-                            s: this.aux2[i].status, tT: this.aux2[i].jobTimeUser};
-                        this.listTareas[i].tT = this.getTime(this.aux2[i].jobTimeUser );
-                    }
+                this.listSus.length = 0;
+                this.aux3 = res;
+                for (let i = 0; i < this.aux3.length; i++) {
+                    this.listSus[i] = {nombre: this.aux3[i].tipoSuspension, tiempo: this.aux3[i].tiempoSuspension,
+                        fehcaInicio: this.aux3[i].fechaInicio.replace('T', '  ').replace('+0000', ''),
+                        fechaFin: this.aux3[i].fechaFin.replace('T', '  ').replace('+0000', '')};
+                    this.listSus[i].tiempo = this.getTime(this.aux3[i].tiempoSuspension );
                 }
             }
         );
   }
 
-  getProyectos(fehcaInicio, fechaFin) {
-    this.admin.detalleProyect(this.idUser, fehcaInicio, fechaFin)
+  getTareas(fechaInicio, fechaFin) {
+    this.admin.listTareasUserF(this.idUser, fechaInicio, fechaFin)
+        .subscribe(
+            res => {
+                this.listTareas.length = 0;
+                this.aux2 = res;
+                    for (let i = 0; i < this.aux2.length; i++) {
+                        this.listTareas[i] = {nP: this.aux2[i].nameProyecto, nT: this.aux2[i].nameTarea,
+                            s: this.aux2[i].status, tT: this.aux2[i].jobTimeUser};
+                        this.listTareas[i].tT = this.getTime(this.aux2[i].jobTimeUser );
+                    }
+            }
+        );
+  }
+
+  getProyectos(fechaInicio, fechaFin) {
+    this.admin.detalleProyect(this.idUser, fechaInicio, fechaFin)
         .subscribe(
           res => {
+            this.listProyect.length = 0;
             this.aux1 = res;
-            if (this.aux1 === null) {
-                if (this.listProyect.length > 0) {
-                  this.listProyect.length = 0;
-                }
-            } else {
                 for (let i = 0; i < this.aux1.length; i++) {
                     this.listProyect[i] = {nombre: this.aux1[i].name, tT: this.aux1[i].jobTimeUser};
                     this.listProyect[i].tT = this.getTime(this.aux1[i].jobTimeUser );
                   }
-            }
           }
         );
   }

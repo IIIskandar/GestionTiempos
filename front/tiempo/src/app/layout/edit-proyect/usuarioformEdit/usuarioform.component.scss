@@ -1,3 +1,19 @@
+
+@import "~@ng-select/ng-select/themes/default.theme.css";
+body {
+  padding: 20px;
+}
+
+.ng-select.custom {
+    border:0px;
+    min-height: 0px;
+    border-radius: 0;
+}
+.ng-select.custom .ng-control  {            
+    min-height: 0px;
+    border-radius: 0;
+}
+
 .mat-card {
     text-align: center;
     img {
@@ -38,32 +54,10 @@ div.ex1 {
     text-align: center;
 }
 
-tr:nth-child(even) {background-color: #f2f2f2;}
 
-textarea {
-    width: 100px;
-    height: 20px;
-    resize: none;
-  }
 
 input[type=text], select, textarea {
-    width: 30%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-  }
-
-  input[type=password], select, textarea {
-    width: 30%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-  }
-
-input[type=number], select, textarea {
-    width: 70%;
+    width: 40%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -71,7 +65,15 @@ input[type=number], select, textarea {
   }
 
   input[type=text1], select, textarea {
-    width: 70%;
+    width: 65%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  input[type=number], select, textarea {
+    width: 65%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
