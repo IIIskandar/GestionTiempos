@@ -132,16 +132,11 @@ export class AdminproyectComponent implements OnInit {
       .subscribe(
         res => {
           this.aux3 = res;
-          if (this.aux3 === null) {
-            if (this.listCategory.length > 0) {
-              this.listCategory.length = 0;
-            }
-          } else {
+          this.listCategory.length = 0;
               for (let i = 0; i < this.aux3.length; i++) {
                 this.listCategory[i] = {nombre: this.aux3[i].category, tiempo: this.aux3[i].jobTimeCategory};
                 this.listCategory[i].tiempo = this.getTime(this.aux3[i].jobTimeCategory );
               }
-            }
         }
       );
   }
@@ -151,16 +146,11 @@ export class AdminproyectComponent implements OnInit {
       .subscribe(
         res => {
           this.aux4 = res;
-          if (this.aux4 === null) {
-            if (this.listSus.length > 0) {
-              this.listSus.length = 0;
-            }
-          } else {
+          this.listSus.length = 0;
               for (let i = 0; i < this.aux4.length; i++) {
                 this.listSus[i] = {nombre: this.aux4[i].tipo, tiempo: this.aux4[i].jobTimeSuspension};
                 this.listSus[i].tiempo = this.getTime(this.aux4[i].jobTimeSuspension );
               }
-            }
         }
       );
   }

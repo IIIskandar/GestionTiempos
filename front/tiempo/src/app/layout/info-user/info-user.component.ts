@@ -22,8 +22,10 @@ export class InfoUserComponent implements OnInit {
   aux1: any;
   aux2: any;
   aux3: any;
-  maxDate1 = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-  maxDate2 = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+  today = new Date();
+  fecha = this.today.setDate(this.today.getDate() + 1);
+  maxDate1 = this.datePipe.transform(new Date(this.fecha), 'yyyy-MM-dd');
+  maxDate2 = this.datePipe.transform(new Date(this.fecha), 'yyyy-MM-dd');
   minDate = this.datePipe.transform(new Date(2019, 0, 2), 'yyyy-MM-dd');
   minDate2 = this.datePipe.transform(new Date(2019, 0, 2), 'yyyy-MM-dd');
   fechaInicio = this.datePipe.transform(new Date(), 'yyyy-MM-');
