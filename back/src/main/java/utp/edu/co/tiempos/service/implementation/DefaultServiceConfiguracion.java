@@ -151,8 +151,30 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
     }
     
     @Override
-    public Proyecto editarProyecto(String id, List<Tarea> tareas, List<String> UsuariosCc){
+    public Proyecto editarProyectoTareas(String id, List<Tarea> tareas){
         Proyecto proyectoAux = consultarProyecto(id);
+        List<Tarea> tareasProyecto = proyectoAux.getTareas();
+       
+        for (Tarea tareaAux : tareas) {
+            tareasProyecto.add(tareaAux);
+        }
+        
+        proyectoAux.setTareas(tareasProyecto);
+        proyectoRepository.save(proyectoAux);
+
+        return proyectoAux;
+    }
+    
+    @Override
+    public Proyecto editarProyectoUsuarios(String id, List<String> UsuariosCc){
+        Proyecto proyectoAux = consultarProyecto(id); 
+        List<Usuario> usuariosProyecto = proyectoAux.getUsersId();
+         for (String ccs : UsuariosCc) {
+            Usuario usuarioAux = consultarUsuariobyCC(ccs);
+            usuariosProyecto.add(usuarioAux);
+        }
+        proyectoAux.setUsersId(usuariosProyecto);
+        proyectoRepository.save(proyectoAux);
         return proyectoAux;
     }
 
@@ -166,6 +188,30 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         }
         return null;
     }
+    
+    @Override
+    public Usuario eliminarUsuarioProyecto(String id, String cc){
+        Proyecto proyectoAux = consultarProyecto(id);
+        Usuario usuarioAux = consultarUsuariobyCC(cc);
+        List<Usuario> usuariosProyecto = proyectoAux.getUsersId();
+        List<Tarea> tareasProyecto = proyectoAux.getTareas();
+        for (Tarea tarea : tareasProyecto) {
+            List<Descripcion> descripciones = tarea.getDescripciones();
+            for (Descripcion descripcion : descripciones) {
+                if(cc.equals(descripcion.getMadeBy()))
+                    return null;
+            }
+        }
+        for (Usuario usuario : usuariosProyecto) {
+            if(usuarioAux.equals(usuario)){
+                usuariosProyecto.remove(usuario);
+                break;
+            }
+        }
+        proyectoAux.setUsersId(usuariosProyecto);
+        proyectoRepository.save(proyectoAux);
+        return usuarioAux;
+    } 
     
 
     //se le asigna un usuario al proyecto añadiendo el id del usuario en el array de usuariosID que tien el proyecto

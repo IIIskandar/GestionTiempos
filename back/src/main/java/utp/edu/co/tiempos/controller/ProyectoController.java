@@ -182,7 +182,25 @@ public class ProyectoController {
         return ResponseEntity.ok(proyectoAux);
     }
     
+    @PutMapping("/editarProyecto/{id}")
+    public ResponseEntity<?> edidtarTareas(@PathVariable("id") String id,@RequestBody List<Tarea> tareas){
+        Proyecto proyectoAux = configuracionService.editarProyectoTareas(id, tareas);
+        return ResponseEntity.ok(proyectoAux);
+    }
     
+    @PutMapping("/editarProyecto/{id}")
+    public ResponseEntity<?> edidtarUsuarios(@PathVariable("id") String id,@RequestBody List<String> usuariosCc){
+        Proyecto proyectoAux = configuracionService.editarProyectoUsuarios(id, usuariosCc);
+        return ResponseEntity.ok(proyectoAux);
+    }
+    
+    @DeleteMapping("/eliminarUsuarioProyecto/{id}/{cc}")
+    public ResponseEntity<?> edidtarUsuarios(@PathVariable("id") String id,@PathVariable("cc") String cc){
+        Usuario usuarioAux = configuracionService.eliminarUsuarioProyecto(id, cc);
+        if(usuarioAux == null)
+            return ResponseEntity.ok(0);
+        return ResponseEntity.ok(1);
+    }
 }
 
 

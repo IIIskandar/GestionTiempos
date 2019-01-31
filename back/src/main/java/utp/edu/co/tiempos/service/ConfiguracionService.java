@@ -39,9 +39,13 @@ public interface ConfiguracionService {
     
     Proyecto guardarProyecto(Proyecto proyecto);
     
-    Proyecto editarProyecto(String id, List<Tarea> tareas, List<String> UsuariosCc);
+    Proyecto editarProyectoTareas(String id, List<Tarea> tareas);
+    
+    Proyecto editarProyectoUsuarios(String id, List<String> UsuariosCc);
     
     Proyecto eliminarProyecto(String id);
+    
+    Usuario eliminarUsuarioProyecto(String id, String cc);
     
     Proyecto asignarUsuarioaProyecto(String idProyecto, String idUsuario);
     
