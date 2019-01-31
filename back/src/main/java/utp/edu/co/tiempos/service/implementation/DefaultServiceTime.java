@@ -256,7 +256,7 @@ public class DefaultServiceTime implements TimeService{
                     registrosTareas = tarea.getDescripciones();
                     for (Descripcion registroTarea : registrosTareas) {
                         if(!(registroTarea.getFechaFin() == null))
-                            if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                            if((registroTarea.getFechaInicio().after(dateObj1)||registroTarea.getFechaInicio().equals(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)||registroTarea.getFechaInicio().equals(dateObj2))){
                                 if(!(registroTarea.getJobTime() == null))
                                     contador = contador + registroTarea.getJobTime();
                         }
@@ -314,7 +314,7 @@ public class DefaultServiceTime implements TimeService{
                 List<Descripcion> registrosTareas = tareaAux.getDescripciones();
                 for (Descripcion registroTarea : registrosTareas) {
                     if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null)) 
-                        if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                        if((registroTarea.getFechaInicio().after(dateObj1)||registroTarea.getFechaInicio().equals(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)||registroTarea.getFechaInicio().equals(dateObj2))){
                             if(!(registroTarea.getJobTime()==null))
                                 contador = registroTarea.getJobTime() + contador;
                     }
@@ -410,7 +410,7 @@ public class DefaultServiceTime implements TimeService{
         List<Descripcion> registrosTareas = tareaAux.getDescripciones();
         for (Descripcion registroTarea : registrosTareas) {
             if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null))
-                if((registroTarea.getMadeBy().equals(cc))&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                if((registroTarea.getMadeBy().equals(cc))&&(registroTarea.getFechaInicio().after(dateObj1)||registroTarea.getFechaInicio().equals(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)||registroTarea.getFechaInicio().equals(dateObj2))){
                     if(!(registroTarea.getJobTime()==null)){
                         contador = registroTarea.getJobTime() + contador;
                         descripcionesId.add(registroTarea.getId());}
@@ -455,7 +455,7 @@ public class DefaultServiceTime implements TimeService{
                 registrosTareas = tarea.getDescripciones();
                 for (Descripcion registroTarea : registrosTareas) {
                     if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null)){
-                        if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2))){
+                        if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1)||registroTarea.getFechaInicio().equals(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)||registroTarea.getFechaInicio().equals(dateObj2))){
                             if(!(registroTarea.getJobTime()== null)){
                                 contador = contador + registroTarea.getJobTime();
                                 contadorRegistros = contadorRegistros + 1;}
@@ -547,7 +547,7 @@ public class DefaultServiceTime implements TimeService{
                     registrosTareas = tarea.getDescripciones();
                     for (Descripcion registroTarea : registrosTareas) {
                         if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null)){
-                            if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
+                            if(registroTarea.getMadeBy().equals(cc)&&(registroTarea.getFechaInicio().after(dateObj1)||registroTarea.getFechaInicio().equals(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)||registroTarea.getFechaInicio().equals(dateObj2)))
                                 if(!(registroTarea.getJobTime()==null))
                                     contador = contador + registroTarea.getJobTime();
                         }
@@ -605,7 +605,7 @@ public class DefaultServiceTime implements TimeService{
                     registrosTareas = tarea.getDescripciones();
                     for (Descripcion registroTarea : registrosTareas) {
                         if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null)){
-                            if((registroTarea.getMadeBy().equals(ccs.get(i)))&&(registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
+                            if((registroTarea.getMadeBy().equals(ccs.get(i)))&&(registroTarea.getFechaInicio().after(dateObj1)||registroTarea.getFechaInicio().equals(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)||registroTarea.getFechaInicio().equals(dateObj2)))
                                 if(registroTarea.getJobTime() != null)
                                     contador = contador + registroTarea.getJobTime();
                         }
@@ -651,7 +651,7 @@ public class DefaultServiceTime implements TimeService{
                 registrosTareas = tarea.getDescripciones();
                 for (Descripcion registroTarea : registrosTareas) {
                     if((registroTarea.getFechaInicio() != null)&&(registroTarea.getFechaFin() != null)){
-                        if((registroTarea.getFechaInicio().after(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)))
+                        if((registroTarea.getFechaInicio().after(dateObj1)||registroTarea.getFechaInicio().equals(dateObj1))&&(registroTarea.getFechaFin().before(dateObj2)||registroTarea.getFechaInicio().equals(dateObj2)))
                             if(registroTarea.getJobTime() != null)
                                 contador = contador + registroTarea.getJobTime();
                     }
@@ -693,7 +693,7 @@ public class DefaultServiceTime implements TimeService{
         List<Suspension> suspensionesAux = new ArrayList<>();
         for (Suspension suspension : suspensionesUsuario) {
             if(!(suspension.getFechaFin()==null))
-                if((suspension.getFechaInicio().after(dateObj1))&&(suspension.getFechaFin().before(dateObj2)))
+                if((suspension.getFechaInicio().after(dateObj1)||suspension.getFechaInicio().equals(dateObj1))&&(suspension.getFechaFin().before(dateObj2)||suspension.getFechaInicio().equals(dateObj2)))
                     suspensionesAux.add(suspension);
         }
         
