@@ -168,10 +168,10 @@ public class ProyectoController {
     public ResponseEntity<?> deleteTarea(@PathVariable("idProyecto") String idProyecto, @PathVariable("idTarea") String idTarea){
         Tarea tarea = configuracionService.eliminarTarea(idProyecto, idTarea);
         if(tarea == null){
-            return ResponseEntity.ok("la tarea no puede ser borrada porque tiene registros");
+            return ResponseEntity.ok(0);
         }
         
-        return ResponseEntity.ok("tarea borrada correctamente");
+        return ResponseEntity.ok(1);
     }
     
     @GetMapping("/consultarProyecto/{id}")

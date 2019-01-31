@@ -203,7 +203,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
             }
         }
         for (Usuario usuario : usuariosProyecto) {
-            if(usuarioAux.equals(usuario)){
+            if(usuario.getCc().equals(cc)){
                 usuariosProyecto.remove(usuario);
                 break;
             }
