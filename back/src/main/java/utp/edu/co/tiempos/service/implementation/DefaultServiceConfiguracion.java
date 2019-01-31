@@ -149,6 +149,12 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         Proyecto representativo = proyectoRepository.insert(proyecto);
         return representativo;
     }
+    
+    @Override
+    public Proyecto editarProyecto(String id, List<Tarea> tareas, List<String> UsuariosCc){
+        Proyecto proyectoAux = consultarProyecto(id);
+        return proyectoAux;
+    }
 
     //elimina un proyecto por ID
     @Override

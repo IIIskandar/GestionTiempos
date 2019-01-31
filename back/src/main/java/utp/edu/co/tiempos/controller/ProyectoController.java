@@ -174,7 +174,7 @@ public class ProyectoController {
         return ResponseEntity.ok("tarea borrada correctamente");
     }
     
-    @GetMapping("/{id}")
+    @GetMapping("/consultarProyecto/{id}")
     public ResponseEntity<?> consultarProyecto(@PathVariable("id") String id){
         Proyecto proyectoAux = configuracionService.consultarProyecto(id);
         if(proyectoAux == null)
