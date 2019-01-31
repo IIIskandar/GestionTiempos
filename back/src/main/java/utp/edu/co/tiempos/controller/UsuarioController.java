@@ -164,4 +164,14 @@ public class UsuarioController {
         return ResponseEntity.ok(tareasUsuario);
     }
     
+    @GetMapping("suspensionesDetalles/{cc}")
+    public ResponseEntity<?> suspensionesPorUsuario(@PathVariable("cc") String cc, @RequestParam("fechaInicio") String fechaInicio, @RequestParam("fechaFin") String fechaFin){
+        List<Suspension> suspensionesUsuario = timeService.suspensionesUsuario(cc, fechaInicio, fechaFin);
+        if(suspensionesUsuario.isEmpty())
+            return ResponseEntity.noContent().build();
+        if(suspensionesUsuario == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(suspensionesUsuario);
+    }
+    
 }

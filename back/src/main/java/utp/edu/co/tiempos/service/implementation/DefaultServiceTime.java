@@ -670,5 +670,34 @@ public class DefaultServiceTime implements TimeService{
         
         return tareasProyecto;
     }
+    
+    @Override
+    public List<Suspension> suspensionesUsuario(String cc, String fechaInicio, String fechaFin){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if((fechaInicio == null) || (fechaFin == null))
+            return null;
+        Date dateObj1 = null;
+            try {
+                dateObj1 = sdf.parse(fechaInicio);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Date dateObj2 = null;
+            try {
+                dateObj2 = sdf.parse(fechaFin);
+            } catch (ParseException ex) {
+                Logger.getLogger(DefaultServiceTime.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        Usuario usuarioAux = configuracionService.consultarUsuariobyCC(cc);
+        List<Suspension> suspensionesUsuario = usuarioAux.getSuspensions();
+        List<Suspension> suspensionesAux = new ArrayList<>();
+        for (Suspension suspension : suspensionesUsuario) {
+            if(!(suspension.getFechaFin()==null))
+                if((suspension.getFechaInicio().after(dateObj1))&&(suspension.getFechaFin().before(dateObj2)))
+                    suspensionesAux.add(suspension);
+        }
+        
+        return suspensionesAux;
+    }
 
 }

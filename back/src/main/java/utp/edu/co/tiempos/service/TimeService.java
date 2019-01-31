@@ -49,8 +49,8 @@ public interface TimeService {
     List<TareaCategoriaDTO> tiempoPorCategoria(String fechaInicio, String fechaFin);
     
     List<TiempoSuspensionTipoDTO> tiempoPorTipoSus(String fechaInicio, String fechaFin);
-    
-//    List<TiempoTareaUsuarioDTO> tiempoTareaUsuario(String idTarea, String cc);
+
+    List<Suspension> suspensionesUsuario(String cc, String fechaInicio, String fechaFin);
     
     Long TiempoSuspensionUsuarioTotal(String cc);
     
