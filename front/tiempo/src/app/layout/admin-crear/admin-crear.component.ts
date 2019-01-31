@@ -14,9 +14,9 @@ export class AdminCrearComponent implements OnInit {
   aux2: any;
   aux3: any;
   aux4: any;
+  auxres: any;
   listProyect: Array<{nombre: string, id: string, jobTime: string}> = [];
   listUser: Array<{nombre: string, cc: string, rol: string}> = [];
-  listCategory: Array<{nombre: string, tiempo: string}> = [];
   listSus: Array<{nombre: string, id: string}> = [];
 
   ngOnInit() {
@@ -49,8 +49,8 @@ export class AdminCrearComponent implements OnInit {
     this.router.navigate(['/crear']);
   }
 
-  editProyecto() {
-    this.router.navigate(['/editProyect']);
+  editProyecto(id) {
+    this.router.navigate(['/editProyect/' + id]);
   }
 
   getUsers() {
@@ -92,20 +92,34 @@ export class AdminCrearComponent implements OnInit {
         );
   }
 
-  eliminarSus(suspension){
+  eliminarSus(suspension) {
     this.admin.eliminarSus(suspension.nombre)
       .subscribe(
         res => {
-          console.log(res);
+          this.auxres = res;
+          if (this.auxres === 1) {
+            this.listSus.length = 0;
+            this.ngOnInit();
+            alert('Suspension eliminada correctamente');
+          } else {
+            alert('La suspension no se puede eliminar porque ya ha sido utilizada');
+          }
         }
       );
   }
 
-  eliminarUser(user){
+  eliminarUser(user) {
     this.admin.eliminarUser(user.cc)
       .subscribe(
-        res =>{
-        console.log(res);
+        res => {
+          this.auxres = res;
+          if (this.auxres === 1) {
+            this.listUser.length = 0;
+            this.ngOnInit();
+            alert('Usuario eliminado correctamente');
+          } else {
+            alert('El usuario no se puede eliminar porque tiene suspensiones y/o registros');
+          }
         }
       );
   }

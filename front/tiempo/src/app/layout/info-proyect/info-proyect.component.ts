@@ -104,12 +104,8 @@ export class InfoProyectComponent implements OnInit {
     this.admin.listTareaProyect(this.idProyect, fechaInicio, fechaFin)
         .subscribe(
             res => {
+                this.listTareas.length = 0;
                 this.aux1 = res;
-                if (this.aux1 === null) {
-                    if (this.listTareas.length > 0) {
-                      this.listTareas.length = 0;
-                    }
-                } else {
                     for (let i = 0; i < this.aux1.length; i++) {
                         this.listTareas[i] = {nT: this.aux1[i].name, c: this.aux1[i].category,
                             s: this.aux1[i].status, tT: this.aux1[i].jobTime, tE: this.aux1[i].expectedTime };
@@ -117,7 +113,6 @@ export class InfoProyectComponent implements OnInit {
                         this.listTareas[i].tE = this.getTime(this.auxtime);
                         this.listTareas[i].tT = this.getTime(this.aux1[i].jobTime );
                     }
-                }
             }
         );
   }

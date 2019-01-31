@@ -1,23 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EditProyectComponent } from './edit-proyect.component';
-import { EditProyectRoutingModule } from './edit-proyect-routing.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UsuarioformEditComponent } from './usuarioformEdit/usuarioform.component';
+import { UsuarioformEditComponent } from './usuarioform.component';
 import {
   MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatFormFieldModule, MatInputModule, MatNativeDateModule, MatRadioModule, MatSelectModule,
   MatSliderModule, MatSlideToggleModule, MatButtonModule, MatIconModule
 } from '@angular/material';
-import { CategoriasEditComponent } from './categoriasEdit/categorias.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
-  declarations: [EditProyectComponent, CategoriasEditComponent, UsuarioformEditComponent],
+  declarations: [UsuarioformEditComponent],
   imports: [
     CommonModule,
-    EditProyectRoutingModule,
     MatButtonModule,
     FlexLayoutModule,
     MatCardModule,
@@ -26,8 +23,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ReactiveFormsModule,
     MatIconModule,
     MatAutocompleteModule,
-    ReactiveFormsModule,
-    NgSelectModule
+    NgSelectModule,
+    BrowserModule
   ]
 })
-export class EditProyectModule { }
+export class UsuarioformEditModule { }

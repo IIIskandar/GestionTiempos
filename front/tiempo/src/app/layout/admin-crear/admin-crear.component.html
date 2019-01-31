@@ -9,7 +9,7 @@
             </tr>
             <tr *ngFor="let proyecto of listProyect">
             <td id="nombre">{{proyecto.nombre}}</td>
-            <td><button mat-raised-button color="primary">
+            <td><button mat-raised-button color="primary"  (click)="editProyecto(proyecto.id)">
                 <a>Editar proyecto</a>
             </button></td>
             </tr>

@@ -1,3 +1,7 @@
+.mb-20 {
+    margin-bottom: 20px;
+}
+
 .mat-card {
     text-align: center;
     img {
@@ -19,10 +23,6 @@ h2 {
     text-transform: uppercase;
     }
 
-h4 {
-    text-align: center;
-    text-transform: uppercase;
-    }
 
 table {
   border-collapse: collapse;
@@ -34,36 +34,25 @@ th, td {
   padding: 8px;
 }
 
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+.example-card {
+    max-width: 400px;
+  }
+
+h4 {
+    text-align: center;
+    text-transform: uppercase;
+    }
+
 div.ex1 {
     text-align: center;
 }
 
-tr:nth-child(even) {background-color: #f2f2f2;}
 
-textarea {
-    width: 100px;
-    height: 20px;
-    resize: none;
-  }
 
 input[type=text], select, textarea {
-    width: 30%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-  }
-
-  input[type=password], select, textarea {
-    width: 30%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-  }
-
-input[type=number], select, textarea {
-    width: 70%;
+    width: 40%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -71,7 +60,15 @@ input[type=number], select, textarea {
   }
 
   input[type=text1], select, textarea {
-    width: 70%;
+    width: 65%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  input[type=number], select, textarea {
+    width: 65%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;

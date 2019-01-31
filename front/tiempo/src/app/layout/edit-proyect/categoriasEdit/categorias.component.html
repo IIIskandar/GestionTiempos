@@ -1,0 +1,8 @@
+<div [formGroup]="tareas">
+<input type="text1" placeholder="CATEGORIA" matInput [matAutocomplete]="autoTest" formControlName="category">
+    <mat-autocomplete #autoTest="matAutocomplete">
+    <mat-option *ngFor="let option of filteredOptions1 | async" [value]="option">
+    {{option}}
+    </mat-option>
+    </mat-autocomplete>
+</div>
