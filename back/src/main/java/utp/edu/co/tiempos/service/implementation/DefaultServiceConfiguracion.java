@@ -156,6 +156,7 @@ public class DefaultServiceConfiguracion implements ConfiguracionService{
         List<Tarea> tareasProyecto = proyectoAux.getTareas();
        
         for (Tarea tareaAux : tareas) {
+            tareaRepository.insert(tareaAux);
             tareasProyecto.add(tareaAux);
         }
         
