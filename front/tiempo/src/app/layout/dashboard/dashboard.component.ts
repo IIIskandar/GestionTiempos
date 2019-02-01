@@ -24,12 +24,10 @@ export class DashboardComponent implements OnInit {
 
     info: any;
     cc: any;
-    nombreBool: boolean;
     user: any;
     timewc: any;
     timesnack: any;
     timemeeting: any;
-    nombreTarea: any;
     fInicio: any;
     suspension: boolean;
     proyectos: boolean;
@@ -75,12 +73,6 @@ export class DashboardComponent implements OnInit {
         }
         if (localStorage.getItem('isLoggedin') === 'true') {
             this.cc = localStorage.getItem('cc');
-            this.nombreTarea = localStorage.getItem('nombreTarea');
-            if ( this.nombreTarea === null) {
-                this.nombreBool = false;
-            } else {
-                this.nombreBool = true;
-            }
             this.getSuspension(this.cc);
             this.getProyectos();
             this.timeJob();

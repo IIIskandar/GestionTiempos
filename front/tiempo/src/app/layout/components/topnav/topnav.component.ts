@@ -14,6 +14,8 @@ export class TopnavComponent implements OnInit {
     iSuspension: boolean;
     fSuspension: boolean;
     tarea: boolean;
+    nombreBool: boolean;
+    nombreTarea: any;
 
     constructor(
         public router: Router,
@@ -51,6 +53,12 @@ export class TopnavComponent implements OnInit {
         } else {
             this.tarea = false;
         }
+        this.nombreTarea = localStorage.getItem('nombreTarea');
+            if ( this.nombreTarea === null) {
+                this.nombreBool = false;
+            } else {
+                this.nombreBool = true;
+            }
         this.name = localStorage.getItem('nombre');
     }
 

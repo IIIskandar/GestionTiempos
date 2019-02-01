@@ -25,7 +25,7 @@ export class InfoUserComponent implements OnInit {
   today = new Date();
   fecha = this.today.setDate(this.today.getDate() + 1);
   maxDate1 = this.datePipe.transform(new Date(this.fecha), 'yyyy-MM-dd');
-  maxDate2 = this.datePipe.transform(new Date(this.fecha), 'yyyy-MM-dd');
+  maxDate2 = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   minDate = this.datePipe.transform(new Date(2019, 0, 2), 'yyyy-MM-dd');
   minDate2 = this.datePipe.transform(new Date(2019, 0, 2), 'yyyy-MM-dd');
   fechaInicio = this.datePipe.transform(new Date(), 'yyyy-MM-');
@@ -68,11 +68,12 @@ export class InfoUserComponent implements OnInit {
 
   selectTime() {
     if (this.myForm.value.fechaFin === '') {
-      this.myForm.value.fechaFin = this.maxDate2;
+      this.myForm.value.fechaFin = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
       this.myForm.value.fechaInicio = this.datePipe.transform(this.myForm.value.fechaInicio, 'yyyy-MM-dd');
     } else {
       this.myForm.value.fechaInicio = this.datePipe.transform(this.myForm.value.fechaInicio, 'yyyy-MM-dd');
-      this.myForm.value.fechaFin = this.datePipe.transform(this.myForm.value.fechaFin, 'yyyy-MM-dd');
+      this.myForm.value.fechaFin = this.datePipe.transform(
+          this.myForm.value.fechaFin.setDate(this.myForm.value.fechaFin.getDate() + 1), 'yyyy-MM-dd');
     }
     this.getProyectos(this.myForm.value.fechaInicio, this.myForm.value.fechaFin);
     this.getTareas(this.myForm.value.fechaInicio, this.myForm.value.fechaFin);

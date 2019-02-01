@@ -61,7 +61,7 @@ export class TareaComponent implements OnInit {
           succes => {
             alert('Tarea inicada correctamente');
             localStorage.setItem('status', 'EnTarea');
-            localStorage.setItem('nombreTarea', tarea.name);
+            localStorage.setItem('nombreTarea', tarea.n);
             localStorage.setItem('idTarea', tarea.id);
             localStorage.setItem('idProyect', this.idProyect);
             this.router.navigate(['/dashboard/proyectos']);
