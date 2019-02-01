@@ -11,7 +11,7 @@ import {
 } from '@angular/material';
 import { CrearRoutingModule } from './crear-routing.module';
 import { UsuarioformComponent } from './usuarioform/usuarioform.component';
-import { NgSelectModule } from '@ng-select/ng-select';
+
 
 @NgModule({
   declarations: [CrearComponent, CategoriasComponent, UsuarioformComponent],
@@ -26,8 +26,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ReactiveFormsModule,
     MatIconModule,
     MatAutocompleteModule,
-    ReactiveFormsModule,
-    NgSelectModule
+    ReactiveFormsModule
   ]
 })
 export class CrearModule { }

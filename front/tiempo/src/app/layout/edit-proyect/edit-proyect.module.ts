@@ -11,7 +11,6 @@ import {
   MatSliderModule, MatSlideToggleModule, MatButtonModule, MatIconModule
 } from '@angular/material';
 import { CategoriasEditComponent } from './categoriasEdit/categorias.component';
-import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [EditProyectComponent, CategoriasEditComponent, UsuarioformEditComponent],
@@ -26,8 +25,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ReactiveFormsModule,
     MatIconModule,
     MatAutocompleteModule,
-    ReactiveFormsModule,
-    NgSelectModule
+    ReactiveFormsModule
   ]
 })
 export class EditProyectModule { }
